@@ -69,7 +69,7 @@ public class User extends Auditable implements Serializable {
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
-    @JsonBackReference
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Payment payment;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private Set<Payment> payments;
 }
