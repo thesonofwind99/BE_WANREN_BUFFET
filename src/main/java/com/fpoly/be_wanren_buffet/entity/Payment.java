@@ -1,5 +1,6 @@
 package com.fpoly.be_wanren_buffet.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fpoly.be_wanren_buffet.enums.PaymentMethod;
 import jakarta.persistence.*;
@@ -35,8 +36,8 @@ public class Payment extends Auditable implements Serializable {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @JsonManagedReference
-    @OneToOne
+    @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 }
