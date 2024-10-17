@@ -1,6 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,12 +20,10 @@ public class PromotionOrder implements Serializable {
     @Column(name = "promotion_order_id")
     private Long promotionOrderId;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

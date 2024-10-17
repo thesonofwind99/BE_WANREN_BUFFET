@@ -1,7 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fpoly.be_wanren_buffet.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -41,12 +39,10 @@ public class Product extends Auditable implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private Set<OrderDetail> orderDetails;
 

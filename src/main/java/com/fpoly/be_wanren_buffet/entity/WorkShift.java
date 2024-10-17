@@ -1,13 +1,11 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,7 +29,6 @@ public class WorkShift extends Auditable implements Serializable {
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "shift")
     private Set<WorkSchedule> schedules;
 
