@@ -31,7 +31,7 @@ public class Product extends Auditable implements Serializable {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "image")
+    @Column(name = "image" , columnDefinition = "LONGTEXT")
     private String image;
 
     @Enumerated(EnumType.STRING)
