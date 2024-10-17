@@ -1,6 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fpoly.be_wanren_buffet.enums.TableStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,11 +30,9 @@ public class Tablee extends Auditable implements Serializable {
     @Column(name = "location")
     private String location;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "tablee")
     private Set<Reservation> reservations;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "tablee")
     private Set<Order> orders;
 

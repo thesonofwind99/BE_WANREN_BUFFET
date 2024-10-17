@@ -1,7 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,26 +48,20 @@ public class User extends Auditable implements Serializable {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @JsonManagedReference
     private Set<Role> roles;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Set<WorkSchedule> schedules;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Set<Reservation> reservations;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Set<LoginHistory> loginHistories;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Set<Payment> payments;
 }

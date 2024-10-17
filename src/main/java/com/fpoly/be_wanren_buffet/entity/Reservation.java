@@ -1,6 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,17 +18,14 @@ public class Reservation extends Auditable implements Serializable {
     @Column(name = "reservation_id")
     private Long reservationId;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "table_id")
     private Tablee tablee;

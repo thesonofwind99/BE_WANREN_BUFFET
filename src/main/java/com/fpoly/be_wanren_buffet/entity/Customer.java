@@ -1,7 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,11 +46,9 @@ public class Customer extends Auditable implements Serializable {
     @Column(name = "account_status")
     private Boolean accountStatus; //True: hoat dong, False: khong hoat dong
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "customer")
     private Set<Reservation> reservations;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "customer")
     private Set<Order> orders;
 }

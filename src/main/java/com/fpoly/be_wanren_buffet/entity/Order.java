@@ -1,7 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fpoly.be_wanren_buffet.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,12 +20,10 @@ public class Order extends Auditable implements Serializable {
     @Column(name = "order_id")
     private Long orderId;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -42,24 +38,19 @@ public class Order extends Auditable implements Serializable {
     @Column(name = "notes")
     private String notes;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "table_id")
     private Tablee tablee;
 
-    @JsonBackReference
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 
-    @JsonBackReference
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Review review;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "order")
     private Set<PromotionOrder> promotionOrders;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetails;
 

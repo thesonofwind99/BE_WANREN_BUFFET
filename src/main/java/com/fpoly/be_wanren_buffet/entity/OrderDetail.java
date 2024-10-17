@@ -1,7 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,12 +30,10 @@ public class OrderDetail extends Auditable implements Serializable {
     @Column(name = "item_notes")
     private String itemNotes;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

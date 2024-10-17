@@ -1,6 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,6 @@ public class Category extends Auditable implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "category")
     private Set<Product> products;
 }

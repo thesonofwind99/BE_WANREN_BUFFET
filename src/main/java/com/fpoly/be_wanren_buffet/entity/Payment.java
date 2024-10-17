@@ -1,7 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fpoly.be_wanren_buffet.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,12 +29,10 @@ public class Payment extends Auditable implements Serializable {
     @Column(name = "payment_status")
     private Boolean paymentStatus; //True: da thanh toan, False: chua thanh toan
 
-    @JsonManagedReference
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

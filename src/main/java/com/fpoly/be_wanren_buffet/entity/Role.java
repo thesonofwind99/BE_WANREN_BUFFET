@@ -1,6 +1,5 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +26,6 @@ public class Role extends Auditable implements Serializable {
     private String description;
 
     @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
     private Set<User> users;
 
 }
