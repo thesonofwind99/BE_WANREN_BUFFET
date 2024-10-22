@@ -1,5 +1,8 @@
 package com.fpoly.be_wanren_buffet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,7 @@ import java.util.Set;
 @Table(name = "category")
 @Getter
 @Setter
+
 public class Category extends Auditable implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,3 +32,4 @@ public class Category extends Auditable implements Serializable {
     @OneToMany(mappedBy = "category")
     private Set<Product> products;
 }
+

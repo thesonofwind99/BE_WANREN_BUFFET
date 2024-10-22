@@ -29,6 +29,9 @@ public class Product extends Auditable implements Serializable {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "type_food")
+    private String typeFood;
+
     @Column(name = "image" , columnDefinition = "LONGTEXT")
     private String image;
 
