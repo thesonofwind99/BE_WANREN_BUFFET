@@ -1,10 +1,12 @@
 package com.fpoly.be_wanren_buffet.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -44,8 +46,14 @@ public class Customer extends Auditable implements Serializable {
     private String customerType;
 
     @Column(name = "account_status")
-    private Boolean accountStatus; //True: hoat dong, False: khong hoat dong
+    private Boolean accountStatus;
 
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate = LocalDateTime.now();
+
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
     @OneToMany(mappedBy = "customer")
     private Set<Reservation> reservations;
 

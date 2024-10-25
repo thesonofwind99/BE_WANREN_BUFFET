@@ -18,7 +18,7 @@ public class Promotion extends Auditable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "promotion_id")
-    private Long promotionId;
+    private Long Promotion;
 
     @Column(name = "promotion_name")
     private String promotionName;

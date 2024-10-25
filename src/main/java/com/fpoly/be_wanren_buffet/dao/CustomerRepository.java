@@ -7,4 +7,9 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "Customer")
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+
+    Customer findByUsername(String username);
+
 }

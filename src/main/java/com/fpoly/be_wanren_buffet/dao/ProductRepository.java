@@ -21,4 +21,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByTypeFood(String typeFood);
 
     Page<Product> findByProductNameContaining(String productName, Pageable pageable); // Đổi tên phương thức để phù hợp với thuộc tính 'productName'
+
+//    Page<Product> findByProductIdQuality(String productName, Pageable pageable);
 }
