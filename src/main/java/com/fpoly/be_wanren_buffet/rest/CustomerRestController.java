@@ -52,7 +52,9 @@ public class CustomerRestController {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 // Giả sử bạn có thể lấy fullName từ UserDetails hoặc từ repository
                 String fullName = customerAuthService.authenticate(loginRequest.getUsername()).getFullname();
-                final String jwt = jwtService.generateToken(userDetails, fullName);
+                String email = customerAuthService.authenticate(loginRequest.getUsername()).getEmail();
+                String phone = customerAuthService.authenticate(loginRequest.getUsername()).getPhoneNumber();
+                final String jwt = jwtService.generateToken(userDetails, fullName , email, phone);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {

@@ -23,9 +23,11 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long JWT_EXPIRATION;
 
-    public String generateToken(UserDetails userDetails, String fullName) {
+    public String generateToken(UserDetails userDetails, String fullName , String email , String phone) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("fullName", fullName); // Thêm fullName vào claims
+        claims.put("fullName", fullName);
+        claims.put("email",email );
+        claims.put("phone",phone );
         claims.put("role", "CUSTOMER");
         return createToken(claims, userDetails.getUsername());
     }
@@ -65,6 +67,15 @@ public class JwtService {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
+
+    public String extractEmail(String token) {
+        return extractAllClaims(token).get("email", String.class);
+    }
+
+    public String extractPhone(String token) {
+        return extractAllClaims(token).get("phone", String.class);
+    }
+
 
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());

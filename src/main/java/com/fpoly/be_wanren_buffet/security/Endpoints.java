@@ -8,7 +8,8 @@ public class Endpoints {
             "/Product/**",
             "/Promotion/search/findByPromotionStatus",
             "/Customer/search/existsByUsername",
-            "/Customer/search/existsByEmail"
+            "/Customer/search/existsByEmail",
+            "/api/payment/create_payment"
     };
 
     public static final String[] PUBLIC_PORT_ENDPOINS = {
