@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "order_detail", uniqueConstraints = {
@@ -37,5 +36,4 @@ public class OrderDetail extends Auditable implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
 }

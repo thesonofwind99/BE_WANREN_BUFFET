@@ -9,11 +9,18 @@ public class Endpoints {
             "/Promotion/search/findByPromotionStatus",
             "/Customer/search/existsByUsername",
             "/Customer/search/existsByEmail",
-            "/api/payment/create_payment"
+            "/api/payment/create_payment",
+
     };
 
     public static final String[] PUBLIC_PORT_ENDPOINS = {
             "/api/customer/register",
             "/api/customer/login",
     };
+
+    public static final String[] PRIVATE_POST_ENDPOINS = {
+            "/api/orders"
+    };
+
+
 }
