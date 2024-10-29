@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -27,7 +28,7 @@ public class PaymentRestController {
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = price * 100; // VNPay expects amount in VND * 100
+            long amount = price * 100;
             // Optional: Make bankCode dynamic or configurable
             if (bankCode == null || bankCode.isEmpty()) {
                 bankCode = "NCB"; // Default bank code
@@ -111,7 +112,7 @@ public class PaymentRestController {
     }
 
     @GetMapping("/RollBack_VNPAY")
-    public String backString() {
-        return "redirect:http://localhost:3000/";
+    public RedirectView backString() {
+        return new RedirectView("http://localhost:3000");
     }
 }
