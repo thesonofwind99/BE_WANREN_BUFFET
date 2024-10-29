@@ -106,5 +106,12 @@ public class PaymentRestController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("An error occurred while processing the payment.");
         }
+
+
+    }
+
+    @GetMapping("/RollBack_VNPAY")
+    public String backString() {
+        return "redirect:http://localhost:3000/";
     }
 }

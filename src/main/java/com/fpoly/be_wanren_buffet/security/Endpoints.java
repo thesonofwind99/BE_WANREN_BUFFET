@@ -10,6 +10,7 @@ public class Endpoints {
             "/Customer/search/existsByUsername",
             "/Customer/search/existsByEmail",
             "/api/payment/create_payment",
+            "/api/payment/RollBack_VNPAY"
 
     };
 
