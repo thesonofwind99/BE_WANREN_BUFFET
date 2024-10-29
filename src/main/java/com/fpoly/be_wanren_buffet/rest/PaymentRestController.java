@@ -1,6 +1,7 @@
 // PaymentRestController.java
 package com.fpoly.be_wanren_buffet.rest;
 import com.fpoly.be_wanren_buffet.config.VnpayConfig;
+import com.fpoly.be_wanren_buffet.dto.PaymentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -95,7 +96,10 @@ public class PaymentRestController {
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
 
             String paymentUrl = vnpayConfig.vnp_PayUrl + "?" + queryUrl;
-            return ResponseEntity.ok(paymentUrl);
+            PaymentDTO paymentDTO = new PaymentDTO();
+            paymentDTO.setStatus("OK");
+            paymentDTO.setURL(paymentUrl);
+            return ResponseEntity.ok().body(paymentDTO);
 
         } catch (Exception e) {
             // Log the error (use a logger in real applications)
