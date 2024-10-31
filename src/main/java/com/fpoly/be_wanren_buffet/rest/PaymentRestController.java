@@ -1,7 +1,9 @@
 // PaymentRestController.java
 package com.fpoly.be_wanren_buffet.rest;
 import com.fpoly.be_wanren_buffet.config.VnpayConfig;
+import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dto.PaymentDTO;
+import com.fpoly.be_wanren_buffet.entity.Order;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,15 @@ public class PaymentRestController {
     @Autowired
     private VnpayConfig vnpayConfig;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
     @GetMapping("/create_payment")
     public ResponseEntity<?> getPayment(@RequestParam long price,
                                         @RequestParam(required = false) String bankCode,
                                         HttpServletRequest request) {
+        List<Order> orders = orderRepository.findAll();
+        Order order = orders.get(orders.size() - 1);
         try {
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
@@ -33,7 +40,7 @@ public class PaymentRestController {
                 bankCode = "NCB"; // Default bank code
             }
 
-            String vnp_TxnRef = VnpayConfig.getRandomNumber(8);
+            String vnp_TxnRef = String.valueOf(order.getOrderId() + 1);
             String vnp_IpAddr = VnpayConfig.getIpAddress(request);
 
             Map<String, String> vnp_Params = new HashMap<>();
@@ -110,8 +117,5 @@ public class PaymentRestController {
 
     }
 
-    @GetMapping("/RollBack_VNPAY")
-    public String backString() {
-        return "redirect:http://localhost:3000/";
-    }
+
 }

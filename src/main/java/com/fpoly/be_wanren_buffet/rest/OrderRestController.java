@@ -65,7 +65,13 @@ public class OrderRestController {
             order.setTotalAmount(orderRequest.getTotalAmount());
             order.setNotes(orderRequest.getNotes());
             order.setPayment(orderRequest.getPayment());
-            order.setOrderStatus(OrderStatus.PREPARING_ORDER);
+            order.setAddress(orderRequest.getAddress());
+            if (orderRequest.getPayment().equals("VN PAY")){
+                order.setOrderStatus(OrderStatus.WAITING);
+            }else {
+                order.setOrderStatus(OrderStatus.PREPARING_ORDER);
+            }
+
             order.setCreatedDate(LocalDateTime.now());
 
             // Lưu đơn hàng
