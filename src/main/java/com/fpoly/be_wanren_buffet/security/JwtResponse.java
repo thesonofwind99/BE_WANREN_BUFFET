@@ -1,18 +1,34 @@
 package com.fpoly.be_wanren_buffet.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
 
 public class JwtResponse {
-    private final  String jwt;
+    private String token;
+    private UpdateCustomerDTO userInfo;
 
-    public JwtResponse(String jwt) {
-        this.jwt = jwt;
+    public JwtResponse(String token) {
+        this.token = token;
     }
 
-    public String getJwt() {
-        return jwt;
+    public JwtResponse(String token, UpdateCustomerDTO userInfo) {
+        this.token = token;
+        this.userInfo = userInfo;
+    }
+
+    // Getters and setters
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public UpdateCustomerDTO getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UpdateCustomerDTO userInfo) {
+        this.userInfo = userInfo;
     }
 }

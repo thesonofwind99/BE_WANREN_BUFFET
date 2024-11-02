@@ -1,11 +1,15 @@
 package com.fpoly.be_wanren_buffet.service;
 
 import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
 import com.fpoly.be_wanren_buffet.entity.Customer;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,4 +30,20 @@ public class CustomerService {
         customerRepository.save(customer);
         return ResponseEntity.ok(Map.of("message", "success"));
     }
+
+    public Customer findCustomerByUsername(String username) {
+        List<Customer> customers = customerRepository.findAll();
+        for (Customer customer : customers) {
+            if (customer.getUsername().equals(username)) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+
 }
