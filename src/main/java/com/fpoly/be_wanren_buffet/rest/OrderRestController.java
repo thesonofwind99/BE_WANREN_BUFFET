@@ -2,10 +2,14 @@ package com.fpoly.be_wanren_buffet.rest;
 
 import com.fpoly.be_wanren_buffet.dao.*;
 import com.fpoly.be_wanren_buffet.dto.OrderDetailRequest;
+import com.fpoly.be_wanren_buffet.dto.OrderHistoryDTO;
 import com.fpoly.be_wanren_buffet.dto.OrderRequest;
+import com.fpoly.be_wanren_buffet.dto.ProducHistorytDTO;
 import com.fpoly.be_wanren_buffet.entity.*;
 import com.fpoly.be_wanren_buffet.enums.OrderStatus;
+import com.fpoly.be_wanren_buffet.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
@@ -30,6 +34,9 @@ public class OrderRestController {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest, Principal principal) {
@@ -107,4 +114,27 @@ public class OrderRestController {
             return ResponseEntity.status(500).body(errorResponse);
         }
     }
+
+    @GetMapping("/GetOrderDetailByOrderId/{orderId}")
+    public ResponseEntity<?> getOrderHistory(@PathVariable("orderId") Long orderId) {
+        List<ProducHistorytDTO> list = orderService.getOrderDetail(orderId);
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/GetOrderByCustomerId/{CustomerId}")
+    public ResponseEntity<?> getTest(@PathVariable("CustomerId") Long CustomerId) {
+        List<OrderHistoryDTO> orderHistoryDTOList = orderService.orderHistoryDTOList(CustomerId);
+
+        // Kiểm tra nếu không có đơn hàng nào
+        if (orderHistoryDTOList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No orders found for Customer ID " + CustomerId);
+        }
+
+        return ResponseEntity.ok().body(orderHistoryDTOList);
+    }
+
+
+
+
+
 }
