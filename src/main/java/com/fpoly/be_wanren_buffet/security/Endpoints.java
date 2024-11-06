@@ -11,13 +11,14 @@ public class Endpoints {
             "/Customer/search/existsByEmail",
             "/api/payment/create_payment",
             "/api/payment/RollBack_VNPAY",
-            "/Customer/**"
-
+            "/Customer/**",
+            "/Order_detail/**"
     };
 
     public static final String[] PUBLIC_PORT_ENDPOINS = {
             "/api/customer/register",
             "/api/customer/login",
+            "/api/orders_detail_staff/add/**",
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {
