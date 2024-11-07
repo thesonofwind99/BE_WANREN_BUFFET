@@ -15,7 +15,7 @@ public class Endpoints {
             "/Orders/**",
             "Order_detail/**",
             "/api/orders/GetOrderDetailByOrderId/**",
-            "/api/orders/GetOrderByCustomerId/**"
+            "/api/orders/GetOrderByCustomerId/**",
 
 
     };

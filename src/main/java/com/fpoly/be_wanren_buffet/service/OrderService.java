@@ -68,24 +68,20 @@ public class OrderService {
         List<OrderDetail> orderDetails = orderDetailRepository.findAll();
         List<OrderHistoryDTO> orderHistoryDTOList = new ArrayList<>();
 
+        // Populate the order history list based on the customer ID
         for (Order order : orderList) {
-            System.out.println(order.getOrderStatus().toString());
-            if(order.getOrderStatus().toString()=="PREPARING_ORDER"){
-                if (order.getCustomer() != null && order.getCustomer().getCustomerId().equals(customerId)) {
-                    OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
-                    orderHistoryDTO.setOrderId(order.getOrderId());
-                    orderHistoryDTO.setTotalAmount(order.getTotalAmount());
-                    orderHistoryDTO.setPayment(order.getPayment());
-                    orderHistoryDTO.setAddress(order.getAddress());
-                    orderHistoryDTO.setNotes(order.getNotes());
-                    orderHistoryDTO.setProducHistorytDTO(new ProducHistorytDTO(null, null, null, null, null, null, null, null, null));
-                    orderHistoryDTOList.add(orderHistoryDTO);
-                }
+            if (order.getCustomer().getCustomerId().equals(customerId)) {
+                OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
+                orderHistoryDTO.setOrderId(order.getOrderId());
+                orderHistoryDTO.setTotalAmount(order.getTotalAmount());
+                orderHistoryDTO.setPayment(order.getPayment());
+                orderHistoryDTO.setNotes(order.getNotes());
+                orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>()); // Initialize list for product history
+                orderHistoryDTOList.add(orderHistoryDTO);
             }
-
         }
 
-        // Xử lý phần thêm sản phẩm đầu tiên nếu cần thiết
+        // Populate product history for each order
         for (OrderDetail orderDetail : orderDetails) {
             for (OrderHistoryDTO orderHistoryDTO : orderHistoryDTOList) {
                 if (orderDetail.getOrder().getOrderId().equals(orderHistoryDTO.getOrderId())) {
@@ -100,8 +96,9 @@ public class OrderService {
                             orderDetail.getProduct().getProductStatus().toString(),
                             orderDetail.getOrder().getTotalAmount()
                     );
-                    orderHistoryDTO.setProducHistorytDTO(producHistorytDTO);
-                    break; // Chỉ lấy sản phẩm đầu tiên
+
+                    // Add each product history to the list within the order history
+                    orderHistoryDTO.getProducHistorytDTOList().add(producHistorytDTO);
                 }
             }
         }

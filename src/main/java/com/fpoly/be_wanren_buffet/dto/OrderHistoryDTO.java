@@ -2,6 +2,8 @@ package com.fpoly.be_wanren_buffet.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class OrderHistoryDTO {
     private Long orderId;
@@ -9,5 +11,5 @@ public class OrderHistoryDTO {
     private String notes;
     private String address;
     private String payment;
-    private ProducHistorytDTO producHistorytDTO;
+    private List<ProducHistorytDTO> producHistorytDTOList;
 }
