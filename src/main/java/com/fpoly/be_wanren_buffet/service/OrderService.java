@@ -70,11 +70,13 @@ public class OrderService {
 
         // Populate the order history list based on the customer ID
         for (Order order : orderList) {
-            if (order.getCustomer().getCustomerId().equals(customerId)) {
+            // Check if order.getCustomer() is not null before accessing its properties
+            if (order.getCustomer() != null && order.getCustomer().getCustomerId().equals(customerId) && order.getOrderStatus().toString() == "PREPARING_ORDER") {
                 OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
                 orderHistoryDTO.setOrderId(order.getOrderId());
                 orderHistoryDTO.setTotalAmount(order.getTotalAmount());
                 orderHistoryDTO.setPayment(order.getPayment());
+                orderHistoryDTO.setAddress(order.getAddress());
                 orderHistoryDTO.setNotes(order.getNotes());
                 orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>()); // Initialize list for product history
                 orderHistoryDTOList.add(orderHistoryDTO);
@@ -83,28 +85,31 @@ public class OrderService {
 
         // Populate product history for each order
         for (OrderDetail orderDetail : orderDetails) {
-            for (OrderHistoryDTO orderHistoryDTO : orderHistoryDTOList) {
-                if (orderDetail.getOrder().getOrderId().equals(orderHistoryDTO.getOrderId())) {
-                    ProducHistorytDTO producHistorytDTO = new ProducHistorytDTO(
-                            orderDetail.getProduct().getProductId(),
-                            orderDetail.getProduct().getProductName(),
-                            orderDetail.getProduct().getDescription(),
-                            orderDetail.getProduct().getPrice(),
-                            orderDetail.getProduct().getTypeFood(),
-                            orderDetail.getProduct().getImage(),
-                            orderDetail.getQuantity(),
-                            orderDetail.getProduct().getProductStatus().toString(),
-                            orderDetail.getOrder().getTotalAmount()
-                    );
+            if (orderDetail.getOrder() != null) {
+                for (OrderHistoryDTO orderHistoryDTO : orderHistoryDTOList) {
+                    if (orderDetail.getOrder().getOrderId().equals(orderHistoryDTO.getOrderId())) {
+                        ProducHistorytDTO producHistorytDTO = new ProducHistorytDTO(
+                                orderDetail.getProduct().getProductId(),
+                                orderDetail.getProduct().getProductName(),
+                                orderDetail.getProduct().getDescription(),
+                                orderDetail.getProduct().getPrice(),
+                                orderDetail.getProduct().getTypeFood(),
+                                orderDetail.getProduct().getImage(),
+                                orderDetail.getQuantity(),
+                                orderDetail.getProduct().getProductStatus().toString(),
+                                orderDetail.getOrder().getTotalAmount()
+                        );
 
-                    // Add each product history to the list within the order history
-                    orderHistoryDTO.getProducHistorytDTOList().add(producHistorytDTO);
+                        // Add each product history to the list within the order history
+                        orderHistoryDTO.getProducHistorytDTOList().add(producHistorytDTO);
+                    }
                 }
             }
         }
 
         return orderHistoryDTOList;
     }
+
 
 
 }
