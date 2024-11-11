@@ -16,22 +16,36 @@ public class Endpoints {
             "Order_detail/**",
             "/api/orders/GetOrderDetailByOrderId/**",
             "/api/orders/GetOrderByCustomerId/**",
-
-
+            "/api/table/tables",
+            "/Table",
+            "/api/product/by-category",
+            "/api/orders_detail_staff/**",
+            "/api/orders_detail_staff/add_or_update/**",
+            "/api/product/**",
+            "/api/order_staff/findOrderIdByTableId/**"
     };
 
     public static final String[] PUBLIC_PORT_ENDPOINS = {
             "/api/customer/register",
             "/api/customer/login",
-
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add/**",
+            "/api/orders_detail_staff/add_or_update/**"
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {
-            "/api/orders"
+            "/api/orders",
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add/**",
+            "/api/orders_detail_staff/add_or_update/**",
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINS = {
-        "/Customer/**"
+        "/Customer/**",
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add/**",
+            "/api/table/**",
+            "/api/order_staff/**"
     };
 
 
