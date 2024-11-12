@@ -52,10 +52,12 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINS).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINS).permitAll()
-                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).authenticated()
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).authenticated()
+                        .requestMatchers(HttpMethod.PATCH, Endpoints.PUBLIC_PATCH_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.DELETE, Endpoints.PUBLIC_DELETE_ENDPOINS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -68,8 +70,8 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Thay đổi theo nhu cầu
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);

@@ -26,7 +26,7 @@ public class User extends Auditable implements Serializable {
     private String password;
 
     @Column(name = "fullname")
-    private String fullname;
+    private String fullName;
 
     @Column(name = "email")
     private String email;

@@ -61,6 +61,7 @@ public class CustomerRestController {
                 // Giả sử bạn có thể lấy fullName từ UserDetails hoặc từ repository
                 Customer authenticatedCustomer = customerAuthService.authenticate(loginRequest.getUsername());
                 String fullName = authenticatedCustomer.getFullName();
+                System.out.println(fullName + "AAAAA");
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
                 final String jwt = jwtService.generateToken(userDetails, fullName , email, phone);
