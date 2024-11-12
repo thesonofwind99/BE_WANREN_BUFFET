@@ -22,7 +22,7 @@ public abstract class Auditable {
             nullable = false,
             updatable = false
     )
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @LastModifiedDate
     @Column(insertable = false)

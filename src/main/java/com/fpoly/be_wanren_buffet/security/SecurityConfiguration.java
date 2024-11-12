@@ -46,6 +46,8 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -54,6 +56,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINS).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINS).authenticated()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).authenticated()
                         .anyRequest().authenticated()

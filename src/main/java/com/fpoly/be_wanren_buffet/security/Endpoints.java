@@ -9,21 +9,24 @@ public class Endpoints {
             "/Promotion/search/findByPromotionStatus",
             "/Customer/search/existsByUsername",
             "/Customer/search/existsByEmail",
-            "/api/payment/create_payment",
-            "/api/payment/RollBack_VNPAY",
             "/Customer/**",
             "/Orders/**",
             "Order_detail/**",
-            "/api/orders/GetOrderDetailByOrderId/**",
-            "/api/orders/GetOrderByCustomerId/**",
-
-
+            "/Promotion/search/findByPromotionStatus",
+            "Promotion/**",
     };
 
-    public static final String[] PUBLIC_PORT_ENDPOINS = {
+    public static final String[]    PUBLIC_PORT_ENDPOINS = {
             "/api/customer/register",
             "/api/customer/login",
+            "/api/review/Creact_review"
+    };
 
+    public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINS = {
+            "/api/orders/GetOrderByCustomerId/**",
+            "/api/orders/GetOrderDetailByOrderId/**",
+            "/api/payment/create_payment",
+            "/api/payment/RollBack_VNPAY",
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {
@@ -31,8 +34,7 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINS = {
-        "/Customer/**"
+            "/Customer/**"
     };
-
-
 }
+
