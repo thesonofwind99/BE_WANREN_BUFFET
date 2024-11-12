@@ -18,9 +18,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "ORDER BY SUM(od.quantity) DESC")
     List<Long> findMostOrderedProduct(Pageable pageable); // Sử dụng Pageable để giới hạn số lượng kết quả
 
+    Product findByProductId(Long productId);
+
     List<Product> findByTypeFood(String typeFood);
 
     Page<Product> findByProductNameContaining(String productName, Pageable pageable); // Đổi tên phương thức để phù hợp với thuộc tính 'productName'
 
-//    Page<Product> findByProductIdQuality(String productName, Pageable pageable);
+    @Query("SELECT p FROM Product p WHERE p.category.categoryName = ?1")
+    List<Product> findProductByCategoryName(String categoryName);
 }
