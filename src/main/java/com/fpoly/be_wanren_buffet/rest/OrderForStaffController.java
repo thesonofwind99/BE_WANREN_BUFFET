@@ -4,6 +4,7 @@ import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.dto.request.OrderUpdateRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.service.OrderForStaffService;
+import com.fpoly.be_wanren_buffet.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import java.util.Optional;
 @RequestMapping("/api/order_staff")
 public class OrderForStaffController {
     private OrderForStaffService orderForStaffService;
+
+    private OrderService orderService;
 
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> addOrder(@RequestBody OrderForStaffRequest orderForStaffRequest) {
@@ -74,6 +77,14 @@ public class OrderForStaffController {
             response.put("error", "Có lỗi xảy ra: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @GetMapping("/get_amount/{order_id}")
+    public ResponseEntity<Map<String, Object>> getOrderAmount(@PathVariable(name = "order_id") Long orderId) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("amount", orderService.GetOrderById(orderId).getTotalAmount());
+        response.put("message", "Lấy tổng tiền thành công");
+        return ResponseEntity.ok(response);
     }
 
 }
