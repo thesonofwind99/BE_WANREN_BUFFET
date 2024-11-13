@@ -15,4 +15,6 @@ public interface OrderForStaffService {
     Order save(Order order);
 
     Long getLatestOrderIdFromTable(Long tableId);
+
+    String findOrderStatusById(Long orderId);
 }

@@ -56,4 +56,24 @@ public class OrderForStaffController {
         return orderForStaffService.getLatestOrderIdFromTable(tableId);
     }
 
+    @GetMapping("/status/{orderId}")
+    public ResponseEntity<Map<String, Object>> getOrderStatus(@PathVariable Long orderId) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String orderStatus = orderForStaffService.findOrderStatusById(orderId);
+
+            if (orderStatus != null) {
+                response.put("orderStatus", orderStatus);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("error", "Order not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            response.put("error", "Có lỗi xảy ra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 }
