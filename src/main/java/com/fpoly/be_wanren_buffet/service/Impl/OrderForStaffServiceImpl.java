@@ -68,5 +68,11 @@ public class OrderForStaffServiceImpl implements OrderForStaffService {
         return orderRepository.findLatestOrderIdByTableId(tableId, pageRequest);
     }
 
+    @Override
+    public String findOrderStatusById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        return (order != null) ? order.getOrderStatus().name() : null;
+    }
+
 
 }

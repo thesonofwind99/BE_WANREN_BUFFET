@@ -22,7 +22,8 @@ public class Endpoints {
             "/api/orders_detail_staff/**",
             "/api/orders_detail_staff/add_or_update/**",
             "/api/product/**",
-            "/api/order_staff/findOrderIdByTableId/**"
+            "/api/order_staff/findOrderIdByTableId/**",
+            "/api/order_staff/status/**"
     };
 
     public static final String[] PUBLIC_PORT_ENDPOINS = {
