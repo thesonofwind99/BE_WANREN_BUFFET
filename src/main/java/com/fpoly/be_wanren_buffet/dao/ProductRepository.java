@@ -1,13 +1,16 @@
 package com.fpoly.be_wanren_buffet.dao;
 
 import com.fpoly.be_wanren_buffet.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.List;
+
 
 @RepositoryRestResource(path = "Product")
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -21,6 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByTypeFood(String typeFood);
 
     Page<Product> findByProductNameContaining(String productName, Pageable pageable); // Đổi tên phương thức để phù hợp với thuộc tính 'productName'
+
 
 //    Page<Product> findByProductIdQuality(String productName, Pageable pageable);
 }
