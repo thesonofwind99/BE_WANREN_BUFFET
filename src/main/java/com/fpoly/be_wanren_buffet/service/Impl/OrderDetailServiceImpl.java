@@ -5,6 +5,7 @@ import com.fpoly.be_wanren_buffet.dao.OrderDetailRepository;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dao.ProductRepository;
 import com.fpoly.be_wanren_buffet.dto.request.OrderDetailForStaffRequest;
+import com.fpoly.be_wanren_buffet.dto.response.OrderDetailForStaffResponse;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
 import com.fpoly.be_wanren_buffet.entity.Product;
@@ -102,5 +103,24 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDetailForStaffResponse> getOrderDetailsWithNameProduct(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        List<OrderDetailForStaffResponse> orderDetailForStaffResponseList = new ArrayList<>();
+        for(OrderDetail orderDetail : orderDetailRepository.findByOrder_orderId(orderId)){
+            OrderDetailForStaffResponse orderDetailForStaffResponse = new OrderDetailForStaffResponse();
+
+            orderDetailForStaffResponse.setProductName(orderDetail.getProduct().getProductName());
+            orderDetailForStaffResponse.setQuantity(orderDetail.getQuantity());
+            orderDetailForStaffResponse.setPrice(orderDetail.getUnitPrice());
+
+            orderDetailForStaffResponseList.add(orderDetailForStaffResponse);
+        }
+        return orderDetailForStaffResponseList;
+
     }
 }

@@ -1,6 +1,7 @@
 package com.fpoly.be_wanren_buffet.rest;
 
 import com.fpoly.be_wanren_buffet.dto.request.OrderDetailForStaffRequest;
+import com.fpoly.be_wanren_buffet.dto.response.OrderDetailForStaffResponse;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
 import com.fpoly.be_wanren_buffet.service.OrderDetailService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,15 @@ public class OrderDetailForStaffController {
         List<OrderDetail> updatedOrderDetails = orderDetailService.addOrUpdateOrderDetail(orderId, orderDetails);
         response.put("orderDetails", updatedOrderDetails);
         response.put("message", "Thêm hoặc cập nhật chi tiết sản phẩm thành công");
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/get/order_details/with_name/{order_id}")
+    public ResponseEntity<?> getOrderDetailsWithNameByOrderId(@PathVariable(name = "order_id") Long orderId) {
+        Map<String, Object> response = new HashMap<>();
+        List<OrderDetailForStaffResponse> orderDetailForStaffResponses = orderDetailService.getOrderDetailsWithNameProduct(orderId);
+        response.put("orderDetails", orderDetailForStaffResponses);
+        response.put("message", "Lấy dữ liệu thành công");
         return ResponseEntity.ok().body(response);
     }
 }
