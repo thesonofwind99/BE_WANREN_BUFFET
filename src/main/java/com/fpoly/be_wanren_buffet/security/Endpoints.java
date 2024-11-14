@@ -35,7 +35,8 @@ public class Endpoints {
             "/api/customer/login",
             "/api/order_staff/add",
             "/api/orders_detail_staff/add/**",
-            "/api/orders_detail_staff/add_or_update/**"
+            "/api/orders_detail_staff/add_or_update/**",
+            "/api/payment/create_payment/normal"
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {

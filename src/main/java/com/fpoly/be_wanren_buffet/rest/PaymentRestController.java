@@ -3,7 +3,9 @@ package com.fpoly.be_wanren_buffet.rest;
 import com.fpoly.be_wanren_buffet.config.VnpayConfig;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dto.PaymentDTO;
+import com.fpoly.be_wanren_buffet.dto.request.PaymentForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
+import com.fpoly.be_wanren_buffet.service.PaymentForStaffService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class PaymentRestController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private PaymentForStaffService paymentForStaffService;
 
     @GetMapping("/create_payment")
     public ResponseEntity<?> getPayment(@RequestParam long price,
@@ -117,5 +122,11 @@ public class PaymentRestController {
 
     }
 
-
+    @PostMapping("/create_payment/normal")
+    public ResponseEntity<?> createPayment(@RequestBody PaymentForStaffRequest paymentForStaffRequest){
+        Map<String, Object> response = new HashMap<>();
+        response.put("payment_id", paymentForStaffService.createPaymentForStaff(paymentForStaffRequest));
+        response.put("message", "Tạo giao dịch thành công");
+        return ResponseEntity.ok(response);
+    }
 }
