@@ -5,6 +5,7 @@ package com.fpoly.be_wanren_buffet.rest;
 import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
 import com.fpoly.be_wanren_buffet.entity.Customer;
+import com.fpoly.be_wanren_buffet.service.CustomerForStaffService;
 import com.fpoly.be_wanren_buffet.service.CustomerService;
 import com.fpoly.be_wanren_buffet.security.JwtResponse;
 import com.fpoly.be_wanren_buffet.security.LoginRequest;
@@ -22,12 +23,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerRestController {
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private CustomerForStaffService customerForStaffService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -94,5 +101,13 @@ public class CustomerRestController {
         updateCustomerDTO1.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
         updateCustomerDTO1.setJwtToken(newToken);
         return ResponseEntity.ok().body(updateCustomerDTO1);
+    }
+
+    @PutMapping("/loyal_point/{phone_number}/{total_amount}")
+    public ResponseEntity<?> updateLoyaltyPoint(@PathVariable(name = "phone_number") String phoneNumber, @PathVariable(name = "total_amount") Double totalAmount){
+        Map<String, Object> response = new HashMap<>();
+        response.put("loyal_phone", customerForStaffService.updateloyalPointOfCustomer(phoneNumber, totalAmount));
+        response.put("message", "Tích điểm thành công");
+        return ResponseEntity.ok(response);
     }
 }
