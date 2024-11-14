@@ -51,7 +51,9 @@ public class Endpoints {
             "/api/table/**",
             "/api/order_staff/**",
             "/Product",
-            "/Product/{productId}"
+            "/Product/{productId}",
+            "/api/order_staff/**",
+            "/api/customer/loyal_point/**"
     };
 
     public static final String[] PRIVATE_PATCH_ENDPOINS = {
