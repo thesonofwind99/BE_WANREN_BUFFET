@@ -27,7 +27,7 @@ public class Customer extends Auditable implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "fullname")
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "email")
