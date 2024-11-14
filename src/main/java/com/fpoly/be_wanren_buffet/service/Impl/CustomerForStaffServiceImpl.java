@@ -14,8 +14,9 @@ public class CustomerForStaffServiceImpl implements CustomerForStaffService {
     @Override
     public Long updateloyalPointOfCustomer(String phoneNumber, Double totalAmount) {
         Customer customer = customerRepository.findByPhoneNumber(phoneNumber);
-        customer.setLoyaltyPoints(customer.getLoyaltyPoints() + Math.round(totalAmount*(5/100)));
-        customerRepository.save(customer);
-        return customer.getLoyaltyPoints();
+        double fivePercent = (totalAmount * 5) / 100;
+        customer.setLoyaltyPoints(customer.getLoyaltyPoints() + Math.round(fivePercent));
+        Customer customer1 = customerRepository.save(customer);
+        return customer1.getLoyaltyPoints();
     }
 }
