@@ -19,7 +19,10 @@ public class Endpoints {
     public static final String[]    PUBLIC_PORT_ENDPOINS = {
             "/api/customer/register",
             "/api/customer/login",
-            "/api/review/Creact_review"
+            "/api/review/Creact_review",
+            "/api/forgot-password/request",
+            "/api/otp/validate",
+            "/api/reset-password/update"
     };
 
     public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINS = {
