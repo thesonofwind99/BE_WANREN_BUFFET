@@ -57,7 +57,6 @@ public class CustomerRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest);
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -71,7 +70,7 @@ public class CustomerRestController {
                 System.out.println(fullName + "AAAA");
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
-                final String jwt = jwtService.generateToken(userDetails, fullName , email, phone);
+                final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
@@ -94,7 +93,7 @@ public class CustomerRestController {
             customer.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
             customerService.save(customer);
         UserDetails userDetails = customerAuthService.loadUserByUsername(username);
-        String newToken = jwtService.generateToken(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber());
+        String newToken = jwtService.generateTokenForCustomer(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber());
         System.out.println(customer.getPhoneNumber());
         updateCustomerDTO1.setFullName(customer.getFullName());
         updateCustomerDTO1.setEmail(customer.getEmail());

@@ -1,16 +1,17 @@
 package com.fpoly.be_wanren_buffet.security;
 
 import com.fpoly.be_wanren_buffet.service.CustomerAuthService;
+import com.fpoly.be_wanren_buffet.service.UserAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,9 +24,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private UserAuthService userAuthService;
 
     @Autowired
     private CustomerAuthService customerAuthService;
@@ -33,20 +39,31 @@ public class SecurityConfiguration {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Authentication Provider cho User
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider userAuthenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customerAuthService);
+        authProvider.setUserDetailsService(userAuthService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
 
+    // Authentication Provider cho Customer
+    @Bean
+    public DaoAuthenticationProvider customerAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customerAuthService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,18 +71,19 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINS).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINS).permitAll()
-                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINS).authenticated()
-                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).permitAll()
-                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ENDPOINS).permitAll()
-                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).authenticated()
+                        // Phân quyền cho Customer
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINS).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).hasAuthority("CUSTOMER")
+                        // Phân quyền cho User (nhân viên)
+                        // Các dòng cho User bị comment
                         .anyRequest().authenticated()
-
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(userAuthenticationProvider())
+                .authenticationProvider(customerAuthenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -85,8 +103,9 @@ public class SecurityConfiguration {
         return source;
     }
 
+    // Authentication Manager
     @Bean
     public AuthenticationManager authenticationManager() {
-        return new ProviderManager(authenticationProvider());
+        return new ProviderManager(List.of(userAuthenticationProvider(), customerAuthenticationProvider()));
     }
 }

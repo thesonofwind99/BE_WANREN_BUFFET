@@ -14,6 +14,7 @@ public class Endpoints {
             "Order_detail/**",
             "/Promotion/search/findByPromotionStatus",
             "Promotion/**",
+            "/api/payment/RollBack_VNPAY",
     };
 
     public static final String[]    PUBLIC_PORT_ENDPOINS = {
@@ -22,14 +23,15 @@ public class Endpoints {
             "/api/review/Creact_review",
             "/api/forgot-password/request",
             "/api/otp/validate",
-            "/api/reset-password/update"
+            "/api/reset-password/update",
+            "/api/user/login"
     };
 
     public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINS = {
             "/api/orders/GetOrderByCustomerId/**",
             "/api/orders/GetOrderDetailByOrderId/**",
             "/api/payment/create_payment",
-            "/api/payment/RollBack_VNPAY",
+
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {

@@ -12,11 +12,10 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class CustommerAuthServiceImpl implements CustomerAuthService {
+public class CustomerAuthServiceImpl implements CustomerAuthService {
+
     @Autowired
     CustomerRepository customerRepository;
-
-
 
     @Override
     public Customer authenticate(String username) {
@@ -26,16 +25,23 @@ public class CustommerAuthServiceImpl implements CustomerAuthService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByUsername(username);
-        System.out.println(customer);
         if (customer == null) {
             throw new UsernameNotFoundException("Customer not found with username: " + username);
         }
-        return User.builder()
+
+        // In ra thông tin khách hàng
+        System.out.println("Customer loaded: " + customer);
+
+        UserDetails userDetails = User.builder()
                 .username(customer.getUsername())
                 .password(customer.getPassword())
                 .authorities("CUSTOMER")
                 .accountLocked(!customer.getAccountStatus())
                 .build();
-    }
 
+        // In ra các quyền của userDetails
+        System.out.println("Authorities of userDetails: " + userDetails.getAuthorities());
+
+        return userDetails;
+    }
 }
