@@ -87,4 +87,12 @@ public class OrderForStaffController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/update/total_amount/{order_id}/{total_amount}")
+    public ResponseEntity<Map<String, Object>> updateOrderTotalAmount(@PathVariable(name = "order_id") Long orderId, @PathVariable(name = "total_amount") Double total_amount) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("amount_last", orderForStaffService.updateTotalPrice(orderId, total_amount));
+        response.put("message", "Cập nhật tổng tiền thành công");
+        return ResponseEntity.ok(response);
+    }
+
 }
