@@ -3,7 +3,7 @@ package com.fpoly.be_wanren_buffet.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 @Entity
@@ -20,12 +20,13 @@ public class PromotionOrder implements Serializable {
     @Column(name = "promotion_order_id")
     private Long promotionOrderId;
 
-    @ManyToOne
-    @JoinColumn(name = "promotion_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "promotion_id", nullable = false)
+    @JsonIgnore
     private Promotion promotion;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private Order order;
-
 }

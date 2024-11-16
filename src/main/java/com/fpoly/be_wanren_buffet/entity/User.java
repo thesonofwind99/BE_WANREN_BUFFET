@@ -41,7 +41,7 @@ public class User extends Auditable implements Serializable {
     private String userType;
 
     @Column(name = "account_status")
-    private Boolean accountStatus; //True: hoat dong, False: khong hoat dong
+    private Boolean accountStatus;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

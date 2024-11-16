@@ -57,6 +57,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).authenticated()
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).authenticated()
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PUBLIC_PATCH_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ENDPOINS).authenticated()
+
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PUBLIC_DELETE_ENDPOINS).permitAll()
                         .anyRequest().authenticated()
                 )

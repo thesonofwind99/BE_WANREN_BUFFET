@@ -99,7 +99,10 @@ public class AdminCustomerRestController {
     public ResponseEntity<?> searchCustomersByFullName(@RequestParam String fullName) {
         String normalizedFullName = normalizeString(fullName);
         List<Customer> customers = customerRepository.findAll().stream()
-                .filter(customer -> normalizeString(customer.getFullName()).contains(normalizedFullName))
+                .filter(customer -> {
+                    String customerName = normalizeString(customer.getFullName());
+                    return customerName != null && customerName.contains(normalizedFullName);
+                })
                 .collect(Collectors.toList());
 
         if (customers.isEmpty()) {
@@ -112,11 +115,12 @@ public class AdminCustomerRestController {
 
     // Utility method to normalize strings
     private String normalizeString(String input) {
-        if (input == null) return null;
+        if (input == null) return "";
         return Normalizer.normalize(input, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "")
                 .toLowerCase(); // Normalize and remove accents, convert to lowercase
     }
+
 
 }
 

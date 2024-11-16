@@ -12,10 +12,12 @@ import com.fpoly.be_wanren_buffet.entity.Tablee;
 import com.fpoly.be_wanren_buffet.entity.User;
 import com.fpoly.be_wanren_buffet.service.OrderForStaffService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,16 +46,33 @@ public class OrderForStaffServiceImpl implements OrderForStaffService {
             order.setTablee(null);
         }
 
-        if(orderForStaffRequest.getCustomerId() != null){
-            Customer customer = customerRepository.findById(orderForStaffRequest.getCustomerId()).get();
-            order.setCustomer(customer);
-        }else{
-            order.setCustomer(null);
-        }
-
         order.setCreatedDate(LocalDateTime.now());
 
         return orderRepository.save(order);
 
     }
+
+    @Override
+    public Optional<Order> findById(Long orderId) {
+        return orderRepository.findById(orderId);
+    }
+
+    @Override
+    public Order save(Order order) {
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public Long getLatestOrderIdFromTable(Long tableId) {
+        PageRequest pageRequest = PageRequest.of(0, 1); // Lấy 1 kết quả duy nhất
+        return orderRepository.findLatestOrderIdByTableId(tableId, pageRequest);
+    }
+
+    @Override
+    public String findOrderStatusById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        return (order != null) ? order.getOrderStatus().name() : null;
+    }
+
+
 }

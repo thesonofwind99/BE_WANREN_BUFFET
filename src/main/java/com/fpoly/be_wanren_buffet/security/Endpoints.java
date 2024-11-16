@@ -18,7 +18,13 @@ public class Endpoints {
             "/api/orders/GetOrderByCustomerId/**",
             "/Customer/search",
             "/User",
-            "/User/search"
+            "/User/search",
+            "/Table",
+            "/Account",
+            "/Promotion",
+            "/User/admins",
+            "/User/{id}/roles"
+
     };
 
     public static final String[] PUBLIC_POST_ENDPOINS = {
@@ -26,7 +32,8 @@ public class Endpoints {
             "/api/customer/login",
             "/Customer/create",
             "/User/create",
-
+            "/Promotion/create",
+            "/User/admins/create",
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {
@@ -37,15 +44,24 @@ public class Endpoints {
             "/Customer/update/{id}",
             "/Customer/updateAccountStatus/{id}",
             "/User/update/{id}",
-            "User/updateAccountStatus/{id}"
-    };
+            "/User/updateAccountStatus/{id}",
+            "/Promotion/update/{id}",
+            "/User/admins/update/{id}",
 
+    };
+    public static final String[] PRIVATE_PATCH_ENDPOINS = {
+            "/Product",
+            "/Product/{productId}"
+
+    };
     public static final String[] PRIVATE_PUT_ENDPOINS = {
             "/Customer/**"
     };
 
     public static final String[] PUBLIC_DELETE_ENDPOINS = {
             "/Customer/delete/{id}",
-            "/User/delete/{id}"
+            "/User/delete/{id}",
+            "/Promotion/delete/{id}",
+            "/User/admins/delete/{id}",
     };
 }
