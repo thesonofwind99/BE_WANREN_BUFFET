@@ -27,11 +27,13 @@ public class JwtService {
     }
 
     // Phương thức tạo token cho Customer
-    public String generateTokenForCustomer(UserDetails userDetails, String fullName, String email, String phone) {
+    public String generateTokenForCustomer(UserDetails userDetails, String fullName, String email, String phone , Long UserId , String address) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("fullName", fullName);
         claims.put("email", email);
         claims.put("phone", phone);
+        claims.put("UserId",UserId);
+        claims.put("address",address);
         claims.put("roles", Collections.singletonList("CUSTOMER"));
         return generateToken(userDetails, claims);
     }

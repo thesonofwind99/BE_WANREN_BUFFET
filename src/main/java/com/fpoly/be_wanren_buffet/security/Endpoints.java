@@ -27,6 +27,7 @@ public class Endpoints {
             "/api/user/login"
     };
 
+
     public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINS = {
             "/api/orders/GetOrderByCustomerId/**",
             "/api/orders/GetOrderDetailByOrderId/**",
@@ -40,6 +41,11 @@ public class Endpoints {
 
     public static final String[] PRIVATE_PUT_ENDPOINS = {
             "/Customer/**"
+    };
+
+    public static final  String[] PRIVATE_GET_ADMIN = {
+            "/User",
+            "/User/**"
     };
 }
 

@@ -70,7 +70,9 @@ public class CustomerRestController {
                 System.out.println(fullName + "AAAA");
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
-                final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone);
+                Long UserId = authenticatedCustomer.getCustomerId();
+                String address = authenticatedCustomer.getAddress();
+                final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone , UserId , address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
@@ -93,7 +95,7 @@ public class CustomerRestController {
             customer.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
             customerService.save(customer);
         UserDetails userDetails = customerAuthService.loadUserByUsername(username);
-        String newToken = jwtService.generateTokenForCustomer(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber());
+        String newToken = jwtService.generateTokenForCustomer(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber() , customer.getCustomerId() , customer.getAddress());
         System.out.println(customer.getPhoneNumber());
         updateCustomerDTO1.setFullName(customer.getFullName());
         updateCustomerDTO1.setEmail(customer.getEmail());

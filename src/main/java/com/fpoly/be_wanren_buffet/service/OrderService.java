@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service class for managing orders.
@@ -142,5 +144,25 @@ public class OrderService {
 
         return orderHistoryDTOList;
     }
+
+    public Map<Integer, Double> getMonthlyRevenue(int year) {
+        List<Object[]> results = orderRepository.getMonthlyRevenue(2024);
+        Map<Integer, Double> revenueByMonth = new HashMap<>();
+
+        // Khởi tạo tất cả các tháng với doanh thu là 0
+        for (int i = 1; i <= 12; i++) {
+            revenueByMonth.put(i, 0.0);
+        }
+
+        // Điền dữ liệu thực tế vào
+        for (Object[] result : results) {
+            Integer month = (Integer) result[0];
+            Double revenue = (Double) result[1];
+            revenueByMonth.put(month, revenue);
+        }
+
+        return revenueByMonth;
+    }
+
 
 }

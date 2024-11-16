@@ -78,6 +78,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).hasAuthority("CUSTOMER")
                         // Phân quyền cho User (nhân viên)
+                        .requestMatchers(HttpMethod.GET , Endpoints.PRIVATE_GET_ADMIN).hasAuthority("STAFF")
                         // Các dòng cho User bị comment
                         .anyRequest().authenticated()
                 )
