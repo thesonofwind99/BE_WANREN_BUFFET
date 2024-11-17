@@ -1,7 +1,9 @@
 package com.fpoly.be_wanren_buffet.security;
 
 public class Endpoints {
-    public static final String[] PUBLIC_GET_ENDPOINS = {
+
+    // Public GET endpoints
+    public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/Product/search/findByTypeFood",
             "/api/product/ProductHot",
             "/Product/search/findByProductNameContaining",
@@ -24,47 +26,39 @@ public class Endpoints {
             "/Promotion",
             "/User/admins",
             "/User/{id}/roles"
-
     };
 
-    public static final String[] PUBLIC_POST_ENDPOINS = {
+    // Public POST endpoints
+    public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/customer/register",
-            "/api/customer/login",
-
+            "/api/customer/login"
     };
 
-    public static final String[] PRIVATE_POST_ENDPOINS = {
-            "/api/orders",
+    // Private POST endpoints
+    public static final String[] PRIVATE_POST_ENDPOINTS = {
+            "/api/orders"
     };
 
-    public static final String[] PUBLIC_PATCH_ENDPOINS = {
+    // Public PATCH endpoints (currently empty)
+    public static final String[] PUBLIC_PATCH_ENDPOINTS = {};
 
-
-    };
-    public static final String[] PRIVATE_PATCH_ENDPOINS = {
+    // Private PATCH endpoints
+    public static final String[] PRIVATE_PATCH_ENDPOINTS = {
             "/Product",
             "/Product/{productId}"
-
     };
-    public static final String[] PRIVATE_PUT_ENDPOINS = {
+
+    public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/Customer/**"
     };
 
-    public static final String[] PUBLIC_DELETE_ENDPOINS = {
-
-    };
-
-//            "/Customer/**",
-//            "/Orders/**",
-//            "Order_detail/**",
-//            "/Promotion/search/findByPromotionStatus",
-//            "Promotion/**",
-//            "/api/payment/RollBack_VNPAY",
 
 
-    public static final String[]    PUBLIC_PORT_ENDPOINS = {
+    // Public PORT endpoints
+    public static final String[] PUBLIC_PORT_ENDPOINTS = {
             "/api/customer/register",
             "/api/customer/login",
+
             "/api/review/Creact_review",
             "/api/forgot-password/request",
             "/api/otp/validate",
@@ -72,38 +66,44 @@ public class Endpoints {
             "/api/user/login"
     };
 
-
-    public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINS = {
+    // Private Customer GET endpoints
+    public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINTS = {
             "/api/orders/GetOrderByCustomerId/**",
             "/api/orders/GetOrderDetailByOrderId/**",
-            "/api/payment/create_payment",
-
+            "/api/payment/create_payment"
     };
 
-
-    public static final  String[] PRIVATE_GET_ADMIN = {
-
+    // Private Admin GET endpoints
+    public static final String[] PRIVATE_GET_ADMIN = {
+            "/Customer/create"
     };
-    public static final String[] PRIVATE_POST_ADMIN= {
+
+    // Private Admin POST endpoints
+    public static final String[] PRIVATE_POST_ADMIN = {
             "/Customer/create",
             "/User/create",
             "/Promotion/create",
-            "/User/admins/create",
+            "/User/admins/create"
     };
-    public static final String[] PRIVATE_PATCH_ADMIN= {
+
+    // Private Admin PATCH endpoints
+    public static final String[] PRIVATE_PATCH_ADMIN = {
             "/Customer/update/{id}",
             "/Customer/updateAccountStatus/{id}",
             "/User/update/{id}",
             "/User/updateAccountStatus/{id}",
             "/Promotion/update/{id}",
-            "/User/admins/update/{id}",
+            "/User/admins/update/{id}"
     };
-    public static final String[] PRIVATE_PUT_ADMIN= {
-    };
-    public static final String[] PRIVATE_DELETE_ADMIN= {
+
+    // Private Admin PUT endpoints (currently empty)
+    public static final String[] PRIVATE_PUT_ADMIN = {};
+
+    // Private Admin DELETE endpoints
+    public static final String[] PRIVATE_DELETE_ADMIN = {
             "/Customer/delete/{id}",
             "/User/delete/{id}",
             "/Promotion/delete/{id}",
-            "/User/admins/delete/{id}",
+            "/User/admins/delete/{id}"
     };
 }

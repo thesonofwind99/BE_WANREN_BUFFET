@@ -69,12 +69,12 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
                 .authorizeHttpRequests(authz -> authz
                         // Public Endpoints
-                        .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINS).permitAll()
-                        .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
                         // Private Endpoints for Customers
-                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINS).hasAuthority("CUSTOMER")
-                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).hasAuthority("CUSTOMER")
-                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINTS).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINTS).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINTS).hasAuthority("CUSTOMER")
                         // Private Endpoints for Admins
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ADMIN).hasAuthority("ADMIN")

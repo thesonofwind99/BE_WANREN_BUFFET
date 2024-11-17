@@ -32,7 +32,7 @@ public class JwtService {
         claims.put("fullName", fullName);
         claims.put("email", email);
         claims.put("phone", phone);
-        claims.put("UserId",UserId);
+        claims.put("userId", String.valueOf(UserId));
         claims.put("address",address);
         claims.put("roles", Collections.singletonList("CUSTOMER"));
         return generateToken(userDetails, claims);

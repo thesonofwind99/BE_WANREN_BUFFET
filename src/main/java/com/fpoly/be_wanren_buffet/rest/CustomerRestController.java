@@ -64,14 +64,14 @@ public class CustomerRestController {
             if (authentication.isAuthenticated()) {
                 // Lấy thông tin người dùng đã đăng nhập
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                // Giả sử bạn có thể lấy fullName từ UserDetails hoặc từ repository
+
                 Customer authenticatedCustomer = customerAuthService.authenticate(loginRequest.getUsername());
                 String fullName = authenticatedCustomer.getFullName();
-                System.out.println(fullName + "AAAA");
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
                 Long UserId = authenticatedCustomer.getCustomerId();
                 String address = authenticatedCustomer.getAddress();
+                System.out.println(address + "ĐỊA CHỈ");
                 final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone , UserId , address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
