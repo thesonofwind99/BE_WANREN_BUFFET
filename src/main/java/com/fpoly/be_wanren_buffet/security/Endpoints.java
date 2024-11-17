@@ -82,8 +82,7 @@ public class Endpoints {
 
 
     public static final  String[] PRIVATE_GET_ADMIN = {
-            "/User",
-            "/User/**"
+
     };
     public static final String[] PRIVATE_POST_ADMIN= {
             "/Customer/create",
@@ -108,4 +107,3 @@ public class Endpoints {
             "/User/admins/delete/{id}",
     };
 }
-
