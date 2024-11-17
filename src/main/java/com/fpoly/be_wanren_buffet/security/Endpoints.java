@@ -44,8 +44,6 @@ public class Endpoints {
     };
 
     public static final  String[] PRIVATE_GET_ADMIN = {
-            "/User",
-            "/User/**"
+
     };
 }
-

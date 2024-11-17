@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = authenticate(username);
+
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
