@@ -1,7 +1,9 @@
 package com.fpoly.be_wanren_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;

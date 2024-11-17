@@ -26,7 +26,7 @@ public class User extends Auditable implements Serializable {
     private String password;
 
     @Column(name = "fullname")
-    private String fullname;
+    private String fullName;
 
     @Column(name = "email")
     private String email;
@@ -41,7 +41,7 @@ public class User extends Auditable implements Serializable {
     private String userType;
 
     @Column(name = "account_status")
-    private Boolean accountStatus; //True: hoat dong, False: khong hoat dong
+    private Boolean accountStatus;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

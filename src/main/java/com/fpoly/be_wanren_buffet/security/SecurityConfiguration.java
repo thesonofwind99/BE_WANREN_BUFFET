@@ -39,14 +39,12 @@ public class SecurityConfiguration {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Authentication Provider cho User
+    // Authentication Provider for User
     @Bean
     public DaoAuthenticationProvider userAuthenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -55,8 +53,7 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
-
-    // Authentication Provider cho Customer
+    // Authentication Provider for Customer
     @Bean
     public DaoAuthenticationProvider customerAuthenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -68,24 +65,30 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults()) // Enable CORS
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
                 .authorizeHttpRequests(authz -> authz
+                        // Public Endpoints
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINS).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINS).permitAll()
-                        // Phân quyền cho Customer
+                        // Private Endpoints for Customers
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINS).hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINS).hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINS).hasAuthority("CUSTOMER")
-                        // Phân quyền cho User (nhân viên)
-                        .requestMatchers(HttpMethod.GET , Endpoints.PRIVATE_GET_ADMIN).hasAuthority("ADMIN")
+                        // Private Endpoints for Admins
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_ADMIN).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ADMIN).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
+                        // All other endpoints require authentication
+
                         // Các dòng cho User bị comment
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(userAuthenticationProvider())
-                .authenticationProvider(customerAuthenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+                .authenticationProvider(userAuthenticationProvider()) // Add User provider
+                .authenticationProvider(customerAuthenticationProvider()) // Add Customer provider
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT Filter
 
         return http.build();
     }
@@ -93,18 +96,17 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Thay đổi theo nhu cầu
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
+        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Change according to your frontend URL
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Allowed HTTP methods
+        configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+        configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
+        configuration.setMaxAge(3600L); // Cache CORS preflight response for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Apply CORS to all endpoints
         return source;
     }
 
-    // Authentication Manager
     @Bean
     public AuthenticationManager authenticationManager() {
         return new ProviderManager(List.of(userAuthenticationProvider(), customerAuthenticationProvider()));

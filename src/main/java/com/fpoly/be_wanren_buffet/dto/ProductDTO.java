@@ -17,5 +17,5 @@ public class ProductDTO {
     private String image;
     private ProductStatus productStatus;
     private Integer quantity;
-    private String categoryName; // Assuming you only need the category name
+    private String categoryName;
 }
