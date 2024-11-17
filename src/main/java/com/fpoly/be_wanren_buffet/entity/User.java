@@ -50,6 +50,7 @@ public class User extends Auditable implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+
     @OneToMany(mappedBy = "user")
     private Set<WorkSchedule> schedules;
 

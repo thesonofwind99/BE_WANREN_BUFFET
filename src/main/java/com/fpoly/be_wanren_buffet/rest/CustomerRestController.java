@@ -51,14 +51,12 @@ public class CustomerRestController {
     @CrossOrigin("http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody Customer customer) {
-
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         return customerService.register(customer);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest);
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -69,10 +67,12 @@ public class CustomerRestController {
                 // Giả sử bạn có thể lấy fullName từ UserDetails hoặc từ repository
                 Customer authenticatedCustomer = customerAuthService.authenticate(loginRequest.getUsername());
                 String fullName = authenticatedCustomer.getFullName();
-                System.out.println(fullName + "AAAAA");
+                System.out.println(fullName + "AAAA");
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
-                final String jwt = jwtService.generateToken(userDetails, fullName , email, phone);
+                Long UserId = authenticatedCustomer.getCustomerId();
+                String address = authenticatedCustomer.getAddress();
+                final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone , UserId , address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class CustomerRestController {
             customer.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
             customerService.save(customer);
         UserDetails userDetails = customerAuthService.loadUserByUsername(username);
-        String newToken = jwtService.generateToken(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber());
+        String newToken = jwtService.generateTokenForCustomer(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber() , customer.getCustomerId() , customer.getAddress());
         System.out.println(customer.getPhoneNumber());
         updateCustomerDTO1.setFullName(customer.getFullName());
         updateCustomerDTO1.setEmail(customer.getEmail());

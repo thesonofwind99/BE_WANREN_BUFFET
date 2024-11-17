@@ -12,4 +12,5 @@ public class OrderHistoryDTO {
     private String address;
     private String payment;
     private List<ProducHistorytDTO> producHistorytDTOList;
+    private Boolean isReviewed;
 }

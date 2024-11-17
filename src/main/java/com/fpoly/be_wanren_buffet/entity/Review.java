@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
@@ -20,6 +21,8 @@ public class Review extends Auditable implements Serializable {
 
     @Column(name = "content")
     private String content;
+
+
 
     @OneToOne
     @JoinColumn(name = "order_id")

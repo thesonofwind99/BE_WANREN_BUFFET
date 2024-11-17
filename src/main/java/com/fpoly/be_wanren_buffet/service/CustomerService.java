@@ -7,14 +7,16 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
-
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -43,6 +45,15 @@ public class CustomerService {
 
     public void save(Customer customer) {
         customerRepository.save(customer);
+    }
+
+    public Optional<Customer> findByEmail(String email){
+        return customerRepository.findByEmail(email);
+    }
+
+    public void updatePassword(Customer user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        customerRepository.save(user);
     }
 
 

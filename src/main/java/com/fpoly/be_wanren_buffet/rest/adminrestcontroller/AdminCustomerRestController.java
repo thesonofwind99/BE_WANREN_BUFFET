@@ -31,6 +31,7 @@ public class AdminCustomerRestController {
         return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
     }
 
+
     @PatchMapping("/update/{id}")
     public ResponseEntity<String> updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
         return customerRepository.findById(id).map(existingCustomer -> {

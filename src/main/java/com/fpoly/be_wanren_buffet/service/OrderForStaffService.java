@@ -17,4 +17,6 @@ public interface OrderForStaffService {
     Long getLatestOrderIdFromTable(Long tableId);
 
     String findOrderStatusById(Long orderId);
+
+    Double updateTotalPrice(Long orderId, Double totalPrice);
 }

@@ -13,7 +13,9 @@ import com.fpoly.be_wanren_buffet.entity.User;
 import com.fpoly.be_wanren_buffet.service.OrderForStaffService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -72,6 +74,16 @@ public class OrderForStaffServiceImpl implements OrderForStaffService {
     public String findOrderStatusById(Long orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         return (order != null) ? order.getOrderStatus().name() : null;
+    }
+
+    @Override
+    @Transactional
+    public Double updateTotalPrice(Long orderId, Double totalPrice) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        order.setTotalAmount(totalPrice);
+        Order updatedOrder = orderRepository.save(order);
+        return updatedOrder.getTotalAmount();
     }
 
 

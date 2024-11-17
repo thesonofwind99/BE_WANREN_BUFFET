@@ -17,4 +17,15 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o.orderId FROM Order o WHERE o.tablee.tableId = :tableId ORDER BY o.createdDate DESC")
     Long findLatestOrderIdByTableId(@Param("tableId") Long tableId, PageRequest pageRequest);
 
+    @Query("SELECT " +
+            "MONTH(o.createdDate) AS month, " +
+            "SUM(o.totalAmount) AS revenue " +
+            "FROM Order o " +
+            "WHERE YEAR(o.createdDate) = :year " +
+            "AND o.orderStatus = 'DELIVERED' " +
+            "GROUP BY MONTH(o.createdDate) " +
+            "ORDER BY MONTH(o.createdDate)")
+    List<Object[]> getMonthlyRevenue(@Param("year") int year);
+
+
 }
