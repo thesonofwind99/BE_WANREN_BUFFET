@@ -32,6 +32,7 @@ public class Endpoints {
             "/api/order_staff/status/**",
             "/api/product/**"
             //Staff
+
     };
 
     public static final String[] PUBLIC_POST_ENDPOINS = {

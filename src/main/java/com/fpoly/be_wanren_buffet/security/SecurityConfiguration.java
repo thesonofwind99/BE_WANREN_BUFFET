@@ -83,6 +83,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
                         // Private Endpoints for Staff
+
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAuthority("STAFF")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAuthority("STAFF")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAuthority("STAFF")
