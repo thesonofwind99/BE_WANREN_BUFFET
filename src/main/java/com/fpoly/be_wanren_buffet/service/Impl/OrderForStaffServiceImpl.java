@@ -50,7 +50,9 @@ public class OrderForStaffServiceImpl implements OrderForStaffService {
 
         order.setCreatedDate(LocalDateTime.now());
 
-        return orderRepository.save(order);
+        Order orderSaved = orderRepository.save(order);
+        System.out.println(orderSaved);
+        return orderSaved;
 
     }
 

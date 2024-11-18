@@ -19,22 +19,34 @@ public class Endpoints {
             "/Customer/search",
             "/User",
             "/User/search",
-            "/Table",
             "/Account",
             "/Promotion",
             "/User/admins",
-            "/User/{id}/roles"
-
+            "/User/{id}/roles",
+            //Staff
+            "/Table/**",
+            "/api/order_staff/findOrderIdByTableId/**",
+            "/api/product/by-category/**",
+            "/api/order_staff/**",
+            "/api/orders_detail_staff/**",
+            "/api/order_staff/status/**",
+            "/api/product/**"
+            //Staff
     };
 
     public static final String[] PUBLIC_POST_ENDPOINS = {
             "/api/customer/register",
             "/api/customer/login",
+            // STAFF POST
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add_or_update/**"
 
     };
 
     public static final String[] PRIVATE_POST_ENDPOINS = {
             "/api/orders",
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add_or_update/**"
     };
 
     public static final String[] PUBLIC_PATCH_ENDPOINS = {
@@ -47,8 +59,12 @@ public class Endpoints {
 
     };
     public static final String[] PRIVATE_PUT_ENDPOINS = {
-            "/Customer/**"
+            "/Customer/**",
+            "/api/order_staff/**",
+            "/api/table/**",
+
     };
+
 
     public static final String[] PUBLIC_DELETE_ENDPOINS = {
 
@@ -100,10 +116,30 @@ public class Endpoints {
     };
     public static final String[] PRIVATE_PUT_ADMIN= {
     };
+
+
     public static final String[] PRIVATE_DELETE_ADMIN= {
             "/Customer/delete/{id}",
             "/User/delete/{id}",
             "/Promotion/delete/{id}",
             "/User/admins/delete/{id}",
+    };
+    public static final String[] PRIVATE_GET_STAFF= {
+            "/Table/**",
+            "/api/order_staff/findOrderIdByTableId/**",
+            "/api/product/by-category/**",
+            "/api/order_staff/**",
+            "/api/orders_detail_staff/**",
+            "/api/order_staff/status/**",
+            "/api/product/**"
+    };
+    public static final String[] PRIVATE_POST_STAFF= {
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add_or_update/**"
+    };
+    public static final String[] PRIVATE_PUT_STAFF = {
+            "/Customer/**",
+            "/api/order_staff/**",
+            "/api/table/**"
     };
 }
