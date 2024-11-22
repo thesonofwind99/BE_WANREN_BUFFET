@@ -25,7 +25,9 @@ public class Endpoints {
             "/Account",
             "/Promotion",
             "/User/admins",
-            "/User/{id}/roles"
+            "/User/{id}/roles",
+            "/work-shift",
+            "/work-schedules/{date}"
     };
 
     // Public POST endpoints
@@ -83,7 +85,8 @@ public class Endpoints {
             "/Customer/create",
             "/User/create",
             "/Promotion/create",
-            "/User/admins/create"
+            "/User/admins/create",
+            "/work-schedules/create"
     };
 
     // Private Admin PATCH endpoints
@@ -93,7 +96,8 @@ public class Endpoints {
             "/User/update/{id}",
             "/User/updateAccountStatus/{id}",
             "/Promotion/update/{id}",
-            "/User/admins/update/{id}"
+            "/User/admins/update/{id}",
+
     };
 
     // Private Admin PUT endpoints (currently empty)

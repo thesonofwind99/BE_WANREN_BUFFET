@@ -1,9 +1,18 @@
 package com.fpoly.be_wanren_buffet.dao;
-
+import com.fpoly.be_wanren_buffet.entity.User;
 import com.fpoly.be_wanren_buffet.entity.WorkSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource(path = "Work_schedule")
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
 public interface WorkScheduleRepository extends JpaRepository<WorkSchedule, Long> {
+    /**
+     * Tìm WorkSchedule theo User và ngày làm việc
+     * @param workDate Ngày làm việc (Date)
+     * @return Optional WorkSchedule nếu tìm thấy
+     */
+    List<WorkSchedule> findByWorkDate(Date workDate);
+
 }
