@@ -26,14 +26,36 @@ public class Endpoints {
             "/Promotion",
             "/User/admins",
             "/User/{id}/roles",
+
             "/work-shift",
-            "/work-schedules/{date}"
+            "/work-schedules/{date}",
+
+            //Staff
+            "/Table/**",
+            "/api/order_staff/findOrderIdByTableId/**",
+            "/api/product/by-category/**",
+            "/api/order_staff/**",
+            "/api/orders_detail_staff/**",
+            "/api/order_staff/status/**",
+            "/api/product/**"
+
     };
 
     // Public POST endpoints
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/customer/register",
-            "/api/customer/login"
+            "/api/customer/login",
+            // STAFF
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add_or_update/**"
+            // STAFF
+    };
+
+    public static final String[] PUBLIC_PUT_ENDPOINTS = {
+            // STAFF
+            "/api/order_staff/**",
+            "/api/table/**",
+            // STAFF
     };
 
     // Private POST endpoints
@@ -53,8 +75,6 @@ public class Endpoints {
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/Customer/**"
     };
-
-
 
     // Public PORT endpoints
     public static final String[] PUBLIC_PORT_ENDPOINTS = {

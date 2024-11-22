@@ -1,11 +1,9 @@
 package com.fpoly.be_wanren_buffet.dao;
-import com.fpoly.be_wanren_buffet.entity.User;
 import com.fpoly.be_wanren_buffet.entity.WorkSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface WorkScheduleRepository extends JpaRepository<WorkSchedule, Long> {
     /**
