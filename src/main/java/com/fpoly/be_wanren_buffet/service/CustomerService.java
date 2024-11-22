@@ -1,18 +1,16 @@
 package com.fpoly.be_wanren_buffet.service;
 
-import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
-import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
-import com.fpoly.be_wanren_buffet.entity.Customer;
-import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import com.fpoly.be_wanren_buffet.entity.Customer;
 
 @Service
 public class CustomerService {

@@ -1,7 +1,11 @@
 package com.fpoly.be_wanren_buffet.rest.adminrestcontroller;
 
 import com.fpoly.be_wanren_buffet.dao.UserRepository;
+import com.fpoly.be_wanren_buffet.dao.WorkScheduleRepository;
+import com.fpoly.be_wanren_buffet.dao.WorkShiftRepository;
 import com.fpoly.be_wanren_buffet.entity.User;
+import com.fpoly.be_wanren_buffet.entity.WorkSchedule;
+import com.fpoly.be_wanren_buffet.entity.WorkShift;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -24,7 +30,10 @@ import java.util.function.Function;
 public class AdminUserRestController {
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private WorkScheduleRepository workScheduleRepository;
+    @Autowired
+    private WorkShiftRepository workShiftRepository;
     @PostMapping("/create")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
         // Kiểm tra trùng username
@@ -41,10 +50,38 @@ public class AdminUserRestController {
                     .body("Email already exists. Please choose another email.");
         }
 
-        // Nếu không trùng, lưu user mới
-        User savedUser = userRepository.save(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        try {
+            // Lưu user mới
+            User savedUser = userRepository.save(user);
+
+            // Lấy shift mặc định (ví dụ: shift ID = 1)
+            // Kiểm tra xem defaultShift có tồn tại không, nếu không thì tạo mới
+            WorkShift defaultShift = workShiftRepository.findById(0L)
+                    .orElseGet(() -> {
+                        WorkShift newDefaultShift = new WorkShift();
+                        newDefaultShift.setShiftId(0L);
+                        newDefaultShift.setShiftName("Default Shift");
+                        newDefaultShift.setStartTime(LocalTime.of(0, 0)); // 00:00
+                        newDefaultShift.setEndTime(LocalTime.of(0, 0));   // 00:00
+                        return workShiftRepository.save(newDefaultShift);
+                    });
+
+// Tạo dữ liệu WorkSchedule
+            WorkSchedule workSchedule = new WorkSchedule();
+            workSchedule.setWorkDate(new Date()); // Gán ngày làm việc mặc định
+            workSchedule.setShift(defaultShift); // Gán shift mặc định
+            workSchedule.setUser(savedUser);     // Gán user vừa được lưu
+
+            workScheduleRepository.save(workSchedule);
+
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error creating user and associated work schedule: " + e.getMessage());
+        }
     }
+
+
 
     @PatchMapping("/update/{id}")
     public ResponseEntity<Object> updatePartialUser(@PathVariable Long id, @RequestBody User partialUpdateUser) {

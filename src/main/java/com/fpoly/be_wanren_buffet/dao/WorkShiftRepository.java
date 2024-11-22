@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "Work_shift")
 public interface WorkShiftRepository extends JpaRepository<WorkShift, Long> {
+
 }

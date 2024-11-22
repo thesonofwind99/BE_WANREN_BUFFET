@@ -26,6 +26,10 @@ public class Endpoints {
             "/Promotion",
             "/User/admins",
             "/User/{id}/roles",
+
+            "/work-shift",
+            "/work-schedules/{date}",
+
             //Staff
             "/Table/**",
             "/api/order_staff/findOrderIdByTableId/**",
@@ -34,7 +38,7 @@ public class Endpoints {
             "/api/orders_detail_staff/**",
             "/api/order_staff/status/**",
             "/api/product/**"
-            //Staff
+
     };
 
     // Public POST endpoints
@@ -50,7 +54,7 @@ public class Endpoints {
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
             // STAFF
             "/api/order_staff/**",
-            "/api/table/**"
+            "/api/table/**",
             // STAFF
     };
 
@@ -101,7 +105,8 @@ public class Endpoints {
             "/Customer/create",
             "/User/create",
             "/Promotion/create",
-            "/User/admins/create"
+            "/User/admins/create",
+            "/work-schedules/create"
     };
 
     // Private Admin PATCH endpoints
@@ -111,7 +116,8 @@ public class Endpoints {
             "/User/update/{id}",
             "/User/updateAccountStatus/{id}",
             "/Promotion/update/{id}",
-            "/User/admins/update/{id}"
+            "/User/admins/update/{id}",
+
     };
 
     // Private Admin PUT endpoints (currently empty)

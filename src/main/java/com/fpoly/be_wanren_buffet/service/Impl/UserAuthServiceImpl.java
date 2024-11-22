@@ -1,17 +1,18 @@
 package com.fpoly.be_wanren_buffet.service.Impl;
 
-import com.fpoly.be_wanren_buffet.dao.UserRepository;
-import com.fpoly.be_wanren_buffet.entity.User;
-import com.fpoly.be_wanren_buffet.service.UserAuthService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.fpoly.be_wanren_buffet.dao.UserRepository;
+import com.fpoly.be_wanren_buffet.entity.User;
+import com.fpoly.be_wanren_buffet.service.UserAuthService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service

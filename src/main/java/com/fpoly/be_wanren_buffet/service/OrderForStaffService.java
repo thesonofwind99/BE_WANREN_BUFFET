@@ -1,10 +1,9 @@
 package com.fpoly.be_wanren_buffet.service;
 
+import java.util.Optional;
+
 import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.Optional;
 
 public interface OrderForStaffService {
     Order addOrder(OrderForStaffRequest orderForStaffRequest);
@@ -19,4 +18,6 @@ public interface OrderForStaffService {
     String findOrderStatusById(Long orderId);
 
     Double updateTotalPrice(Long orderId, Double totalPrice);
+
+    Order findOrderById(Long orderId);
 }
