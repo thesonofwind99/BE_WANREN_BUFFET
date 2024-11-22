@@ -86,5 +86,10 @@ public class OrderForStaffServiceImpl implements OrderForStaffService {
         return updatedOrder.getTotalAmount();
     }
 
+    @Override
+    public Order findOrderById(Long orderId) {
+        return orderRepository.findById(orderId).orElse(null);
+    }
+
 
 }
