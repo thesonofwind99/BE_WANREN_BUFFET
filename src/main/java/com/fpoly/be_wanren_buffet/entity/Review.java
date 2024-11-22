@@ -1,11 +1,17 @@
 package com.fpoly.be_wanren_buffet.entity;
 
-import jakarta.persistence.*;
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")

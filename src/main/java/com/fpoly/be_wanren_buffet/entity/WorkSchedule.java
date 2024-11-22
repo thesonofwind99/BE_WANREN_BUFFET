@@ -1,5 +1,6 @@
 package com.fpoly.be_wanren_buffet.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,14 +21,15 @@ public class WorkSchedule extends Auditable implements Serializable {
     private Long scheduleId;
 
     @Column(name = "work_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private Date workDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "shift_id")
+    @JoinColumn(name = "shift_id", nullable = false)
     private WorkShift shift;
 
 }

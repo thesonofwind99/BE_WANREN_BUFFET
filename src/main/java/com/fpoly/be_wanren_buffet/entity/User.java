@@ -65,4 +65,5 @@ public class User extends Auditable implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private Set<Payment> payments;
+
 }
