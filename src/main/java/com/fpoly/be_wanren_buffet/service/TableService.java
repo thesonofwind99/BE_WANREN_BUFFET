@@ -21,4 +21,11 @@ public class TableService {
         table.setTableStatus(status);
         return tableRepository.save(table);
     }
+    public Tablee findTableById(Long tableId) {
+        return tableRepository.findById(tableId).orElse(null);
+    }
+
+    public Tablee save(Tablee tablee) {
+        return tableRepository.save(tablee);
+    }
 }
