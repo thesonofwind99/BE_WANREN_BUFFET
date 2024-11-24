@@ -14,4 +14,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     // Tìm chi tiết đơn hàng theo orderId và productId
     Optional<OrderDetail> findByOrder_orderIdAndProduct_productId(Long orderId, Long productId);
     List<OrderDetail> findByOrder_orderId(Long orderId);
+    Optional<OrderDetail> findOrderDetailByOrderDetailId(Long orderDetailId);
 }

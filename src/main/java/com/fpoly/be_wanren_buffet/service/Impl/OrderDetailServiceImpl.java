@@ -5,6 +5,7 @@ import com.fpoly.be_wanren_buffet.dao.OrderDetailRepository;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dao.ProductRepository;
 import com.fpoly.be_wanren_buffet.dto.request.OrderDetailForStaffRequest;
+import com.fpoly.be_wanren_buffet.dto.request.OrderDetailUpdateDTO;
 import com.fpoly.be_wanren_buffet.dto.response.OrderDetailForStaffResponse;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
@@ -95,6 +96,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         return orderDetailRepository.findByOrder_orderId(orderId).stream()
                 .map(orderDetail -> {
                     OrderDetailForStaffRequest dto = new OrderDetailForStaffRequest();
+                    dto.setOrderDetailId(orderDetail.getOrderDetailId());
                     dto.setOrderId(orderDetail.getOrder().getOrderId());
                     dto.setProductId(orderDetail.getProduct().getProductId());  // Lấy productId
                     dto.setQuantity(orderDetail.getQuantity());
@@ -123,4 +125,33 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         return orderDetailForStaffResponseList;
 
     }
+
+    private OrderDetailForStaffRequest toRequestDTO(OrderDetail orderDetail) {
+        OrderDetailForStaffRequest dto = new OrderDetailForStaffRequest();
+        dto.setOrderDetailId(orderDetail.getOrderDetailId());
+        dto.setQuantity(orderDetail.getQuantity());
+        return dto;
+    }
+
+    @Override
+    public List<OrderDetailForStaffRequest> updateOrderDetails(List<OrderDetailUpdateDTO> updateDTOs) {
+        List<OrderDetailForStaffRequest> updatedOrderDetails = new ArrayList<>();
+
+        for (OrderDetailUpdateDTO dto : updateDTOs) {
+            OrderDetail orderDetail = orderDetailRepository.findById(dto.getId())
+                    .orElseThrow(() -> new RuntimeException("OrderDetail not found with ID: " + dto.getId()));
+
+            // Cập nhật thông tin từ DTO
+            orderDetail.setQuantity(dto.getQuantity());
+
+            // Lưu lại vào database
+            OrderDetail updatedOrderDetail = orderDetailRepository.save(orderDetail);
+
+            // Chuyển entity thành DTO và thêm vào danh sách
+            updatedOrderDetails.add(toRequestDTO(updatedOrderDetail));
+        }
+
+        return updatedOrderDetails;
+    }
+
 }

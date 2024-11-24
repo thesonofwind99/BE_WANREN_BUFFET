@@ -51,6 +51,7 @@ public class Endpoints {
             // STAFF
             "/api/order_staff/**",
             "/api/table/**",
+            "/api/orders_detail_staff/quantity-update"
             // STAFF
     };
 
