@@ -1,6 +1,7 @@
 package com.fpoly.be_wanren_buffet.service;
 
 import com.fpoly.be_wanren_buffet.dto.request.OrderDetailForStaffRequest;
+import com.fpoly.be_wanren_buffet.dto.request.OrderDetailUpdateDTO;
 import com.fpoly.be_wanren_buffet.dto.response.OrderDetailForStaffResponse;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
 
@@ -14,4 +15,6 @@ public interface OrderDetailService {
     List<OrderDetailForStaffRequest> getOrderDetailsByOrderId(Long orderId);
 
     List<OrderDetailForStaffResponse> getOrderDetailsWithNameProduct(Long orderId);
+
+    List<OrderDetailForStaffRequest> updateOrderDetails(List<OrderDetailUpdateDTO> updateDTOs);
 }
