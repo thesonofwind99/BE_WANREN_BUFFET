@@ -47,7 +47,8 @@ public class Endpoints {
             "/api/customer/login",
             // STAFF
             "/api/order_staff/add",
-            "/api/orders_detail_staff/add_or_update/**"
+            "/api/orders_detail_staff/add_or_update/**",
+            "/api/payment/create_payment/normal"
             // STAFF
     };
 
