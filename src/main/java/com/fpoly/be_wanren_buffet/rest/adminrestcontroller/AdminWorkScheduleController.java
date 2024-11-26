@@ -60,6 +60,7 @@ public class AdminWorkScheduleController {
                     user.getFullName(),
                     user.getUserType(),
                     workShift.getShiftId(),
+                    workShift.getShiftName(),
                     savedWorkSchedule.getWorkDate()
             );
 
@@ -72,13 +73,9 @@ public class AdminWorkScheduleController {
     @GetMapping("/{date}")
     public ResponseEntity<?> getWorkSchedulesByDate(@PathVariable("date") String date) {
         try {
-            // Chuyển đổi String thành Date
             Date workDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-
-            // Lấy danh sách WorkSchedule theo ngày
             List<WorkSchedule> workSchedules = workScheduleService.getSchedulesByDate(workDate);
 
-            // Chuyển đổi danh sách WorkSchedule thành WorkScheduleFullDTO
             List<WorkScheduleFullDTO> response = workSchedules.stream().map(workSchedule -> {
                 User user = workSchedule.getUser();
                 WorkShift workShift = workSchedule.getShift();
@@ -88,15 +85,17 @@ public class AdminWorkScheduleController {
                         user.getFullName(),
                         user.getUserType(),
                         workShift.getShiftId(),
+                        workShift.getShiftName(),
                         workSchedule.getWorkDate()
                 );
             }).collect(Collectors.toList());
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            log.error("Lỗi khi lấy WorkSchedules", e);
+            log.error("Error retrieving WorkSchedules", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
 
 }

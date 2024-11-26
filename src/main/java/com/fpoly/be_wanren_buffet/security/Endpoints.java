@@ -117,11 +117,14 @@ public class Endpoints {
             "/User/updateAccountStatus/{id}",
             "/Promotion/update/{id}",
             "/User/admins/update/{id}",
+            "/work-schedules/update/{id}"
 
     };
 
     // Private Admin PUT endpoints (currently empty)
-    public static final String[] PRIVATE_PUT_ADMIN = {};
+    public static final String[] PRIVATE_PUT_ADMIN = {
+            "/work-schedules/{id}/shift"
+    };
 
     // Private Admin DELETE endpoints
     public static final String[] PRIVATE_DELETE_ADMIN = {

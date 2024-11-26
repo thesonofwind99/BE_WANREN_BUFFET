@@ -14,5 +14,6 @@ public class WorkScheduleFullDTO {
     private String fullName;
     private String userType;
     private Long shiftId;
+    private String shiftName;
     private Date workDate;
 }
