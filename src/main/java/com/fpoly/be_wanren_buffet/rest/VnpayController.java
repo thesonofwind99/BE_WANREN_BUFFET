@@ -48,7 +48,7 @@ public class VnpayController {
             @RequestParam("vnp_OrderInfo") String orderInfor,
             @RequestParam("vnp_Amount") String amount) {
         System.out.println(orderInfor);
-        if (orderInfor.equals("Thanh toan don hang %3A83")) {
+        if (orderInfor.contains("Thanh toan don hang")) {
             try {
                 if ("00".equals(statusPayment)) {
                     // Parse the transaction reference to a Long
