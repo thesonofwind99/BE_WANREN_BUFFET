@@ -37,7 +37,8 @@ public class Endpoints {
             "/api/order_staff/**",
             "/api/orders_detail_staff/**",
             "/api/order_staff/status/**",
-            "/api/product/**"
+            "/api/product/**",
+
 
     };
 
@@ -48,7 +49,8 @@ public class Endpoints {
             // STAFF
             "/api/order_staff/add",
             "/api/orders_detail_staff/add_or_update/**",
-            "/api/payment/create_payment/normal"
+            "/api/payment/create_payment/normal",
+            "/api/payment/submit_order_vnpay",
             // STAFF
     };
 

@@ -6,6 +6,7 @@ import com.fpoly.be_wanren_buffet.dto.PaymentDTO;
 import com.fpoly.be_wanren_buffet.dto.request.PaymentForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.service.PaymentForStaffService;
+import com.fpoly.be_wanren_buffet.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class PaymentRestController {
 
     @Autowired
     private VnpayConfig vnpayConfig;
+
+    @Autowired
+    private VNPayService vnpayService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -128,5 +132,12 @@ public class PaymentRestController {
         response.put("payment_id", paymentForStaffService.createPaymentForStaff(paymentForStaffRequest));
         response.put("message", "Tạo giao dịch thành công");
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/submit_order_vnpay")
+    public String submidOrder(@RequestParam("amount") Integer orderTotal,
+                              @RequestParam("orderInfo") String orderInfo){
+        String vnpayUrl = vnpayService.createOrder(orderTotal, orderInfo);
+        return vnpayUrl;
     }
 }
