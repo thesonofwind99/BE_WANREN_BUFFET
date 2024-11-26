@@ -2,6 +2,7 @@ package com.fpoly.be_wanren_buffet.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,7 @@ public class WorkScheduleService {
     public List<WorkSchedule> getSchedulesByDate(Date workDate) {
         return workScheduleRepository.findByWorkDate(workDate);
     }
-
+    public Optional<WorkSchedule> findById(Long id) {
+        return workScheduleRepository.findById(id);
+    }
 }
