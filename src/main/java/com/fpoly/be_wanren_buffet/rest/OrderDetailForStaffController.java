@@ -1,6 +1,7 @@
 package com.fpoly.be_wanren_buffet.rest;
 
 import com.fpoly.be_wanren_buffet.dto.request.OrderDetailForStaffRequest;
+import com.fpoly.be_wanren_buffet.dto.request.OrderDetailUpdateDTO;
 import com.fpoly.be_wanren_buffet.dto.response.OrderDetailForStaffResponse;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
 import com.fpoly.be_wanren_buffet.service.OrderDetailService;
@@ -49,5 +50,11 @@ public class OrderDetailForStaffController {
         response.put("orderDetails", orderDetailForStaffResponses);
         response.put("message", "Lấy dữ liệu thành công");
         return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/quantity-update")
+    public ResponseEntity<List<OrderDetailForStaffRequest>> updateOrderDetails(@RequestBody List<OrderDetailUpdateDTO> updateDTOs) {
+        List<OrderDetailForStaffRequest> updatedOrderDetails = orderDetailService.updateOrderDetails(updateDTOs);
+        return ResponseEntity.ok(updatedOrderDetails);
     }
 }

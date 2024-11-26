@@ -3,6 +3,7 @@ package com.fpoly.be_wanren_buffet.dao;
 
 import java.util.List;
 
+import com.fpoly.be_wanren_buffet.entity.Product;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,5 +28,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY MONTH(o.createdDate)")
     List<Object[]> getMonthlyRevenue(@Param("year") int year);
 
+    Order findByOrderId(Long orderId);
 
 }

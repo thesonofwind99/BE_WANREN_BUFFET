@@ -26,6 +26,7 @@ public class Endpoints {
             "/Promotion",
             "/User/admins",
             "/User/{id}/roles",
+            "/Reservation/**",
 
             "/work-shift",
             "/work-schedules/{date}",
@@ -37,7 +38,8 @@ public class Endpoints {
             "/api/order_staff/**",
             "/api/orders_detail_staff/**",
             "/api/order_staff/status/**",
-            "/api/product/**"
+            "/api/product/**",
+
 
     };
 
@@ -47,7 +49,9 @@ public class Endpoints {
             "/api/customer/login",
             // STAFF
             "/api/order_staff/add",
-            "/api/orders_detail_staff/add_or_update/**"
+            "/api/orders_detail_staff/add_or_update/**",
+            "/api/payment/create_payment/normal",
+            "/api/payment/submit_order_vnpay",
             // STAFF
     };
 
@@ -55,6 +59,7 @@ public class Endpoints {
             // STAFF
             "/api/order_staff/**",
             "/api/table/**",
+            "/api/orders_detail_staff/quantity-update"
             // STAFF
     };
 
@@ -67,13 +72,19 @@ public class Endpoints {
     public static final String[] PUBLIC_PATCH_ENDPOINTS = {};
 
     // Private PATCH endpoints
-    public static final String[] PRIVATE_PATCH_ENDPOINTS = {
+    public static final String[] PRIVATE_PATCH_CASHIER = {
             "/Product",
-            "/Product/{productId}"
+            "/Product/{productId}",
+            "/Orders/{orderId}",
+            "/Orders/{orderId}/orderDetails",
+    };
+
+    public static final String[] PRIVATE_PUT_CASHIER = {
+            "/Orders/{orderId}/updateOrder",
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
-            "/Customer/**"
+            "/Customer/**",
     };
 
     // Public PORT endpoints

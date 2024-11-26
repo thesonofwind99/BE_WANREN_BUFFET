@@ -63,12 +63,10 @@ public class LoginUserRestController {
                 User authenticatedUser = userOpt.get();
 
                 List<String> roles = roleRepository.findRoleNamesByUserId(authenticatedUser.getUserId());
-
-
-
-
+                String fullName = authenticatedUser.getFullName();
+                Long userId = authenticatedUser.getUserId();
                 // Tạo JWT
-                final String jwt = jwtService.generateTokenForUser(userDetails, roles);
+                final String jwt = jwtService.generateTokenForUser(userDetails, fullName, userId,roles);
 
                 return ResponseEntity.ok(new JwtResponse(jwt));
             } else {
