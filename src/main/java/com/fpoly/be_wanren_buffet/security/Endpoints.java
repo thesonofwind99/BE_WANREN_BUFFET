@@ -26,6 +26,7 @@ public class Endpoints {
             "/Promotion",
             "/User/admins",
             "/User/{id}/roles",
+            "/Reservation/**",
 
             "/work-shift",
             "/work-schedules/{date}",
@@ -69,13 +70,19 @@ public class Endpoints {
     public static final String[] PUBLIC_PATCH_ENDPOINTS = {};
 
     // Private PATCH endpoints
-    public static final String[] PRIVATE_PATCH_ENDPOINTS = {
+    public static final String[] PRIVATE_PATCH_CASHIER = {
             "/Product",
-            "/Product/{productId}"
+            "/Product/{productId}",
+            "/Orders/{orderId}",
+            "/Orders/{orderId}/orderDetails",
+    };
+
+    public static final String[] PRIVATE_PUT_CASHIER = {
+            "/Orders/{orderId}/updateOrder",
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
-            "/Customer/**"
+            "/Customer/**",
     };
 
     // Public PORT endpoints
