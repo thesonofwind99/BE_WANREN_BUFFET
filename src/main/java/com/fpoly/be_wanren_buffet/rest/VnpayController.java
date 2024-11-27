@@ -62,7 +62,7 @@ public class VnpayController {
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
                     // Redirect to the frontend with a success message
-                    return "redirect:http://localhost:3000/checkout?success=" + successMessage;
+                    return "redirect:http://localhost:3000/checkout/sucessful";
                 } else {
                     Long orderId = Long.parseLong(txnRef);
                     orderService.deleteOrderById(orderId - 1);
@@ -124,12 +124,12 @@ public class VnpayController {
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
                     // Redirect to the frontend with a success message
-                    return "redirect:http://localhost:3000/checkout/step3?success=" + successMessage;
+                    return "redirect:http://localhost:3000/checkout/sucessful";
                 } else {
                     // Encode the error message
                     String errorMessage = URLEncoder.encode("Giao dịch thất bại", StandardCharsets.UTF_8);
                     // Redirect to the frontend with an error message
-                    return "redirect:http://localhost:3000/checkout/step3?error=" + errorMessage;
+                    return "redirect:http://localhost:3000/checkout/failed";
                 }
             } catch (NumberFormatException e) {
                 // Handle invalid txnRef format

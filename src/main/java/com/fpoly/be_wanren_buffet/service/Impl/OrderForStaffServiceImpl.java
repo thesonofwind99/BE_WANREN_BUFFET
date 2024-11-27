@@ -3,6 +3,7 @@ package com.fpoly.be_wanren_buffet.service.Impl;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.fpoly.be_wanren_buffet.enums.OrderStatus;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,19 @@ public class OrderForStaffServiceImpl implements OrderForStaffService {
     @Override
     public Order findOrderById(Long orderId) {
         return orderRepository.findById(orderId).orElse(null);
+    }
+
+    @Override
+    public boolean updateOrderStatus(Long orderId, OrderStatus status) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+
+        if (order != null) {
+            order.setOrderStatus(status);
+            orderRepository.save(order);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

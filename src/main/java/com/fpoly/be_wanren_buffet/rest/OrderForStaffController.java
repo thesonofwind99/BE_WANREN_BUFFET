@@ -5,6 +5,7 @@ import com.fpoly.be_wanren_buffet.dto.request.OrderUpdateRequest;
 import com.fpoly.be_wanren_buffet.dto.request.TransferRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.entity.Tablee;
+import com.fpoly.be_wanren_buffet.enums.OrderStatus;
 import com.fpoly.be_wanren_buffet.enums.TableStatus;
 import com.fpoly.be_wanren_buffet.service.OrderForStaffService;
 import com.fpoly.be_wanren_buffet.service.OrderService;
@@ -135,6 +136,17 @@ public class OrderForStaffController {
         orderForStaffService.save(order);
 
         return ResponseEntity.ok("Order transferred and tables updated successfully");
+    }
+
+    @PutMapping("/update-status/{orderId}")
+    public ResponseEntity<String> updateOrderStatus(@PathVariable Long orderId, @RequestParam OrderStatus status) {
+        boolean isUpdated = orderForStaffService.updateOrderStatus(orderId, status);
+
+        if (isUpdated) {
+            return ResponseEntity.ok("Order status updated successfully");
+        } else {
+            return ResponseEntity.status(400).body("Failed to update order status");
+        }
     }
 
 }
