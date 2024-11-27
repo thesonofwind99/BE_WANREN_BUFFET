@@ -19,8 +19,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Autowired
     private JwtService jwtService;
@@ -49,6 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             username = jwtService.extractUsername(jwt);
         } catch (Exception e) {
+            logger.error("Error extracting username from JWT: {}", e.getMessage());
             filterChain.doFilter(request, response);
             return;
         }
@@ -56,32 +62,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Lấy các vai trò từ token
         Set<String> roles = jwtService.extractRoles(jwt);
 
-        // Thêm dòng in ra vai trò
-        System.out.println("Roles from token: " + roles);
-
-        // Hoặc sử dụng logger nếu bạn đã cấu hình
-        // log.info("Roles from token: {}", roles);
+        // Ghi log vai trò
+        logger.debug("Roles from token: {}", roles);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails;
             if (roles.contains("CUSTOMER")) {
                 // Xác thực Customer
                 userDetails = customerAuthService.loadUserByUsername(username);
-
             } else {
                 // Xác thực User (nhân viên)
                 userDetails = userAuthService.loadUserByUsername(username);
             }
 
-            // In ra các quyền (authorities) của userDetails
-            System.out.println("Authorities of userDetails: " + userDetails.getAuthorities());
+            // Ghi log các quyền của userDetails
+            logger.debug("Authorities of userDetails: {}", userDetails.getAuthorities());
 
-            if (jwtService.isTokenValid(jwt, userDetails) ) {
+            if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                logger.debug("Authentication set for user: {}", username);
             }
         }
 

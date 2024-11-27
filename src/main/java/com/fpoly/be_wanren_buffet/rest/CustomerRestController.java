@@ -1,5 +1,3 @@
-// src/main/java/com/fpoly/be_wanren_buffet/rest/CustomerRestController.java
-
 package com.fpoly.be_wanren_buffet.rest;
 
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
@@ -51,7 +49,6 @@ public class CustomerRestController {
     /**
      * Endpoint đăng ký khách hàng
      */
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody Customer customer) {
         log.info("Đăng ký khách hàng: {}", customer.getUsername());

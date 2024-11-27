@@ -4,36 +4,37 @@ public class Endpoints {
 
     // Public GET endpoints
     public static final String[] PUBLIC_GET_ENDPOINTS = {
-            "/Product/search/findByTypeFood",
+            "/api/product/search/findByTypeFood",
             "/api/product/ProductHot",
-            "/Product/search/findByProductNameContaining",
-            "/Product/**",
-            "/Promotion/search/findByPromotionStatus",
-            "/Customer/search/existsByUsername",
-            "/Customer/search/existsByEmail",
+            "/api/product/search/findByProductNameContaining",
+            "/api/product/**",
+            "/api/promotion/search/findByPromotionStatus",
+            "/api/customer/existsByUsername",
+            "/api/customer/existsByEmail",
             "/api/payment/create_payment",
             "/api/payment/RollBack_VNPAY",
-            "/Customer",
-            "/Orders/**",
-            "/Order_detail/**",
+            "/api/customer",
+            "/api/orders/**",
+            "/api/order_detail/**",
             "/api/orders/GetOrderDetailByOrderId/**",
             "/api/orders/GetOrderByCustomerId/**",
-            "/Customer/search",
-            "/User",
-            "/User/search",
-            "/Table",
-            "/Account",
-            "/Promotion/**",
-            "/User/admins",
-            "/User/{id}/roles",
-            "/Customer/search/existsByPhoneNumber",
-            "/User/**",
-            "/checkout",
+            "/api/customer/search",
+            "/api/user",
+            "/api/user/search",
+            "/api/table",
+            "/api/account",
+            "/api/promotion/**",
+            "/api/user/admins",
+            "/api/user/{id}/roles",
+            "/api/customer/search/existsByPhoneNumber",
+            "/api/user/**",
+            "/api/checkout",
             "/api/statistical/**",
-
-
+            "/api/register",
+            "/Customer/**"
     };
 
+    // Public POST endpoints
     public static final String[] PUBLIC_PORT_ENDPOINTS = {
             "/api/customer/register",
             "/api/customer/login",
@@ -41,26 +42,16 @@ public class Endpoints {
             "/api/forgot-password/request",
             "/api/otp/validate",
             "/api/reset-password/update",
-            "/api/user/login",
+            "/api/user/login"
     };
-
-
 
     public static final String[] PRIVATE_POST_ENDPOINTS = {
             "/api/orders"
     };
 
-
-
-
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
-            "/Customer/**"
+            "/api/customer/**"
     };
-
-
-
-
-
 
     // Private Customer GET endpoints
     public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINTS = {
@@ -70,40 +61,39 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_GET_ADMIN = {
-            "/Customer/create",
+            "/api/customer/create",
             "/api/statistical/**",
     };
 
     // Private Admin POST endpoints
     public static final String[] PRIVATE_POST_ADMIN = {
-            "/Customer/create",
-            "/User/create",
-            "/Promotion/create",
-            "/User/admins/create",
-            "/Product",
-            "/Product/**",
-            "/Product"
+            "/api/customer/create",
+            "/api/user/create",
+            "/api/promotion/create",
+            "/api/user/admins/create",
+            "/api/product",
+            "/api/product/**",
+            "/api/product"
     };
 
     // Private Admin PATCH endpoints
     public static final String[] PRIVATE_PATCH_ADMIN = {
-            "/Customer/update/{id}",
-            "/Customer/updateAccountStatus/{id}",
-            "/User/update/{id}",
-            "/User/updateAccountStatus/{id}",
-            "/Promotion/update/{id}",
-            "/User/admins/update/{id}"
+            "/api/customer/update/{id}",
+            "/api/customer/updateAccountStatus/{id}",
+            "/api/user/update/{id}",
+            "/api/user/updateAccountStatus/{id}",
+            "/api/promotion/update/{id}",
+            "/api/user/admins/update/{id}"
     };
-
 
     public static final String[] PRIVATE_PUT_ADMIN = {};
 
     // Private Admin DELETE endpoints
     public static final String[] PRIVATE_DELETE_ADMIN = {
-            "/Customer/delete/{id}",
-            "/User/delete/{id}",
-            "/Promotion/delete/{id}",
-            "/User/admins/delete/{id}",
-            "/Product/**"
+            "/api/customer/delete/{id}",
+            "/api/user/delete/{id}",
+            "/api/promotion/delete/{id}",
+            "/api/user/admins/delete/{id}",
+            "/api/product/**"
     };
 }

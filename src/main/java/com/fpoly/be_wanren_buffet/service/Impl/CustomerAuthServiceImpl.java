@@ -19,14 +19,17 @@ public class CustomerAuthServiceImpl implements CustomerAuthService {
 
     @Override
     public Customer authenticate(String username) {
-        // Bạn có thể giữ lại nếu cần thiết
-        return customerRepository.findByEmail(username).get(); // Sử dụng email thay vì username
+        if(username.contains("@")){
+            return customerRepository.findByEmail(username).get(); // Sử dụng email thay vì username
+        }
+        return  customerRepository.findByUsername(username).get();
+
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Tìm kiếm khách hàng bằng email thay vì username
-        Customer customer = customerRepository.findByEmail(username).get();
+        Customer customer = authenticate(username);
         if (customer == null) {
             throw new UsernameNotFoundException("Customer not found with email: " + username);
         }

@@ -80,9 +80,11 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults()) // Enable CORS
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
                 .authorizeHttpRequests(authz -> authz
-                        // Public Endpoints
+                        // Public GET Endpoints
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
+                        // Public POST Endpoints
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
+                        // Các endpoint khác được phép truy cập mà không cần xác thực
                         .requestMatchers("/login**", "/oauth2/**", "/api/product/**", "/assets/**").permitAll()
                         // Private Endpoints for Customers
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINTS).hasAuthority("CUSTOMER")
@@ -94,16 +96,15 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
                         // All other endpoints require authentication
-
-                        // Các dòng cho User bị comment
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(userAuthenticationProvider())
                 .authenticationProvider(customerAuthenticationProvider())
+                .authenticationProvider(userAuthenticationProvider())
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
+                        .loginPage("/login") // Đảm bảo frontend xử lý trang đăng nhập
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService())
                         )
@@ -112,6 +113,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+
     @Bean
     public CustomOAuth2UserService customOAuth2UserService() {
         return new CustomOAuth2UserService();
@@ -119,7 +121,7 @@ public class SecurityConfiguration {
 
     @Bean
     public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return new OAuth2AuthenticationSuccessHandler(jwtService ,customerRepository , customerService);
+        return new OAuth2AuthenticationSuccessHandler(jwtService, customerRepository, customerService);
     }
 
     @Bean
