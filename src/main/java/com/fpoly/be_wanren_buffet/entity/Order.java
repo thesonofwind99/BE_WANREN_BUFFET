@@ -45,8 +45,8 @@ public class Order extends Auditable implements Serializable {
     @JoinColumn(name = "table_id")
     private Tablee tablee;
 
-//    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private String payment;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Review review;

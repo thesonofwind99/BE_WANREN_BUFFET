@@ -4,13 +4,16 @@ import com.fpoly.be_wanren_buffet.dao.OrderDetailRepository;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dao.ProductRepository;
 import com.fpoly.be_wanren_buffet.dao.ReviewRepository;
+import com.fpoly.be_wanren_buffet.dto.HourlyRevenueDTO;
 import com.fpoly.be_wanren_buffet.dto.OrderHistoryDTO;
 import com.fpoly.be_wanren_buffet.dto.ProducHistorytDTO;
+import com.fpoly.be_wanren_buffet.dto.WeeklyRevenueDTO;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
 import com.fpoly.be_wanren_buffet.entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +50,16 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order with ID " + id + " not found"));
     }
 
-    public void deleteOrderById(Long id) {
-        orderRepository.deleteById(id);
+    public boolean deleteOrderById(Long id) {
+        try {
+            orderRepository.deleteById(id);
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+
     }
 
     /**
@@ -105,7 +116,7 @@ public class OrderService {
                 OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
                 orderHistoryDTO.setOrderId(order.getOrderId());
                 orderHistoryDTO.setTotalAmount(order.getTotalAmount());
-                orderHistoryDTO.setPayment(order.getPayment());
+                orderHistoryDTO.setPayment(order.getPayment().getPaymentMethod().toString());
                 orderHistoryDTO.setAddress(order.getAddress());
                 orderHistoryDTO.setNotes(order.getNotes());
                 orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>()); // Initialize list for product history
@@ -163,6 +174,42 @@ public class OrderService {
 
         return revenueByMonth;
     }
+
+    @Transactional // Procedure này chỉ đọc dữ liệu
+    public List<WeeklyRevenueDTO> getWeeklyRevenue() {
+        List<Object[]> results = orderRepository.getWeeklyRevenue();
+        List<WeeklyRevenueDTO> weeklyRevenues = new ArrayList<>();
+        for (Object[] result : results) {
+            String dayOfWeek = (String) result[0];
+            Double dailyRevenue = result[1] != null ? ((Number) result[1]).doubleValue() : 0.0;
+            weeklyRevenues.add(new WeeklyRevenueDTO(dayOfWeek, dailyRevenue));
+        }
+        return weeklyRevenues;
+    }
+
+    @Transactional // Procedure này chỉ đọc dữ liệu
+    public List<HourlyRevenueDTO> getHourlyRevenue() {
+        List<Object[]> results = orderRepository.getHourlyRevenue();
+        List<HourlyRevenueDTO> hourlyRevenues = new ArrayList<>();
+        for (Object[] result : results) {
+            Integer hourOfDay = null;
+            Double hourlyRevenue = 0.0;
+
+            // Kiểm tra và ánh xạ giá trị hour_of_day
+            if (result[0] instanceof Number) {
+                hourOfDay = ((Number) result[0]).intValue();
+            }
+
+            // Kiểm tra và ánh xạ giá trị hourly_revenue
+            if (result[1] instanceof Number) {
+                hourlyRevenue = ((Number) result[1]).doubleValue();
+            }
+
+            hourlyRevenues.add(new HourlyRevenueDTO(hourOfDay, hourlyRevenue));
+        }
+        return hourlyRevenues;
+    }
+
 
 
 }

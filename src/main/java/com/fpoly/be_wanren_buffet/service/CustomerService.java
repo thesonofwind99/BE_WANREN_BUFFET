@@ -26,6 +26,8 @@ public class CustomerService {
             return ResponseEntity.badRequest().body(Map.of("message", "Customer already exists"));
         } else if (customerRepository.existsByEmail(customer.getEmail())) {
             return ResponseEntity.badRequest().body(Map.of("message", "Email already exists"));
+        } else if (customerRepository.existsByEmail(customer.getPhoneNumber())) {
+            return ResponseEntity.badRequest().body(Map.of("message", "PhoneNumber already exists"));
         }
 
         // Lưu khách hàng vào cơ sở dữ liệu

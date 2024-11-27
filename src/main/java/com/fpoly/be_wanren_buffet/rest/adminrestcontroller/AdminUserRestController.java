@@ -112,42 +112,7 @@ public class AdminUserRestController {
         userRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully.");
     }
-    @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> searchUsers(
-            @RequestParam(value = "username", required = false) String username,
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "fullName", required = false) String fullName,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<User> users;
-
-        // Perform search based on provided parameters
-        if (username != null) {
-            users = userRepository.findByUsernameContainingIgnoreCase(username, pageable);
-        } else if (email != null) {
-            users = userRepository.findByEmailContainingIgnoreCase(email, pageable);
-        } else if (fullName != null) {
-            users = userRepository.findByFullNameContainingIgnoreCase(fullName, pageable);
-        } else {
-            users = userRepository.findAll(pageable);
-        }
-
-        // Prepare response with _embedded structure
-        Map<String, Object> response = new HashMap<>();
-        Map<String, Object> embedded = new HashMap<>();
-        embedded.put("users", users.getContent());
-        response.put("_embedded", embedded);
-        response.put("page", Map.of(
-                "size", users.getSize(),
-                "totalElements", users.getTotalElements(),
-                "totalPages", users.getTotalPages(),
-                "number", users.getNumber()
-        ));
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
 
 }

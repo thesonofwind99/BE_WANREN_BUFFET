@@ -2,14 +2,13 @@
 
 package com.fpoly.be_wanren_buffet.rest;
 
-import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
 import com.fpoly.be_wanren_buffet.entity.Customer;
-import com.fpoly.be_wanren_buffet.service.CustomerForStaffService;
-import com.fpoly.be_wanren_buffet.service.CustomerService;
 import com.fpoly.be_wanren_buffet.security.JwtResponse;
 import com.fpoly.be_wanren_buffet.security.LoginRequest;
 import com.fpoly.be_wanren_buffet.service.CustomerAuthService;
+import com.fpoly.be_wanren_buffet.service.CustomerForStaffService;
+import com.fpoly.be_wanren_buffet.service.CustomerService;
 import com.fpoly.be_wanren_buffet.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerRestController {
+
     @Autowired
     private CustomerService customerService;
 
@@ -48,15 +48,30 @@ public class CustomerRestController {
     @Autowired
     private JwtService jwtService;
 
-    @CrossOrigin("http://localhost:3000")
+    /**
+     * Endpoint đăng ký khách hàng
+     */
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody Customer customer) {
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        return customerService.register(customer);
+        log.info("Đăng ký khách hàng: {}", customer.getUsername());
+        try {
+            // Mã hóa mật khẩu trước khi lưu
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            // Đăng ký khách hàng thông qua service
+            return customerService.register(customer);
+        } catch (Exception e) {
+            log.error("Lỗi khi đăng ký khách hàng: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("Đăng ký thất bại. Vui lòng thử lại.");
+        }
     }
 
+    /**
+     * Endpoint đăng nhập khách hàng
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest loginRequest) {
+        log.info("Khách hàng đang cố gắng đăng nhập: {}", loginRequest.getUsername());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -65,45 +80,84 @@ public class CustomerRestController {
                 // Lấy thông tin người dùng đã đăng nhập
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
+                // Lấy thông tin khách hàng từ service
                 Customer authenticatedCustomer = customerAuthService.authenticate(loginRequest.getUsername());
+                if (authenticatedCustomer == null) {
+                    log.warn("Khách hàng không tồn tại: {}", loginRequest.getUsername());
+                    return ResponseEntity.badRequest().body("Thông tin đăng nhập không chính xác.");
+                }
+
                 String fullName = authenticatedCustomer.getFullName();
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
-                Long UserId = authenticatedCustomer.getCustomerId();
+                Long userId = authenticatedCustomer.getCustomerId();
                 String address = authenticatedCustomer.getAddress();
-                System.out.println(address + "ĐỊA CHỈ");
-                final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone , UserId , address);
+
+                log.info("Đăng nhập thành công cho khách hàng: {}", email);
+
+                // Tạo JWT token cho khách hàng
+                final String jwt = jwtService.generateTokenForCustomer(fullName, email, phone, userId, address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            log.error("Lỗi khi đăng nhập: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("Thông tin đăng nhập không chính xác.");
         }
-        return ResponseEntity.badRequest().body("Fall succescc");
+        return ResponseEntity.badRequest().body("Đăng nhập thất bại.");
     }
 
+    /**
+     * Endpoint cập nhật thông tin khách hàng
+     */
     @PutMapping("/updateCustomer/{username}")
     public ResponseEntity<?> updateCustomer(
             @PathVariable String username,
             @Validated @RequestBody UpdateCustomerDTO updateCustomerDTO) {
-
+        log.info("Cập nhật thông tin khách hàng: {}", username);
+        try {
             Customer customer = customerService.findCustomerByUsername(username);
-            UpdateCustomerDTO updateCustomerDTO1 = new UpdateCustomerDTO();
-            System.out.println(customer);
+            if (customer == null) {
+                log.warn("Khách hàng không tồn tại: {}", username);
+                throw new ResourceNotFoundException("Customer not found with username: " + username);
+            }
+
+            // Cập nhật các trường thông tin
             customer.setFullName(updateCustomerDTO.getFullName());
             customer.setEmail(updateCustomerDTO.getEmail());
             customer.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
+            // Bạn có thể thêm các trường khác nếu cần
             customerService.save(customer);
-        UserDetails userDetails = customerAuthService.loadUserByUsername(username);
-        String newToken = jwtService.generateTokenForCustomer(userDetails, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber() , customer.getCustomerId() , customer.getAddress());
-        System.out.println(customer.getPhoneNumber());
-        updateCustomerDTO1.setFullName(customer.getFullName());
-        updateCustomerDTO1.setEmail(customer.getEmail());
-        updateCustomerDTO1.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
-        updateCustomerDTO1.setJwtToken(newToken);
-        return ResponseEntity.ok().body(updateCustomerDTO1);
+
+            // Tạo mới JWT token với thông tin cập nhật
+            String newToken = jwtService.generateTokenForCustomer(
+                    customer.getFullName(),
+                    customer.getEmail(),
+                    customer.getPhoneNumber(),
+                    customer.getCustomerId(),
+                    customer.getAddress()
+            );
+
+            // Chuẩn bị DTO phản hồi
+            UpdateCustomerDTO responseDTO = new UpdateCustomerDTO();
+            responseDTO.setFullName(customer.getFullName());
+            responseDTO.setEmail(customer.getEmail());
+            responseDTO.setPhoneNumber(customer.getPhoneNumber());
+            responseDTO.setJwtToken(newToken);
+
+            log.info("Cập nhật thành công cho khách hàng: {}", username);
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (ResourceNotFoundException e) {
+            log.error("Lỗi cập nhật khách hàng: {}", e.getMessage());
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Lỗi cập nhật khách hàng: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("Cập nhật thất bại. Vui lòng thử lại.");
+        }
     }
 
+    /**
+     * Endpoint cập nhật điểm thưởng cho khách hàng
+     */
     @PutMapping("/loyal_point/{phone_number}/{total_amount}")
     public ResponseEntity<?> updateLoyaltyPoint(@PathVariable(name = "phone_number") String phoneNumber, @PathVariable(name = "total_amount") Double totalAmount){
         Map<String, Object> response = new HashMap<>();

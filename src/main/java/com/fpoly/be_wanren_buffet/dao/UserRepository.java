@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     // Tìm kiếm người dùng có tên chứa một chuỗi ký tự (không phân biệt hoa thường)
-    Page<User> findByFullNameContainingIgnoreCase(String fullName, Pageable pageable);
+    Page<User> findByFullNameContaining(String fullName, Pageable pageable);
 
     // Tìm kiếm người dùng có username chứa một chuỗi ký tự (không phân biệt hoa thường)
     Page<User> findByUsernameContainingIgnoreCase(String username, Pageable pageable);

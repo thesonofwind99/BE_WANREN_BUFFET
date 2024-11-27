@@ -15,32 +15,35 @@ import org.springframework.stereotype.Service;
 public class CustomerAuthServiceImpl implements CustomerAuthService {
 
     @Autowired
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     @Override
     public Customer authenticate(String username) {
-        return customerRepository.findByUsername(username);
+        // Bạn có thể giữ lại nếu cần thiết
+        return customerRepository.findByEmail(username).get(); // Sử dụng email thay vì username
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findByUsername(username);
+        // Tìm kiếm khách hàng bằng email thay vì username
+        Customer customer = customerRepository.findByEmail(username).get();
         if (customer == null) {
-            throw new UsernameNotFoundException("Customer not found with username: " + username);
+            throw new UsernameNotFoundException("Customer not found with email: " + username);
         }
 
-        // In ra thông tin khách hàng
-        System.out.println("Customer loaded: " + customer);
+        // In ra thông tin khách hàng để debug
+        log.info("Customer loaded: {}", customer);
 
+        // Tạo UserDetails với quyền hạn "CUSTOMER"
         UserDetails userDetails = User.builder()
-                .username(customer.getUsername())
-                .password(customer.getPassword())
+                .username(customer.getEmail()) // Đảm bảo username là email
+                .password(customer.getPassword()) // Sử dụng password nếu cần
                 .authorities("CUSTOMER")
-                .accountLocked(!customer.getAccountStatus())
+                .accountLocked(!customer.getAccountStatus()) // Kiểm tra trạng thái tài khoản
                 .build();
 
-        // In ra các quyền của userDetails
-        System.out.println("Authorities of userDetails: " + userDetails.getAuthorities());
+        // In ra các quyền của userDetails để debug
+        log.info("Authorities of userDetails: {}", userDetails.getAuthorities());
 
         return userDetails;
     }

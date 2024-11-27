@@ -21,7 +21,7 @@ public class Customer extends Auditable implements Serializable {
     @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
@@ -30,13 +30,11 @@ public class Customer extends Auditable implements Serializable {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-
 
     @Column(name = "address")
     private String address;
@@ -50,12 +48,18 @@ public class Customer extends Auditable implements Serializable {
     @Column(name = "account_status")
     private Boolean accountStatus;
 
+    @Column(name = "provider")
+    private String provider; // Ví dụ: "google"
+
+    @Column(name = "provider_id")
+    private String providerId; // "sub" từ Google
 
     @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
     @OneToMany(mappedBy = "customer")
     private Set<Reservation> reservations;
 

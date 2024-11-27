@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.*;
+import java.util.function.Function;
 
 @Component
 public class JwtService {
@@ -27,18 +28,18 @@ public class JwtService {
     }
 
     // Phương thức tạo token cho Customer
-    public String generateTokenForCustomer(UserDetails userDetails, String fullName, String email, String phone , Long UserId , String address) {
+    public String generateTokenForCustomer(String fullName, String email, String phone, Long userId, String address) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("fullName", fullName);
         claims.put("email", email);
         claims.put("phone", phone);
-        claims.put("userId", String.valueOf(UserId));
-        claims.put("address",address);
+        claims.put("userId", String.valueOf(userId));
+        claims.put("address", address);
         claims.put("roles", Collections.singletonList("CUSTOMER"));
-        return generateToken(userDetails, claims);
+        return createToken(claims, email);
     }
 
-    // Phương thức tạo token cho User
+    // Phương thức tạo token cho User (nhân viên)
     public String generateTokenForUser(UserDetails userDetails, List<String> roles) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roles);
@@ -46,11 +47,14 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -69,20 +73,35 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
 
+    @SuppressWarnings("unchecked")
     public Set<String> extractRoles(String token) {
-        return new HashSet<>(extractAllClaims(token).get("roles", List.class));
+        Claims claims = extractAllClaims(token);
+        Object rolesObject = claims.get("roles");
+        if (rolesObject instanceof List<?>) {
+            List<String> roles = (List<String>) rolesObject;
+            return new HashSet<>(roles);
+        }
+        return Collections.emptySet();
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
-        return extractAllClaims(token).getExpiration().before(new Date());
+        try {
+            return extractAllClaims(token).getExpiration().before(new Date());
+        } catch (Exception e) {
+            return true;
+        }
     }
 }
-
