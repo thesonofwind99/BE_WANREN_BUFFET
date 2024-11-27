@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
+import com.fpoly.be_wanren_buffet.enums.OrderStatus;
 
 public interface OrderForStaffService {
     Order addOrder(OrderForStaffRequest orderForStaffRequest);
@@ -20,4 +21,6 @@ public interface OrderForStaffService {
     Double updateTotalPrice(Long orderId, Double totalPrice);
 
     Order findOrderById(Long orderId);
+
+    boolean updateOrderStatus(Long orderId, OrderStatus status);
 }

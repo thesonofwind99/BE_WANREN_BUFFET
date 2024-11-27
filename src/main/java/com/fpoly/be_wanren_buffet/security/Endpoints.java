@@ -57,6 +57,7 @@ public class Endpoints {
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
             // STAFF
+            "/api/order_staff/update-status/**",
             "/api/order_staff/**",
             "/api/table/**",
             "/api/orders_detail_staff/quantity-update"
