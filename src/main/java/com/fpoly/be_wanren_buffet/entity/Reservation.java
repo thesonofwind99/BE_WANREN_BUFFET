@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "reservation")
@@ -35,7 +37,10 @@ public class Reservation extends Auditable implements Serializable {
     private Integer numberPeople;
 
     @JoinColumn(name = "date_to_come")
-    private LocalDateTime dateToCome;
+    private Date dateToCome;
+
+    @JoinColumn(name = "time_to_come")
+    private LocalTime timeToCome;
 
     @JoinColumn(name = "phone_number")
     private String phoneNumber;
