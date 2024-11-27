@@ -4,10 +4,7 @@ import com.fpoly.be_wanren_buffet.dao.OrderDetailRepository;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dao.ProductRepository;
 import com.fpoly.be_wanren_buffet.dao.ReviewRepository;
-import com.fpoly.be_wanren_buffet.dto.HourlyRevenueDTO;
-import com.fpoly.be_wanren_buffet.dto.OrderHistoryDTO;
-import com.fpoly.be_wanren_buffet.dto.ProducHistorytDTO;
-import com.fpoly.be_wanren_buffet.dto.WeeklyRevenueDTO;
+import com.fpoly.be_wanren_buffet.dto.*;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
 import com.fpoly.be_wanren_buffet.entity.Review;
@@ -127,7 +124,12 @@ public class OrderService {
 
                 orderHistoryDTOList.add(orderHistoryDTO);
             }
+
+
         }
+
+
+
 
         // Populate product history for each order
         for (OrderDetail orderDetail : orderDetails) {
@@ -208,6 +210,49 @@ public class OrderService {
             hourlyRevenues.add(new HourlyRevenueDTO(hourOfDay, hourlyRevenue));
         }
         return hourlyRevenues;
+    }
+
+    public void updateOrderDetails(Long orderId, List<OrderDetailDTO> orderDetails) {
+
+
+//        // Lấy danh sách các OrderDetail hiện có trong database cho orderId
+        List<OrderDetail> existingDetails = orderDetailRepository.findByOrder_orderId(orderId);
+//
+//        // Duyệt qua các chi tiết hiện có để xóa những cái không còn trong danh sách cập nhật
+        for (OrderDetail existingDetail : existingDetails) {
+            boolean stillExists = orderDetails.stream()
+                    .anyMatch(detail -> detail.getOrderDetailId() != null
+                            && detail.getOrderDetailId().equals(existingDetail.getOrderDetailId()));
+            if (!stillExists) {
+                orderDetailRepository.delete(existingDetail); // Xóa nếu không còn trong danh sách
+            }
+        }
+
+
+        for (OrderDetailDTO detail : orderDetails) {
+            OrderDetail entity = new OrderDetail();
+            entity.setOrder(orderRepository.findByOrderId(orderId));
+            entity.setOrderDetailId(detail.getOrderDetailId());
+            entity.setProduct(productRepository.findByProductId(detail.getProductId()));
+            entity.setQuantity(detail.getQuantity());
+            entity.setUnitPrice(detail.getUnitPrice());
+            entity.setItemNotes(detail.getItemNotes());
+            entity.setUpdatedDate(detail.getUpdatedDate());
+
+            // Thêm logic bổ sung nếu cần, ví dụ: xử lý `_links` hay kiểm tra dữ liệu
+            orderDetailRepository.save(entity);
+        }
+
+        // Tính lại totalAmount
+        double totalAmount = orderDetailRepository.findByOrder_orderId(orderId).stream()
+                .mapToDouble(detail -> detail.getQuantity() * detail.getUnitPrice())
+                .sum();
+
+        // Cập nhật totalAmount cho Order
+        Order order = orderRepository.findByOrderId(orderId);
+        order.setTotalAmount(totalAmount+15000);
+        orderRepository.save(order); // Lưu lại Order với totalAmount mới
+
     }
 
 

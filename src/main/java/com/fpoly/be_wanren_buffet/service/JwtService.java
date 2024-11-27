@@ -40,11 +40,14 @@ public class JwtService {
     }
 
     // Phương thức tạo token cho User (nhân viên)
-    public String generateTokenForUser(UserDetails userDetails, List<String> roles) {
+    public String generateTokenForUser(UserDetails userDetails, String fullName, Long userId, List<String> roles) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("fullName", fullName);
         claims.put("roles", roles);
+        claims.put("userId", String.valueOf(userId));
         return generateToken(userDetails, claims);
     }
+
 
     private String createToken(Map<String, Object> claims, String subject) {
         Date now = new Date();

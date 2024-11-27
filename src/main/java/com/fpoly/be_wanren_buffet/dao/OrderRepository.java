@@ -40,6 +40,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Procedure(procedureName = "GetHourlyRevenue")
     List<Object[]> getHourlyRevenue();
 
+    Order findByOrderId(Long orderId);
 
 
 
