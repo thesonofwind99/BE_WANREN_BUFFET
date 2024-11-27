@@ -53,6 +53,10 @@ public class Endpoints {
             "/api/payment/create_payment/normal",
             "/api/payment/submit_order_vnpay",
             // STAFF
+
+            //CUSTOMER
+            "/api/reservation/create"
+            //CUSTOMER
     };
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
