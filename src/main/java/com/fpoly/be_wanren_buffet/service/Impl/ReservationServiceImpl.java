@@ -23,9 +23,11 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
+        reservation.setNumberPeople(reservationRequest.getNumberPeople());
         reservation.setDateToCome(reservationRequest.getDateToCome());
         reservation.setFullName(reservationRequest.getFullName());
         reservation.setPhoneNumber(reservationRequest.getPhoneNumber());
+        reservation.setEmail(reservationRequest.getEmail());
         reservation.setNote(reservationRequest.getNote());
         reservation.setCreatedDate(LocalDateTime.now());
         Reservation savedReservation = reservationRepository.save(reservation);
