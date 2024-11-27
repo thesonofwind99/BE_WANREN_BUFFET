@@ -129,7 +129,7 @@ public class OrderRestController {
             // Set order status based on payment method
             if (payment.getPaymentMethod() == PaymentMethod.VNPAY) {
                 order.setOrderStatus(OrderStatus.WAITING);
-            } else {
+            } else if (payment.getPaymentMethod() == PaymentMethod.CASH){
                 order.setOrderStatus(OrderStatus.PREPARING_ORDER);
             }
 

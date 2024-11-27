@@ -28,7 +28,8 @@ public class Endpoints {
             "/User/{id}/roles",
             "/Customer/search/existsByPhoneNumber",
             "/User/**",
-            "/checkout"
+            "/checkout",
+            "/api/statistical/**",
 
 
     };
