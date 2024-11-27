@@ -1,14 +1,13 @@
 package com.fpoly.be_wanren_buffet.service;
 
-import com.fpoly.be_wanren_buffet.dao.TableRepository;
-import com.fpoly.be_wanren_buffet.entity.Tablee;
-import com.fpoly.be_wanren_buffet.enums.TableStatus;
-import jakarta.persistence.Table;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.fpoly.be_wanren_buffet.dao.TableRepository;
+import com.fpoly.be_wanren_buffet.entity.Tablee;
+import com.fpoly.be_wanren_buffet.enums.TableStatus;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TableService {
@@ -20,5 +19,12 @@ public class TableService {
                 .orElseThrow(() -> new IllegalArgumentException("Table not found with ID: " + tableId));
         table.setTableStatus(status);
         return tableRepository.save(table);
+    }
+    public Tablee findTableById(Long tableId) {
+        return tableRepository.findById(tableId).orElse(null);
+    }
+
+    public Tablee save(Tablee tablee) {
+        return tableRepository.save(tablee);
     }
 }

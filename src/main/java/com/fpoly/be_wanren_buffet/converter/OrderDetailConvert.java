@@ -1,9 +1,7 @@
 package com.fpoly.be_wanren_buffet.converter;
 
 import com.fpoly.be_wanren_buffet.dto.request.OrderDetailForStaffRequest;
-import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.entity.OrderDetail;
-import com.fpoly.be_wanren_buffet.entity.Product;
 
 public class OrderDetailConvert {
 

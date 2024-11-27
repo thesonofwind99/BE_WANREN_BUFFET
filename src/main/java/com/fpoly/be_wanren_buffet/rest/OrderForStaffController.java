@@ -2,9 +2,13 @@ package com.fpoly.be_wanren_buffet.rest;
 
 import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.dto.request.OrderUpdateRequest;
+import com.fpoly.be_wanren_buffet.dto.request.TransferRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
+import com.fpoly.be_wanren_buffet.entity.Tablee;
+import com.fpoly.be_wanren_buffet.enums.TableStatus;
 import com.fpoly.be_wanren_buffet.service.OrderForStaffService;
 import com.fpoly.be_wanren_buffet.service.OrderService;
+import com.fpoly.be_wanren_buffet.service.TableService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,8 @@ public class OrderForStaffController {
     private OrderForStaffService orderForStaffService;
 
     private OrderService orderService;
+
+    private TableService tableService;
 
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> addOrder(@RequestBody OrderForStaffRequest orderForStaffRequest) {
@@ -93,6 +99,42 @@ public class OrderForStaffController {
         response.put("amount_last", orderForStaffService.updateTotalPrice(orderId, total_amount));
         response.put("message", "Cập nhật tổng tiền thành công");
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{orderId}/transfer")
+    public ResponseEntity<String> transferTable(
+            @PathVariable Long orderId,
+            @RequestBody TransferRequest transferRequest) {
+
+        // Tìm đơn hàng theo orderId
+        Order order = orderForStaffService.findOrderById(orderId);
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
+        }
+
+        // Tìm bàn cũ và bàn mới theo tableId
+        Tablee oldTable = order.getTablee();
+        Tablee newTable = tableService.findTableById(transferRequest.getNewTableId());
+
+        if (newTable == null || newTable.getTableStatus() != TableStatus.EMPTY_TABLE) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Table is not available");
+        }
+
+        // Cập nhật trạng thái bàn cũ và bàn mới
+        oldTable.setTableStatus(TableStatus.EMPTY_TABLE);  // Bàn cũ trở thành bàn trống
+        newTable.setTableStatus(TableStatus.OCCUPIED_TABLE);  // Bàn mới trở thành bàn đã chiếm
+
+        // Lưu thay đổi trạng thái của các bàn
+        tableService.save(oldTable);
+        tableService.save(newTable);
+
+        // Cập nhật bàn mới cho đơn hàng
+        order.setTablee(newTable);
+
+        // Lưu lại đơn hàng với bàn mới
+        orderForStaffService.save(order);
+
+        return ResponseEntity.ok("Order transferred and tables updated successfully");
     }
 
 }
