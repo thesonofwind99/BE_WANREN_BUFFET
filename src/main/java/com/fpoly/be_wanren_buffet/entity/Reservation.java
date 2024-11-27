@@ -31,11 +31,17 @@ public class Reservation extends Auditable implements Serializable {
     @JoinColumn(name = "table_id")
     private Tablee tablee;
 
+    @JoinColumn(name = "number_people")
+    private Integer numberPeople;
+
     @JoinColumn(name = "date_to_come")
     private LocalDateTime dateToCome;
 
     @JoinColumn(name = "phone_number")
     private String phoneNumber;
+
+    @JoinColumn(name = "email")
+    private String email;
 
     @JoinColumn(name = "full_name")
     private String fullName;

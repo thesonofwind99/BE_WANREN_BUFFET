@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @Setter
 public class ReservationRequest {
     private Long customerId;
+    private Integer numberPeople;
     private LocalDateTime dateToCome;
     private String phoneNumber;
+    private String email;
     private String fullName;
     private String note;
 }
