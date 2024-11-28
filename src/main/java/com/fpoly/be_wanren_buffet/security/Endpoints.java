@@ -64,7 +64,8 @@ public class Endpoints {
             "/api/order_staff/update-status/**",
             "/api/order_staff/**",
             "/api/table/**",
-            "/api/orders_detail_staff/quantity-update"
+            "/api/orders_detail_staff/quantity-update",
+            "/api/customer/loyal_point/**"
             // STAFF
     };
 
