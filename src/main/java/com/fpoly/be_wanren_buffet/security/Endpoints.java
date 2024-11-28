@@ -31,7 +31,11 @@ public class Endpoints {
             "/api/checkout",
             "/api/statistical/**",
             "/api/register",
-            "/Customer/**"
+            "/Customer/**",
+            "/Category",
+            "/Product",
+            "/Product/**",
+            "/Category/**"
     };
 
     // Public POST endpoints
@@ -42,7 +46,7 @@ public class Endpoints {
             "/api/forgot-password/request",
             "/api/otp/validate",
             "/api/reset-password/update",
-            "/api/user/login"
+            "/api/user/login",
     };
 
     public static final String[] PRIVATE_POST_ENDPOINTS = {
@@ -86,7 +90,10 @@ public class Endpoints {
             "/api/user/admins/update/{id}"
     };
 
-    public static final String[] PRIVATE_PUT_ADMIN = {};
+    public static final String[] PRIVATE_PUT_ADMIN = {
+            "/Product/**",
+            "/api/product/UpdateCategory"
+    };
 
     // Private Admin DELETE endpoints
     public static final String[] PRIVATE_DELETE_ADMIN = {
