@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "reservation")
@@ -29,5 +32,26 @@ public class Reservation extends Auditable implements Serializable {
     @ManyToOne
     @JoinColumn(name = "table_id")
     private Tablee tablee;
+
+    @JoinColumn(name = "number_people")
+    private Integer numberPeople;
+
+    @JoinColumn(name = "date_to_come")
+    private Date dateToCome;
+
+    @JoinColumn(name = "time_to_come")
+    private LocalTime timeToCome;
+
+    @JoinColumn(name = "phone_number")
+    private String phoneNumber;
+
+    @JoinColumn(name = "email")
+    private String email;
+
+    @JoinColumn(name = "full_name")
+    private String fullName;
+
+    @JoinColumn(name = "note")
+    private String note;
 
 }
