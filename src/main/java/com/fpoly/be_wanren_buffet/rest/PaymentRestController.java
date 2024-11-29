@@ -2,9 +2,13 @@
 package com.fpoly.be_wanren_buffet.rest;
 import com.fpoly.be_wanren_buffet.config.VnpayConfig;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
+import com.fpoly.be_wanren_buffet.dao.PaymentRepository;
 import com.fpoly.be_wanren_buffet.dto.PaymentDTO;
 import com.fpoly.be_wanren_buffet.dto.request.PaymentForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
+import com.fpoly.be_wanren_buffet.entity.Payment;
+import com.fpoly.be_wanren_buffet.enums.OrderStatus;
+import com.fpoly.be_wanren_buffet.service.OrderService;
 import com.fpoly.be_wanren_buffet.service.PaymentForStaffService;
 import com.fpoly.be_wanren_buffet.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +35,13 @@ public class PaymentRestController {
     private OrderRepository orderRepository;
 
     @Autowired
+    private PaymentRepository paymentRepository;
+
+    @Autowired
     private PaymentForStaffService paymentForStaffService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/create_payment")
     public ResponseEntity<?> getPayment(@RequestParam long price,
@@ -140,4 +150,8 @@ public class PaymentRestController {
         String vnpayUrl = vnpayService.createOrder(orderTotal, orderInfo);
         return vnpayUrl;
     }
+
+
+
+
 }

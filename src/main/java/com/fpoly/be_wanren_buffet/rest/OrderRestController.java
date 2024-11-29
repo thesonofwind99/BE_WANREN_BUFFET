@@ -49,7 +49,6 @@ public class OrderRestController {
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest, Principal principal) {
         log.debug("Received OrderRequest: {}", orderRequest);
         log.debug("Authenticated user: {}", principal != null ? principal.getName() : "Anonymous");
-        System.out.println(orderRequest.getPayment() + "PAYMENT");
         try {
             if (principal == null) {
                 // Nếu khách hàng chưa đăng nhập, trả về lỗi
@@ -131,6 +130,8 @@ public class OrderRestController {
                 order.setOrderStatus(OrderStatus.WAITING);
             } else if (payment.getPaymentMethod() == PaymentMethod.CASH){
                 order.setOrderStatus(OrderStatus.PREPARING_ORDER);
+            }else if(payment.getPaymentMethod() == PaymentMethod.QR_CODE){
+                order.setOrderStatus(OrderStatus.WAITING);
             }
 
             // Save Order (which will cascade and save Payment if properly configured)
@@ -170,11 +171,12 @@ public class OrderRestController {
             Map<String, Object> response = new HashMap<>();
             response.put("orderId", order.getOrderId());
             response.put("message", "Đặt hàng thành công");
+            response.put("amount" , order.getTotalAmount());
             if (newToken != null) {
                 response.put("jwtToken", newToken);
             }
 
-            System.out.println(response + "HELLO");
+
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {

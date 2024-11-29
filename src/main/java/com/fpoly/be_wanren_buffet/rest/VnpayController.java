@@ -15,6 +15,7 @@ import com.fpoly.be_wanren_buffet.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,6 +42,8 @@ public class VnpayController {
     @Autowired
     private UserRepository userRepository;
 
+
+
     @GetMapping("/RollBack_VNPAY")
     public String backString(
             @RequestParam("vnp_TxnRef") String txnRef,
@@ -57,7 +60,9 @@ public class VnpayController {
                     Order order = orderService.GetOrderById(orderId - 1);
                     order.setOrderStatus(OrderStatus.PREPARING_ORDER);
                     orderService.UpdateStatusOrder(order);
-
+                    Payment payment = paymentRepository.findByOrderId(orderId -1);
+                    payment.setPaymentStatus(true);
+                    paymentRepository.save(payment);
                     // Encode the success message
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
@@ -109,7 +114,7 @@ public class VnpayController {
                     Payment payment = new Payment();
                     payment.setUser(user);
                     payment.setOrder(order);
-                    payment.setPaymentMethod(PaymentMethod.BANK_CARD);
+                    payment.setPaymentMethod(PaymentMethod.VNPAY);
                     payment.setCreatedDate(LocalDateTime.now());
                     payment.setPaymentStatus(true);
                     payment.setAmountPaid(totalAmount);
@@ -144,6 +149,39 @@ public class VnpayController {
         }
         return "";
 
+    }
+
+    @GetMapping("/callbck_qrcode/{orderId}")
+    public String getCallbackQRCode(@PathVariable("orderId") Long orderId) {
+        try {
+            // Retrieve and update the order status
+            Order order = orderService.GetOrderById(orderId);
+            if (order == null) {
+                throw new IllegalArgumentException("Order not found for orderId: " + orderId);
+            }
+
+            order.setOrderStatus(OrderStatus.PREPARING_ORDER);
+            orderService.UpdateStatusOrder(order);
+
+            // Retrieve and update payment status
+            Payment payment = paymentRepository.findByOrderId(orderId);
+            if (payment == null) {
+                throw new IllegalArgumentException("Payment not found for orderId: " + orderId);
+            }
+
+            payment.setPaymentStatus(true);
+            paymentRepository.save(payment);
+
+            // Encode the success message and include it in the redirect
+            String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
+
+            // Redirect to the frontend with a success message
+            return "redirect:http://localhost:3000/checkout/sucessful?message=" + successMessage;
+        } catch (Exception e) {
+            // Handle exceptions and provide a failure message
+            String errorMessage = URLEncoder.encode("Có lỗi xảy ra trong quá trình thanh toán", StandardCharsets.UTF_8);
+            return "redirect:http://localhost:3000/checkout/failed?message=" + errorMessage;
+        }
     }
 
 }

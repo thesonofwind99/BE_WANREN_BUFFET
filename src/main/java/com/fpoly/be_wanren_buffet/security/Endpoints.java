@@ -35,7 +35,8 @@ public class Endpoints {
             "/Category",
             "/Product",
             "/Product/**",
-            "/Category/**"
+            "/Category/**",
+            "/api/payment/callbck_qrcode/**"
     };
 
     // Public POST endpoints
