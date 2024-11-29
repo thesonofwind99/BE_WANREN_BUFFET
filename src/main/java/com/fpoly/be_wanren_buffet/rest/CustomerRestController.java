@@ -1,8 +1,27 @@
+// src/main/java/com/fpoly/be_wanren_buffet/rest/CustomerRestController.java
+
 package com.fpoly.be_wanren_buffet.rest;
 
-import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
-import com.fpoly.be_wanren_buffet.dto.UpdatePhoneNumberDTO;
 import com.fpoly.be_wanren_buffet.entity.Customer;
 import com.fpoly.be_wanren_buffet.security.JwtResponse;
 import com.fpoly.be_wanren_buffet.security.LoginRequest;
@@ -10,29 +29,13 @@ import com.fpoly.be_wanren_buffet.service.CustomerAuthService;
 import com.fpoly.be_wanren_buffet.service.CustomerForStaffService;
 import com.fpoly.be_wanren_buffet.service.CustomerService;
 import com.fpoly.be_wanren_buffet.service.JwtService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerRestController {
-
     @Autowired
     private CustomerService customerService;
 
@@ -49,34 +52,17 @@ public class CustomerRestController {
     private CustomerAuthService customerAuthService;
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
     private JwtService jwtService;
 
-    /**
-     * Endpoint đăng ký khách hàng
-     */
+    @CrossOrigin("http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody Customer customer) {
-        log.info("Đăng ký khách hàng: {}", customer.getUsername());
-        try {
-            // Mã hóa mật khẩu trước khi lưu
-            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-            // Đăng ký khách hàng thông qua service
-            return customerService.register(customer);
-        } catch (Exception e) {
-            log.error("Lỗi khi đăng ký khách hàng: {}", e.getMessage());
-            return ResponseEntity.badRequest().body("Đăng ký thất bại. Vui lòng thử lại.");
-        }
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        return customerService.register(customer);
     }
 
-    /**
-     * Endpoint đăng nhập khách hàng
-     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest loginRequest) {
-        log.info("Khách hàng đang cố gắng đăng nhập: {}", loginRequest.getUsername());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -85,35 +71,23 @@ public class CustomerRestController {
                 // Lấy thông tin người dùng đã đăng nhập
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-                // Lấy thông tin khách hàng từ service
                 Customer authenticatedCustomer = customerAuthService.authenticate(loginRequest.getUsername());
-                if (authenticatedCustomer == null) {
-                    log.warn("Khách hàng không tồn tại: {}", loginRequest.getUsername());
-                    return ResponseEntity.badRequest().body("Thông tin đăng nhập không chính xác.");
-                }
-
                 String fullName = authenticatedCustomer.getFullName();
                 String email = authenticatedCustomer.getEmail();
                 String phone = authenticatedCustomer.getPhoneNumber();
-                Long userId = authenticatedCustomer.getCustomerId();
+                Long UserId = authenticatedCustomer.getCustomerId();
                 String address = authenticatedCustomer.getAddress();
-
-                log.info("Đăng nhập thành công cho khách hàng: {}", email);
-
-                // Tạo JWT token cho khách hàng
-                final String jwt = jwtService.generateTokenForCustomer(fullName, email, phone, userId, address);
+                System.out.println(address + "ĐỊA CHỈ");
+                final String jwt = jwtService.generateTokenForCustomer(userDetails, fullName , email, phone , UserId , address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
-            log.error("Lỗi khi đăng nhập: {}", e.getMessage());
-            return ResponseEntity.badRequest().body("Thông tin đăng nhập không chính xác.");
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.badRequest().body("Đăng nhập thất bại.");
+        return ResponseEntity.badRequest().body("Fall succescc");
     }
 
-    /**
-     * Endpoint cập nhật thông tin khách hàng
-     */
     @PutMapping("/updateCustomer/{username}")
     public ResponseEntity<?> updateCustomer(
             @PathVariable String username,
@@ -206,6 +180,18 @@ public class CustomerRestController {
         Map<String, Object> response = new HashMap<>();
         response.put("loyal_phone", customerForStaffService.updateloyalPointOfCustomer(phoneNumber, totalAmount));
         response.put("message", "Tích điểm thành công");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/loyalty-points")
+    public ResponseEntity<LoyaltyPointsResponse> getLoyaltyPoints(@RequestParam String phoneNumber) {
+        LoyaltyPointsResponse response = customerService.getLoyaltyPointsByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/update-loyalty-points")
+    public ResponseEntity<LoyaltyPointsResponse> updateLoyaltyPoints(@RequestBody UpdateLoyaltyPointsRequest request) {
+        LoyaltyPointsResponse response = customerService.updateLoyaltyPoints(request);
         return ResponseEntity.ok(response);
     }
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fpoly.be_wanren_buffet.dto.LoyaltyPointsResponse;
+import com.fpoly.be_wanren_buffet.dto.UpdateLoyaltyPointsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,6 +56,26 @@ public class CustomerService {
     public void updatePassword(Customer user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         customerRepository.save(user);
+    }
+
+    public LoyaltyPointsResponse getLoyaltyPointsByPhoneNumber(String phoneNumber) {
+        Customer customer = customerRepository.findByPhoneNumber(phoneNumber);
+
+        return new LoyaltyPointsResponse(phoneNumber, customer.getLoyaltyPoints());
+    }
+
+    public LoyaltyPointsResponse updateLoyaltyPoints(UpdateLoyaltyPointsRequest request) {
+        Customer customer = customerRepository.findByPhoneNumber(request.getPhoneNumber());
+//                .orElseThrow(() -> new RuntimeException("Customer not found with phone number: " + request.getPhoneNumber()));
+
+        if (customer.getLoyaltyPoints() < request.getPointsToDeduct()) {
+            throw new IllegalArgumentException("Not enough loyalty points to deduct. Current points: " + customer.getLoyaltyPoints());
+        }
+
+        customer.setLoyaltyPoints(customer.getLoyaltyPoints() - request.getPointsToDeduct());
+        customerRepository.save(customer);
+
+        return new LoyaltyPointsResponse(customer.getPhoneNumber(), customer.getLoyaltyPoints());
     }
 
 
