@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,13 +24,54 @@ public class PaymentForStaffServiceImpl implements PaymentForStaffService {
     private final OrderRepository orderRepository;
     @Override
     public Long createPaymentForStaff(PaymentForStaffRequest paymentForStaffRequest) {
-        Payment payment = PaymentConvert.convertToPayment(paymentForStaffRequest);
-        Order order = orderRepository.findById(paymentForStaffRequest.getOrderId()).get();
-        User user = userRepository.findById(paymentForStaffRequest.getUserId()).get();
-        payment.setUser(user);
-        payment.setOrder(order);
-        payment.setCreatedDate(LocalDateTime.now());
-        Payment payment1 = paymentRepository.save(payment);
-        return payment1.getPaymentId();
+//        Payment payment = PaymentConvert.convertToPayment(paymentForStaffRequest);
+//        Order order = orderRepository.findById(paymentForStaffRequest.getOrderId()).get();
+//        User user = userRepository.findById(paymentForStaffRequest.getUserId()).get();
+//        payment.setUser(user);
+//        payment.setOrder(order);
+//        payment.setCreatedDate(LocalDateTime.now());
+//        Payment payment1 = paymentRepository.save(payment);
+//        return payment1.getPaymentId();
+        try {
+            Payment payment = PaymentConvert.convertToPayment(paymentForStaffRequest);
+
+            Optional<Order> optionalOrder = orderRepository.findById(paymentForStaffRequest.getOrderId());
+            if (optionalOrder.isEmpty()) {
+                throw new Exception("Order not found");
+            }
+            Order order = optionalOrder.get();
+
+            Optional<User> optionalUser = userRepository.findById(paymentForStaffRequest.getUserId());
+            if (optionalUser.isEmpty()) {
+                throw new Exception("User not found");
+            }
+            User user = optionalUser.get();
+
+            Optional<Payment> existingPayment = paymentRepository.findByOrder(order);
+
+            if (existingPayment.isPresent()) {
+                Payment existing = existingPayment.get();
+                existing.setUser(user);
+                existing.setOrder(order);
+                existing.setAmountPaid(payment.getAmountPaid());
+                existing.setPaymentMethod(payment.getPaymentMethod());
+                existing.setPaymentStatus(payment.getPaymentStatus());
+                existing.setCreatedDate(LocalDateTime.now());
+
+                Payment updatedPayment = paymentRepository.save(existing);
+                return updatedPayment.getPaymentId();
+            } else {
+                payment.setUser(user);
+                payment.setOrder(order);
+                payment.setCreatedDate(LocalDateTime.now());
+
+                Payment newPayment = paymentRepository.save(payment);
+                return newPayment.getPaymentId();
+            }
+        } catch (Exception e) {
+            // Handle errors and log if necessary
+            System.out.println("Error creating or updating payment: " + e.getMessage());
+            throw new RuntimeException("Failed to create or update payment");
+        }
     }
 }

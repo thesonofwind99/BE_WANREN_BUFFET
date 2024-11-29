@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/payment")
@@ -85,50 +86,55 @@ public class VnpayController {
         } else if (orderInfor.contains("Pay for the bill at the table by")) {
             try {
                 if ("00".equals(statusPayment)) {
-                    //Get userId and orderId from orderInfor of VNPay
+
                     String[] parts = orderInfor.split(" ");
                     Long userId = Long.parseLong(parts[parts.length - 2]); // Phần tử áp chót
                     Long orderId = Long.parseLong(parts[parts.length - 1]); // Phần tử cuối
 
-                    //Find User by userId
-                    User user = userRepository.findById(userId).get();
+                    User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
 
-                    //Find Order by orderId
-                    Order order = orderRepository.findById(orderId).get();
+                    Optional<Order> optionalOrder = orderRepository.findById(orderId);
+                    if (optionalOrder.isEmpty()) {
+                        throw new Exception("Order not found");
+                    }
 
-                    //Update status of Order
+                    Order order = optionalOrder.get();
                     order.setOrderStatus(OrderStatus.DELIVERED);
-
-                    //Update amount of Order
-                    double totalAmount = Double.parseDouble(amount) / 100;
-                    order.setTotalAmount(totalAmount);
-
+                    order.setTotalAmount(Double.parseDouble(amount) / 100);
                     orderRepository.save(order);
 
-                    //Create Payment with User and Order
-                    Payment payment = new Payment();
-                    payment.setUser(user);
-                    payment.setOrder(order);
-                    payment.setPaymentMethod(PaymentMethod.BANK_CARD);
-                    payment.setCreatedDate(LocalDateTime.now());
-                    payment.setPaymentStatus(true);
-                    payment.setAmountPaid(totalAmount);
+                    Optional<Payment> optionalPayment = paymentRepository.findByOrder(order);
+                    Payment payment;
+                    if (optionalPayment.isPresent()) {
+
+                        payment = optionalPayment.get();
+                        payment.setPaymentStatus(true);
+                        payment.setAmountPaid(Double.parseDouble(amount) / 100);
+                        payment.setPaymentMethod(PaymentMethod.BANK_CARD);
+                        payment.setCreatedDate(LocalDateTime.now());
+                    } else {
+                        payment = new Payment();
+                        payment.setUser(user);
+                        payment.setOrder(order);
+                        payment.setPaymentMethod(PaymentMethod.BANK_CARD);
+                        payment.setCreatedDate(LocalDateTime.now());
+                        payment.setPaymentStatus(true);
+                        payment.setAmountPaid(Double.parseDouble(amount) / 100);
+                    }
+
                     paymentRepository.save(payment);
 
-                    //Find Table by Order
-                    Tablee tablee = orderRepository.findById(orderId).get().getTablee();
-                    tablee.setTableStatus(TableStatus.EMPTY_TABLE);
-                    tableRepository.save(tablee);
+                    Tablee tablee = order.getTablee();
+                    if (tablee != null) {
+                        tablee.setTableStatus(TableStatus.EMPTY_TABLE);
+                        tableRepository.save(tablee);
+                    }
 
-                    // Encode the success message
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
-
-                    // Redirect to the frontend with a success message
                     return "redirect:http://localhost:3000/checkout/sucessful";
                 } else {
-                    // Encode the error message
+                    // Handle failed payment status
                     String errorMessage = URLEncoder.encode("Giao dịch thất bại", StandardCharsets.UTF_8);
-                    // Redirect to the frontend with an error message
                     return "redirect:http://localhost:3000/checkout/failed";
                 }
             } catch (NumberFormatException e) {
@@ -141,6 +147,7 @@ public class VnpayController {
                 String exceptionMessage = URLEncoder.encode("Lỗi hệ thống", StandardCharsets.UTF_8);
                 return "redirect:http://localhost:3000/checkout/step3=" + exceptionMessage;
             }
+
         }
         return "";
 
