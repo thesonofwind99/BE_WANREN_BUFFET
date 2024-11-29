@@ -1,6 +1,8 @@
 package com.fpoly.be_wanren_buffet.rest;
 
+import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
+import com.fpoly.be_wanren_buffet.dto.UpdatePhoneNumberDTO;
 import com.fpoly.be_wanren_buffet.entity.Customer;
 import com.fpoly.be_wanren_buffet.security.JwtResponse;
 import com.fpoly.be_wanren_buffet.security.LoginRequest;
@@ -11,10 +13,12 @@ import com.fpoly.be_wanren_buffet.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -42,6 +47,9 @@ public class CustomerRestController {
 
     @Autowired
     private CustomerAuthService customerAuthService;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private JwtService jwtService;
@@ -151,6 +159,44 @@ public class CustomerRestController {
             return ResponseEntity.badRequest().body("Cập nhật thất bại. Vui lòng thử lại.");
         }
     }
+
+    @PutMapping("/updatePassword/{customerId}")
+    public ResponseEntity<String> updatePassword(
+            @PathVariable("customerId") String customerId,
+            @RequestBody Map<String, String> requestBody) {
+
+        // Lấy mật khẩu từ request body
+        String password = requestBody.get("password");
+
+        if (password == null || password.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is required");
+        }
+
+        // Fetch the customer using customerId
+        Optional<Customer> optionalCustomer = customerRepository.findCustomerByCustomerId(Long.parseLong(customerId));
+
+        if (!optionalCustomer.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
+        }
+
+        Customer customer = optionalCustomer.get();
+
+        try {
+            // Mã hóa và cập nhật mật khẩu
+            customer.setPassword(passwordEncoder.encode(password));
+            customerRepository.save(customer);  // Lưu thông tin khách hàng
+
+            return ResponseEntity.ok("Password updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating password");
+        }
+    }
+
+
+    // Method to validate Vietnamese phone numbers
+
+
+
 
     /**
      * Endpoint cập nhật điểm thưởng cho khách hàng

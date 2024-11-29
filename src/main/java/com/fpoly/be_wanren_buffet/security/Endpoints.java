@@ -36,7 +36,8 @@ public class Endpoints {
             "/Product",
             "/Product/**",
             "/Category/**",
-            "/api/payment/callbck_qrcode/**"
+            "/api/payment/callbck_qrcode/**",
+
     };
 
     // Public POST endpoints
@@ -55,7 +56,8 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
-            "/api/customer/**"
+            "/api/customer/**",
+
     };
 
     // Private Customer GET endpoints
