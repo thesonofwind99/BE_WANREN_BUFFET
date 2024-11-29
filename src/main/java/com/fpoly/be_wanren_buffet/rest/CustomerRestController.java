@@ -5,6 +5,8 @@ package com.fpoly.be_wanren_buffet.rest;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fpoly.be_wanren_buffet.dto.LoyaltyPointsResponse;
+import com.fpoly.be_wanren_buffet.dto.UpdateLoyaltyPointsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,13 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
 import com.fpoly.be_wanren_buffet.entity.Customer;
@@ -115,6 +111,18 @@ public class CustomerRestController {
         Map<String, Object> response = new HashMap<>();
         response.put("loyal_phone", customerForStaffService.updateloyalPointOfCustomer(phoneNumber, totalAmount));
         response.put("message", "Tích điểm thành công");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/loyalty-points")
+    public ResponseEntity<LoyaltyPointsResponse> getLoyaltyPoints(@RequestParam String phoneNumber) {
+        LoyaltyPointsResponse response = customerService.getLoyaltyPointsByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/update-loyalty-points")
+    public ResponseEntity<LoyaltyPointsResponse> updateLoyaltyPoints(@RequestBody UpdateLoyaltyPointsRequest request) {
+        LoyaltyPointsResponse response = customerService.updateLoyaltyPoints(request);
         return ResponseEntity.ok(response);
     }
 }
