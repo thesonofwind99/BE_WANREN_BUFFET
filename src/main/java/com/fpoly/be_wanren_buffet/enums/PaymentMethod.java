@@ -2,6 +2,7 @@ package com.fpoly.be_wanren_buffet.enums;
 
 public enum PaymentMethod {
     CASH,
-    BANK_CARD,
+    VNPAY,
+    MOMO,
     QR_CODE
 }

@@ -35,6 +35,12 @@ public class Endpoints {
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/customer/register",
             "/api/customer/login",
+            // STAFF
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add_or_update/**",
+            "/api/payment/create_payment/normal",
+            "/api/payment/submit_order_vnpay",
+            // STAFF
 
             //CUSTOMER
             "/api/reservation/create"
@@ -59,10 +65,15 @@ public class Endpoints {
             "/Product/{productId}",
             "/Orders/{orderId}",
             "/Orders/{orderId}/orderDetails",
+            "/Table/**",
     };
 
     public static final String[] PRIVATE_PUT_CASHIER = {
             "/Orders/{orderId}/updateOrder",
+    };
+
+    public static final String[] PRIVATE_POST_CASHIER = {
+            "/Table/**",
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
