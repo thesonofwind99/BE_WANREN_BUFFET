@@ -1,13 +1,7 @@
 package com.fpoly.be_wanren_buffet.rest;
 
-import com.fpoly.be_wanren_buffet.dao.OrderRepository;
-import com.fpoly.be_wanren_buffet.dao.PaymentRepository;
-import com.fpoly.be_wanren_buffet.dao.TableRepository;
-import com.fpoly.be_wanren_buffet.dao.UserRepository;
-import com.fpoly.be_wanren_buffet.entity.Order;
-import com.fpoly.be_wanren_buffet.entity.Payment;
-import com.fpoly.be_wanren_buffet.entity.Tablee;
-import com.fpoly.be_wanren_buffet.entity.User;
+import com.fpoly.be_wanren_buffet.dao.*;
+import com.fpoly.be_wanren_buffet.entity.*;
 import com.fpoly.be_wanren_buffet.enums.OrderStatus;
 import com.fpoly.be_wanren_buffet.enums.PaymentMethod;
 import com.fpoly.be_wanren_buffet.enums.TableStatus;
@@ -42,6 +36,9 @@ public class VnpayController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @GetMapping("/RollBack_VNPAY")
     public String backString(
@@ -90,11 +87,31 @@ public class VnpayController {
             try {
                 if ("00".equals(statusPayment)) {
 
-                    String[] parts = orderInfor.split(" ");
-                    Long userId = Long.parseLong(parts[parts.length - 2]); // Phần tử áp chót
-                    Long orderId = Long.parseLong(parts[parts.length - 1]); // Phần tử cuối
+                    String[] parts = orderInfor.split(" "); // Tách chuỗi bằng dấu cách
 
-                    User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+                    // Tách từng biến từ mảng
+                    Long userId = Long.parseLong(parts[parts.length - 4]); // Phần tử thứ 4 từ cuối
+                    Long orderId = Long.parseLong(parts[parts.length - 3]); // Phần tử thứ 3 từ cuối
+                    // Kiểm tra và lấy giá trị không bắt buộc
+                    String phoneNumber = null;
+                    Long pointsToDeduct = null;
+
+                    if (parts.length >= 5) {
+                        phoneNumber = parts[parts.length - 2].trim(); // Loại bỏ khoảng trắng nếu có
+                        if (phoneNumber.isEmpty()) {
+                            phoneNumber = null; // Đặt lại là null nếu chuỗi rỗng
+                        }
+                    }
+                    if (parts.length >= 6) {
+                        try {
+                            pointsToDeduct = Long.parseLong(parts[parts.length - 1]);
+                        } catch (NumberFormatException e) {
+                            pointsToDeduct = null; // Đặt lại là null nếu không thể parse được
+                        }
+                    }
+
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new Exception("User not found"));
 
                     Optional<Order> optionalOrder = orderRepository.findById(orderId);
                     if (optionalOrder.isEmpty()) {
@@ -109,28 +126,38 @@ public class VnpayController {
                     Optional<Payment> optionalPayment = paymentRepository.findByOrder(order);
                     Payment payment;
                     if (optionalPayment.isPresent()) {
-
                         payment = optionalPayment.get();
                         payment.setPaymentStatus(true);
                         payment.setAmountPaid(Double.parseDouble(amount) / 100);
-                        payment.setPaymentMethod(PaymentMethod.CASH);
+                        payment.setPaymentMethod(PaymentMethod.VNPAY);
                         payment.setCreatedDate(LocalDateTime.now());
                     } else {
                         payment = new Payment();
                         payment.setUser(user);
                         payment.setOrder(order);
-                        payment.setPaymentMethod(PaymentMethod.CASH);
+                        payment.setPaymentMethod(PaymentMethod.VNPAY);
                         payment.setCreatedDate(LocalDateTime.now());
                         payment.setPaymentStatus(true);
                         payment.setAmountPaid(Double.parseDouble(amount) / 100);
                     }
-
                     paymentRepository.save(payment);
 
                     Tablee tablee = order.getTablee();
                     if (tablee != null) {
                         tablee.setTableStatus(TableStatus.EMPTY_TABLE);
                         tableRepository.save(tablee);
+                    }
+
+                    if (phoneNumber != null && pointsToDeduct != null && pointsToDeduct > 0) {
+                        Customer customer = customerRepository.findByPhoneNumber(phoneNumber);
+
+                        if (customer.getLoyaltyPoints() < pointsToDeduct) {
+                            throw new IllegalArgumentException("Not enough loyalty points to deduct. Current points: " + customer.getLoyaltyPoints());
+                        }
+
+                        // Cập nhật loyalty points
+                        customer.setLoyaltyPoints(customer.getLoyaltyPoints() - pointsToDeduct);
+                        customerRepository.save(customer);
                     }
 
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
@@ -140,15 +167,16 @@ public class VnpayController {
                     String errorMessage = URLEncoder.encode("Giao dịch thất bại", StandardCharsets.UTF_8);
                     return "redirect:http://localhost:3000/checkout/failed";
                 }
+
             } catch (NumberFormatException e) {
                 // Handle invalid txnRef format
                 String errorMessage = URLEncoder.encode("Mã đơn hàng không hợp lệ", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout/step3=" + errorMessage;
+                return "redirect:http://localhost:3000/checkout/failed";
             } catch (Exception e) {
                 // Handle other unforeseen exceptions
                 System.out.println(e.getMessage());
                 String exceptionMessage = URLEncoder.encode("Lỗi hệ thống", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout/step3=" + exceptionMessage;
+                return "redirect:http://localhost:3000/checkout/checkout/failed";
             }
 
         }
