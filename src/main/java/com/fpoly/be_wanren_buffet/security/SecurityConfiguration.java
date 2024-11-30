@@ -82,7 +82,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         // Public GET Endpoints
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
-                        // Public POST Endpoints
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/customer/updatePhoneNumber/**").hasAuthority("CUSTOMER")
 
@@ -95,36 +94,24 @@ public class SecurityConfiguration {
                         // Private Endpoints for Admins
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ADMIN).hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ADMIN).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
+                        // Private Endpoints for Staff
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAuthority("STAFF")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAuthority("STAFF")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAuthority("STAFF")
                         // All other endpoints require authentication
+
+                        // Các dòng cho User bị comment
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(customerAuthenticationProvider())
-                .authenticationProvider(userAuthenticationProvider())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+                .authenticationProvider(userAuthenticationProvider()) // Add User provider
+                .authenticationProvider(customerAuthenticationProvider()) // Add Customer provider
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT Filter
 
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login") // Đảm bảo frontend xử lý trang đăng nhập
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService())
-                        )
-                        .successHandler(oAuth2AuthenticationSuccessHandler())
-                );
         return http.build();
-    }
-
-
-    @Bean
-    public CustomOAuth2UserService customOAuth2UserService() {
-        return new CustomOAuth2UserService();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return new OAuth2AuthenticationSuccessHandler(jwtService, customerRepository, customerService);
     }
 
     @Bean
