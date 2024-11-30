@@ -17,9 +17,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p.productId FROM Product p " +
             "JOIN OrderDetail od ON od.product.productId = p.productId " +
+            "WHERE p.price > 10000 " + // Thêm điều kiện lọc giá sản phẩm > 100,000
             "GROUP BY p.productId " +
             "ORDER BY SUM(od.quantity) DESC")
-    List<Long> findMostOrderedProduct(Pageable pageable); // Sử dụng Pageable để giới hạn số lượng kết quả
+    List<Long> findMostOrderedProduct(Pageable pageable);
+    // Sử dụng Pageable để giới hạn số lượng kết quả
 
     Product findByProductId(Long productId);
 

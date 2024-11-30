@@ -4,6 +4,7 @@ import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
 import com.fpoly.be_wanren_buffet.entity.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,13 @@ public class AdminCustomerRestController {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @PostMapping("/create")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         log.info("Creating customer: {}", customer);
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customer.setCreatedDate(LocalDateTime.now());
         return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
     }
@@ -36,6 +41,7 @@ public class AdminCustomerRestController {
         return customerRepository.findById(id).map(existingCustomer -> {
             if (applyUpdates(existingCustomer, updatedCustomer)) {
                 existingCustomer.setUpdatedDate(LocalDateTime.now());
+                existingCustomer.setPassword(passwordEncoder.encode(existingCustomer.getPassword()));
                 customerRepository.save(existingCustomer);
                 log.info("Customer with id: {} updated successfully", id);
                 return ResponseEntity.ok("Customer updated successfully");

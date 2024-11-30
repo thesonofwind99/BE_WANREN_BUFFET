@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/payment")
@@ -112,13 +113,13 @@ public class VnpayController {
                         payment = optionalPayment.get();
                         payment.setPaymentStatus(true);
                         payment.setAmountPaid(Double.parseDouble(amount) / 100);
-                        payment.setPaymentMethod(PaymentMethod.BANK_CARD);
+                        payment.setPaymentMethod(PaymentMethod.CASH);
                         payment.setCreatedDate(LocalDateTime.now());
                     } else {
                         payment = new Payment();
                         payment.setUser(user);
                         payment.setOrder(order);
-                        payment.setPaymentMethod(PaymentMethod.BANK_CARD);
+                        payment.setPaymentMethod(PaymentMethod.CASH);
                         payment.setCreatedDate(LocalDateTime.now());
                         payment.setPaymentStatus(true);
                         payment.setAmountPaid(Double.parseDouble(amount) / 100);

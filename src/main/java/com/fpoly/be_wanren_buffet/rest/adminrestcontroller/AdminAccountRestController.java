@@ -8,7 +8,9 @@ import com.fpoly.be_wanren_buffet.entity.User;
 import com.fpoly.be_wanren_buffet.entity.UserRole;
 import com.fpoly.be_wanren_buffet.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +24,9 @@ public class AdminAccountRestController {
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     /**
      * API để lấy danh sách tất cả người dùng có vai trò ADMIN.
      */
@@ -68,7 +73,7 @@ public class AdminAccountRestController {
         newUser.setEmail(userDTO.getEmail());
         newUser.setPhoneNumber(userDTO.getPhoneNumber());
         newUser.setAddress(userDTO.getAddress());
-        newUser.setPassword(userDTO.getPassword()); // Lưu ý: Cần mã hóa mật khẩu
+        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Lưu ý: Cần mã hóa mật khẩu
         newUser.setAccountStatus(userDTO.getAccountStatus());
 
         // Lưu User vào database
@@ -96,7 +101,7 @@ public class AdminAccountRestController {
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setPhoneNumber(userDTO.getPhoneNumber());
         existingUser.setAddress(userDTO.getAddress());
-        existingUser.setPassword(userDTO.getPassword()); // Lưu ý: Cần mã hóa mật khẩu
+        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Lưu ý: Cần mã hóa mật khẩu
         existingUser.setAccountStatus(userDTO.getAccountStatus());
 
         // Lưu thông tin đã cập nhật vào database

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,9 @@ public class AdminUserRestController {
     private WorkScheduleRepository workScheduleRepository;
     @Autowired
     private WorkShiftRepository workShiftRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @PostMapping("/create")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
         // Kiểm tra trùng username
@@ -52,6 +56,7 @@ public class AdminUserRestController {
 
         try {
             // Lưu user mới
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userRepository.save(user);
 
             // Lấy shift mặc định (ví dụ: shift ID = 1)
@@ -101,6 +106,7 @@ public class AdminUserRestController {
 
         // Cập nhật các trường không null và lưu
         updateFields(partialUpdateUser, existingUser);
+        existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
         return ResponseEntity.ok(userRepository.save(existingUser));
     }
 
