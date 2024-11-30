@@ -64,8 +64,7 @@ public class Endpoints {
             "/api/order_staff/update-status/**",
             "/api/order_staff/**",
             "/api/table/**",
-            "/api/orders_detail_staff/quantity-update",
-            "/api/customer/loyal_point/**"
+            "/api/orders_detail_staff/quantity-update"
             // STAFF
     };
 
@@ -83,10 +82,15 @@ public class Endpoints {
             "/Product/{productId}",
             "/Orders/{orderId}",
             "/Orders/{orderId}/orderDetails",
+            "/Table/**",
     };
 
     public static final String[] PRIVATE_PUT_CASHIER = {
             "/Orders/{orderId}/updateOrder",
+    };
+
+    public static final String[] PRIVATE_POST_CASHIER = {
+            "/Table/**",
     };
 
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
