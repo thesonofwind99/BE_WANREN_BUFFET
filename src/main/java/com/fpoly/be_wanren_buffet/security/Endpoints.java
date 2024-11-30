@@ -21,7 +21,6 @@ public class Endpoints {
             "/Customer/search",
             "/User",
             "/User/search",
-            "/Table",
             "/Account",
             "/Promotion",
             "/User/admins",
@@ -29,31 +28,13 @@ public class Endpoints {
             "/Reservation/**",
 
             "/work-shift",
-            "/work-schedules/{date}",
-
-            //Staff
-            "/Table/**",
-            "/api/order_staff/findOrderIdByTableId/**",
-            "/api/product/by-category/**",
-            "/api/order_staff/**",
-            "/api/orders_detail_staff/**",
-            "/api/order_staff/status/**",
-            "/api/product/**",
-            "/api/promotions/info/**",
-            "/api/customer/loyalty-points",
-            "/api/table/status/**"
+            "/work-schedules/{date}"
     };
 
     // Public POST endpoints
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/customer/register",
             "/api/customer/login",
-            // STAFF
-            "/api/order_staff/add",
-            "/api/orders_detail_staff/add_or_update/**",
-            "/api/payment/create_payment/normal",
-            "/api/payment/submit_order_vnpay",
-            // STAFF
 
             //CUSTOMER
             "/api/reservation/create"
@@ -61,14 +42,7 @@ public class Endpoints {
     };
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
-            // STAFF
-            "/api/order_staff/update-status/**",
-            "/api/order_staff/**",
-            "/api/table/**",
-            "/api/orders_detail_staff/quantity-update",
             "/api/customer/loyal_point/**",
-            "api/customer/update-loyalty-points",
-            // STAFF
     };
 
     // Private POST endpoints
@@ -151,5 +125,43 @@ public class Endpoints {
             "/User/delete/{id}",
             "/Promotion/delete/{id}",
             "/User/admins/delete/{id}"
+    };
+
+    // Private STAFF GET endpoints
+    public static final String[] PRIVATE_GET_STAFF = {
+            //Staff
+            "/Table",
+            "/Table/**",
+            "/api/order_staff/findOrderIdByTableId/**",
+            "/api/product/by-category/**",
+            "/api/order_staff/**",
+            "/api/orders_detail_staff/**",
+            "/api/order_staff/status/**",
+            "/api/product/**",
+            "/api/promotions/info/**",
+            "/api/customer/loyalty-points",
+            "/api/table/status/**",
+
+    };
+
+    // Private STAFF POST endpoints
+    public static final String[] PRIVATE_POST_STAFF = {
+            // STAFF
+            "/api/order_staff/add",
+            "/api/orders_detail_staff/add_or_update/**",
+            "/api/payment/create_payment/normal",
+            "/api/payment/submit_order_vnpay"
+            // STAFF
+    };
+
+    public static final String[] PRIVATE_PUT_STAFF = {
+            // STAFF
+            "/api/order_staff/update-status/**",
+            "/api/order_staff/**",
+            "/api/table/**",
+            "/api/orders_detail_staff/quantity-update",
+            "/api/customer/loyal_point/**",
+            "/api/customer/update-loyalty-points",
+            // STAFF
     };
 }
