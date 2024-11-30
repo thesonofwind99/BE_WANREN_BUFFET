@@ -74,6 +74,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
                         // Private Endpoints for Cashiers
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_CASHIER).permitAll()
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_CASHIER).permitAll()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_CASHIER).permitAll()
                         // Private Endpoints for Customers
