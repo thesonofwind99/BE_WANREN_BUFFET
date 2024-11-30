@@ -45,11 +45,20 @@ public class AdminWorkScheduleController {
             WorkShift workShift = workShiftService.findById(workScheduleDTO.getShiftId())
                     .orElseThrow(() -> new RuntimeException("Shift không tồn tại"));
 
+            // Chuyển đổi ngày làm việc từ String sang Date
+            Date workDate = new SimpleDateFormat("yyyy-MM-dd").parse(workScheduleDTO.getWorkDate());
+
+            // Kiểm tra xem đã có lịch làm việc cho user với shiftId và workDate chưa
+            boolean exists = workScheduleService.existsByUserAndShiftAndWorkDate(user, workShift, workDate);
+            if (exists) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User đã có lịch làm việc cho ca này trong ngày " + workScheduleDTO.getWorkDate());
+            }
+
             // Tạo WorkSchedule entity
             WorkSchedule workSchedule = new WorkSchedule();
             workSchedule.setUser(user);
             workSchedule.setShift(workShift);
-            workSchedule.setWorkDate(new SimpleDateFormat("yyyy-MM-dd").parse(workScheduleDTO.getWorkDate()));
+            workSchedule.setWorkDate(workDate);
 
             // Lưu WorkSchedule
             WorkSchedule savedWorkSchedule = workScheduleService.save(workSchedule);
@@ -70,6 +79,7 @@ public class AdminWorkScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
     @GetMapping("/{date}")
     public ResponseEntity<?> getWorkSchedulesByDate(@PathVariable("date") String date) {
         try {
@@ -96,6 +106,4 @@ public class AdminWorkScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
-
 }
