@@ -4,77 +4,47 @@ public class Endpoints {
 
     // Public GET endpoints
     public static final String[] PUBLIC_GET_ENDPOINTS = {
-            "/Product/search/findByTypeFood",
+            "/api/product/search/findByTypeFood",
             "/api/product/ProductHot",
-            "/Product/search/findByProductNameContaining",
-            "/Product/**",
-            "/Promotion/search/findByPromotionStatus",
-            "/Customer/search/existsByUsername",
-            "/Customer/search/existsByEmail",
+            "/api/product/search/findByProductNameContaining",
+            "/api/product/**",
+            "/api/promotion/search/findByPromotionStatus",
+            "/api/customer/existsByUsername",
+            "/api/customer/existsByEmail",
             "/api/payment/create_payment",
             "/api/payment/RollBack_VNPAY",
-            "/Customer",
-            "/Orders/**",
-            "/Order_detail/**",
+            "/api/customer",
+            "/api/orders/**",
+            "/api/order_detail/**",
             "/api/orders/GetOrderDetailByOrderId/**",
             "/api/orders/GetOrderByCustomerId/**",
-            "/Customer/search",
-            "/User",
-            "/User/search",
-            "/Table",
-            "/Account",
-            "/Promotion",
-            "/User/admins",
-            "/User/{id}/roles",
-            "/Reservation/**",
+            "/api/customer/search",
+            "/api/user",
+            "/api/user/search",
+            "/api/table",
+            "/api/account",
+            "/api/promotion/**",
+            "/api/user/admins",
+            "/api/user/{id}/roles",
+            "/api/customer/search/existsByPhoneNumber",
+            "/api/user/**",
+            "/api/checkout",
+            "/api/statistical/**",
+            "/api/register",
+            "/Customer/**",
+            "/Category",
+            "/Product",
+            "/Product/**",
+            "/Category/**",
+            "/api/payment/callbck_qrcode/**",
+            "/oauth2/authorization/google"
 
-            "/work-shift",
-            "/work-schedules/{date}"
     };
 
     // Public POST endpoints
-    public static final String[] PUBLIC_POST_ENDPOINTS = {
-            "/api/customer/register",
-            "/api/customer/login",
-            //CUSTOMER
-            "/api/reservation/create"
-    };
-
-    public static final String[] PUBLIC_PUT_ENDPOINTS = {
-            // STAFF
-            "/api/customer/loyal_point/**",
-            // STAFF
-    };
-
-    // Private POST endpoints
-    public static final String[] PRIVATE_POST_ENDPOINTS = {
-            "/api/orders"
-    };
-
-    // Public PATCH endpoints (currently empty)
-    public static final String[] PUBLIC_PATCH_ENDPOINTS = {};
-
-    // Private PATCH endpoints
-    public static final String[] PRIVATE_PATCH_CASHIER = {
-            "/Product",
-            "/Product/{productId}",
-            "/Orders/{orderId}",
-            "/Orders/{orderId}/orderDetails",
-    };
-
-    public static final String[] PRIVATE_PUT_CASHIER = {
-            "/Orders/{orderId}/updateOrder",
-    };
-
-    public static final String[] PRIVATE_PUT_ENDPOINTS = {
-            "/Customer/**",
-    };
-
-    // Public PORT endpoints
     public static final String[] PUBLIC_PORT_ENDPOINTS = {
             "/api/customer/register",
             "/api/customer/login",
-
             "/api/review/Creact_review",
             "/api/forgot-password/request",
             "/api/otp/validate",
@@ -98,7 +68,6 @@ public class Endpoints {
             "/api/payment/create_payment"
     };
 
-    // Private Admin GET endpoints
     public static final String[] PRIVATE_GET_ADMIN = {
             "/api/customer/create",
             "/api/statistical/**",
@@ -125,7 +94,6 @@ public class Endpoints {
             "/api/user/admins/update/{id}"
     };
 
-    // Private Admin PUT endpoints (currently empty)
     public static final String[] PRIVATE_PUT_ADMIN = {
             "/Product/**",
             "/api/product/UpdateCategory"

@@ -11,8 +11,9 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "Promotion")
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
-    @Query("SELECT p FROM Promotion p WHERE p.promotionStatus = :promotionStatus")
+    @Query("SELECT p FROM Promotion p WHERE p.promotionStatus = :promotionStatus AND p.endDate > CURRENT_DATE")
     Page<Promotion> findByPromotionStatus(@Param("promotionStatus") Boolean promotionStatus, Pageable pageable);
+
     Page<Promotion> findByPromotionNameContaining(String promotionName, Pageable pageable);
 
 

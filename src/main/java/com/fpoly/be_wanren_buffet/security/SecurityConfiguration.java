@@ -47,9 +47,14 @@ public class SecurityConfiguration {
     @Autowired
     private CustomerRepository customerRepository;
 
-
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -84,7 +89,6 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/customer/updatePhoneNumber/**").hasAuthority("CUSTOMER")
-
                         // Các endpoint khác được phép truy cập mà không cần xác thực
                         .requestMatchers("/login**", "/oauth2/**", "/api/product/**", "/assets/**").permitAll()
                         // Private Endpoints for Customers
@@ -102,14 +106,18 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAuthority("STAFF")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAuthority("STAFF")
                         // All other endpoints require authentication
-
-                        // Các dòng cho User bị comment
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
                 .authenticationProvider(userAuthenticationProvider()) // Add User provider
                 .authenticationProvider(customerAuthenticationProvider()) // Add Customer provider
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT Filter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT Filter
+                // OAuth2 Login Configuration for Google
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login") // Specify custom login page if needed
+                        .successHandler(oauth2AuthenticationSuccessHandler) // Use the custom success handler
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                );
 
         return http.build();
     }
