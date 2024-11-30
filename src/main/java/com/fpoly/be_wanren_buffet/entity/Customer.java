@@ -41,8 +41,6 @@ public class Customer extends Auditable implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-
-
     @Column(name = "address")
     private String address;
 

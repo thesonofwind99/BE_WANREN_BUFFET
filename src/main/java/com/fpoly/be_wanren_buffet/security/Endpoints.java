@@ -39,8 +39,9 @@ public class Endpoints {
             "/api/orders_detail_staff/**",
             "/api/order_staff/status/**",
             "/api/product/**",
-
-
+            "/api/promotions/info/**",
+            "/api/customer/loyalty-points",
+            "/api/table/status/**"
     };
 
     // Public POST endpoints
@@ -64,7 +65,13 @@ public class Endpoints {
             "/api/order_staff/update-status/**",
             "/api/order_staff/**",
             "/api/table/**",
+<<<<<<< HEAD
             "/api/orders_detail_staff/quantity-update"
+=======
+            "/api/orders_detail_staff/quantity-update",
+            "/api/customer/loyal_point/**",
+            "api/customer/update-loyalty-points",
+>>>>>>> d76a2f8b1d290340321d33db7db9d0756b6e9187
             // STAFF
     };
 
