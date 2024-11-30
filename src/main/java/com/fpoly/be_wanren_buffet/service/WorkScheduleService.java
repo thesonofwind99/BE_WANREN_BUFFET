@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.fpoly.be_wanren_buffet.entity.User;
+import com.fpoly.be_wanren_buffet.entity.WorkShift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,8 @@ import com.fpoly.be_wanren_buffet.entity.WorkSchedule;
 
 
 @Service
-public class WorkScheduleService {
+public class
+WorkScheduleService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -41,4 +44,8 @@ public class WorkScheduleService {
     public Optional<WorkSchedule> findById(Long id) {
         return workScheduleRepository.findById(id);
     }
+    public boolean existsByUserAndShiftAndWorkDate(User user, WorkShift workShift, Date workDate) {
+        return workScheduleRepository.existsByUserAndShiftAndWorkDate(user, workShift, workDate);
+    }
+
 }
