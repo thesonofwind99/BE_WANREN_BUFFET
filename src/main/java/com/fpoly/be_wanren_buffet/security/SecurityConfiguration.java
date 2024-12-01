@@ -88,7 +88,7 @@ public class SecurityConfiguration {
                         // Public GET Endpoints
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/customer/updatePhoneNumber/**").hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINTS).permitAll()
                         // Các endpoint khác được phép truy cập mà không cần xác thực
                         .requestMatchers("/login**", "/oauth2/**", "/api/product/**", "/assets/**").permitAll()
                         // Private Endpoints for Customers
@@ -102,9 +102,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
                         // Private Endpoints for Staff
-                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAuthority("STAFF")
-                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAuthority("STAFF")
-                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAuthority("STAFF")
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAnyAuthority("STAFF","ADMIN")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAnyAuthority("STAFF","ADMIN")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAnyAuthority("STAFF","ADMIN")
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
