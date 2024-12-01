@@ -54,4 +54,7 @@ public class Reservation extends Auditable implements Serializable {
     @JoinColumn(name = "note")
     private String note;
 
+    @JoinColumn(name = "status")
+    private Boolean status;
+
 }
