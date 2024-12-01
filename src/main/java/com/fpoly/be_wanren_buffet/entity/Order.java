@@ -57,4 +57,10 @@ public class Order extends Auditable implements Serializable {
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetails;
 
+    @JoinColumn(name = "discount_point_used")
+    private Long discountPointUsed;
+
+    @JoinColumn(name = "number_people")
+    private Integer numberPeople;
+
 }

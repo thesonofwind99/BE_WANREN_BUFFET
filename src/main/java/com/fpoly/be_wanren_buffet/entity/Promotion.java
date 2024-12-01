@@ -50,4 +50,7 @@ public class Promotion extends Auditable implements Serializable {
     @OneToMany(mappedBy = "promotion")
     private Set<PromotionOrder> promotionOrders;
 
+    @OneToMany(mappedBy = "promotion")
+    private Set<Voucher> vouchers;
+
 }
