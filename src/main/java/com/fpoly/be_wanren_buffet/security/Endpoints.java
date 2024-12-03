@@ -63,7 +63,8 @@ public class Endpoints {
 
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/api/customer/**",
-
+            "/api/customer/loyal_point/**",
+            "/api/customer/updatePhoneNumber/**"
     };
 
     // Private Customer GET endpoints
