@@ -5,6 +5,7 @@ import com.fpoly.be_wanren_buffet.dto.WeeklyRevenueDTO;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -43,6 +44,18 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Order findByOrderId(Long orderId);
 
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Order o SET o.customer.customerId = :customerId WHERE o.orderId = :orderId")
+    void updateCustomerIdByOrderId(@Param("customerId") Long customerId, @Param("orderId") Long orderId);
 
+    @Query("SELECT CASE WHEN o.customer IS NOT NULL THEN TRUE ELSE FALSE END FROM Order o WHERE o.orderId = :orderId")
+    boolean existsCustomerByOrderId(@Param("orderId") Long orderId);
 
+    @Query("SELECT o.discountPointUsed FROM Order o WHERE o.orderId = :orderId")
+    Optional<Long> findDiscountPointsByOrderId(@Param("orderId") Long orderId);
+
+    @Modifying
+    @Query("UPDATE Order o SET o.discountPointUsed = :discountPoints WHERE o.orderId = :orderId")
+    int updateDiscountPointsByOrderId(@Param("discountPoints") Long discountPoints, @Param("orderId") Long orderId);
 }

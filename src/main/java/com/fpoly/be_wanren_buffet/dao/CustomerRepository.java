@@ -22,7 +22,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmail(String email);
     Optional<Customer> findByUsername(String username);
 
-   Customer findByPhoneNumber(String phoneNumber);
+    Customer findByPhoneNumber(String phoneNumber);
 
     Page<Customer> findByFullNameContaining(String fullName, Pageable pageable);
 

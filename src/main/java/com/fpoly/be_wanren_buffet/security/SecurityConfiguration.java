@@ -89,6 +89,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/customer/updatePhoneNumber/**").hasAuthority("CUSTOMER")
                         // Các endpoint khác được phép truy cập mà không cần xác thực
                         .requestMatchers("/login**", "/oauth2/**", "/api/product/**", "/assets/**").permitAll()
                         // Private Endpoints for Customers
