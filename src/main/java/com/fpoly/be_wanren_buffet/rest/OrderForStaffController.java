@@ -1,5 +1,7 @@
 package com.fpoly.be_wanren_buffet.rest;
 
+import com.fpoly.be_wanren_buffet.dto.CustomerDiscountDTO;
+import com.fpoly.be_wanren_buffet.dto.UpdateCustomerRequestStaff;
 import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.dto.request.OrderUpdateRequest;
 import com.fpoly.be_wanren_buffet.dto.request.TransferRequest;
@@ -149,4 +151,45 @@ public class OrderForStaffController {
         }
     }
 
+
+    @PutMapping("/update-customer")
+    public ResponseEntity<String> updateCustomerInOrder(@RequestBody UpdateCustomerRequestStaff request) {
+        orderForStaffService.updateCustomerInOrder(request.getOrderId(), request.getPhoneNumber());
+        return ResponseEntity.ok("Customer updated successfully for orderId: " + request.getOrderId());
+    }
+
+    @GetMapping("/check-customer")
+    public ResponseEntity<String> checkCustomerExistenceByOrderId(@RequestParam("orderId") Long orderId) {
+        boolean exists = orderForStaffService.doesCustomerExistByOrderId(orderId);
+
+        if (exists) {
+            return ResponseEntity.ok("Customer exists for the specified order.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer does not exist for the specified order.");
+        }
+    }
+
+    @PutMapping("/update-discount-points-order")
+    public ResponseEntity<String> updateDiscountPoints(
+            @RequestParam("orderId") Long orderId,
+            @RequestParam("discountPoints") Long discountPoints) {
+        boolean isUpdated = orderForStaffService.updateDiscountPoints(orderId, discountPoints);
+
+        if (isUpdated) {
+            return ResponseEntity.ok("Discount points updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found or update failed.");
+        }
+    }
+
+    @GetMapping("/get-discount-points")
+    public ResponseEntity<?> getDiscountPoints(@RequestParam("orderId") Long orderId) {
+        Optional<Long> discountPoints = orderForStaffService.getDiscountPointsByOrderId(orderId);
+
+        if (discountPoints.isPresent()) {
+            return ResponseEntity.ok(discountPoints.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found or discount points not set.");
+        }
+    }
 }

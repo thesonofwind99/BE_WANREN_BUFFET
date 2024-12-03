@@ -14,4 +14,5 @@ public class OrderForStaffRequest {
     private String orderStatus;
     private Double totalAmount;
     private Long tableId;
+    private Integer numberPeople;
 }
