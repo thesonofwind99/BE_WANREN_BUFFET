@@ -1,17 +1,18 @@
 package com.fpoly.be_wanren_buffet.rest;
 
-import com.fpoly.be_wanren_buffet.dto.request.ReservationRequest;
-import com.fpoly.be_wanren_buffet.entity.Reservation;
-import com.fpoly.be_wanren_buffet.service.ReservationService;
-import lombok.AllArgsConstructor;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fpoly.be_wanren_buffet.dto.request.ReservationRequest;
+import com.fpoly.be_wanren_buffet.service.ReservationService;
+
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/reservation")

@@ -1,15 +1,21 @@
 package com.fpoly.be_wanren_buffet.rest;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dto.HourlyRevenueDTO;
 import com.fpoly.be_wanren_buffet.dto.WeeklyRevenueDTO;
 import com.fpoly.be_wanren_buffet.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 @RestController
 @RequestMapping("/api/statistical")
@@ -20,7 +26,6 @@ public class StatisticalRestController {
 
     @Autowired
     private OrderRepository orderRepository;
-
 
     @GetMapping("/monthly-revenue")
     public ResponseEntity<?> getMonthlyRevenue(
@@ -72,7 +77,5 @@ public class StatisticalRestController {
 
         return ResponseEntity.ok(dailyRevenues);
     }
-
-
 
 }
