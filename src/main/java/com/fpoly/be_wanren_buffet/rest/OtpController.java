@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/otp")
-@CrossOrigin(origins = "http://localhost:3000") // Điều chỉnh nếu frontend chạy trên domain/port khác
+@RequestMapping("/api/otp")// Điều chỉnh nếu frontend chạy trên domain/port khác
 public class OtpController {
 
     @Autowired

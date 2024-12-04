@@ -32,7 +32,7 @@ public class ProductRestController {
         return ResponseEntity.ok(productDTO); // Return 200 with product details
     }
 
-    @CrossOrigin("http://localhost:3000")
+
     @GetMapping("/ProductHot")
     public List<Long> getProductsHot() {
         return productService.findAllProductsHot();

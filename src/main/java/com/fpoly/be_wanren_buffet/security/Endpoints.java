@@ -31,13 +31,13 @@ public class Endpoints {
             "/api/checkout",
             "/api/statistical/**",
             "/api/register",
-            "/Customer/**",
-            "/Category",
-            "/Product",
-            "/Product/**",
-            "/Category/**",
+            "/api-data/Customer/**",
+            "/api-data/Category",
+            "/api-data/Product",
+            "/api-data/Product/**",
+            "/api-data/Category/**",
             "/api/payment/callbck_qrcode/**",
-            "/oauth2/authorization/google"
+            "/oauth2/authorization/google",
 
     };
 
@@ -96,7 +96,7 @@ public class Endpoints {
     };
 
     public static final String[] PRIVATE_PUT_ADMIN = {
-            "/Product/**",
+            "/api-data/Product/**",
             "/api/product/UpdateCategory"
     };
 
@@ -112,8 +112,8 @@ public class Endpoints {
     // Private STAFF GET endpoints
     public static final String[] PRIVATE_GET_STAFF = {
             //Staff
-            "/Table",
-            "/Table/**",
+            "/api-data/Table",
+            "/api-data/Table/**",
             "/api/order_staff/findOrderIdByTableId/**",
             "/api/product/by-category/**",
             "/api/order_staff/**",

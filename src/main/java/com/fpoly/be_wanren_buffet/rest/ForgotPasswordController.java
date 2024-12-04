@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/forgot-password")
-@CrossOrigin(origins = "http://localhost:3000") // Cấu hình CORS (nếu frontend và backend chạy trên các domain/port khác nhau)
+@RequestMapping("/api/forgot-password")// Cấu hình CORS (nếu frontend và backend chạy trên các domain/port khác nhau)
 public class ForgotPasswordController {
 
     @Autowired

@@ -4,6 +4,7 @@ import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
 import com.fpoly.be_wanren_buffet.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -55,6 +56,8 @@ public class SecurityConfiguration {
 
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
+
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -125,7 +128,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Change according to your frontend URL
+        configuration.setAllowedOrigins(List.of("https://wanrenbuffet.netlify.app")); // Change according to your frontend URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Allowed HTTP methods
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)

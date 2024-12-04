@@ -57,7 +57,7 @@ public class CustomerRestController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @CrossOrigin("http://localhost:3000")
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody Customer customer) {
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));

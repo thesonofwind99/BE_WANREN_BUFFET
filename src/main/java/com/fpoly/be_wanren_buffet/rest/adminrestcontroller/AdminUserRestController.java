@@ -26,7 +26,6 @@ import java.util.function.Function;
 
 @Slf4j
 @RestController
-@CrossOrigin("http://localhost:3000")
 @RequestMapping("/User")
 public class AdminUserRestController {
     @Autowired

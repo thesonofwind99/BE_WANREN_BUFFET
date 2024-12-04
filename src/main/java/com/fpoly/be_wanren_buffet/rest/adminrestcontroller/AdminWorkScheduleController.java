@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/work-schedules")
 public class AdminWorkScheduleController {
 

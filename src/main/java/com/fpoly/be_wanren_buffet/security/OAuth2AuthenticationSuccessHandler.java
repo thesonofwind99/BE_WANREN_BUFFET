@@ -101,10 +101,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             logger.info("Generated JWT token for user: {}", email);
 
             // Chuyển hướng người dùng về frontend với token
-            response.sendRedirect("http://localhost:3000/login-success?token=" + token);
+            response.sendRedirect("https://wanrenbuffet.netlify.app/login-success?token=" + token);
         } catch (Exception e) {
             logger.error("Error in OAuth2AuthenticationSuccessHandler: {}", e.getMessage());
-            response.sendRedirect("http://localhost:3000/login-failure");
+            response.sendRedirect("https://wanrenbuffet.netlify.app/login-failure");
         }
     }
 

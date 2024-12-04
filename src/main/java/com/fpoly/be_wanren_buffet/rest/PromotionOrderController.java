@@ -23,7 +23,7 @@ public class PromotionOrderController {
         if (promotionInfo != null) {
             return ResponseEntity.ok(promotionInfo);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 }

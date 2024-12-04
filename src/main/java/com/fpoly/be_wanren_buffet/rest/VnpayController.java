@@ -63,7 +63,7 @@ public class VnpayController {
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
                     // Redirect to the frontend with a success message
-                    return "redirect:http://localhost:3000/checkout/sucessful";
+                    return "redirect:https://wanrenbuffet.netlify.app/checkout/sucessful";
                 } else {
                     Long orderId = Long.parseLong(txnRef);
                     orderService.deleteOrderById(orderId - 1);
@@ -71,17 +71,17 @@ public class VnpayController {
                     String errorMessage = URLEncoder.encode("Giao dịch thất bại", StandardCharsets.UTF_8);
 
                     // Redirect to the frontend with an error message
-                    return "redirect:http://localhost:3000/checkout?error=" + errorMessage;
+                    return "redirect:https://wanrenbuffet.netlify.app/checkout?error=" + errorMessage;
                 }
             } catch (NumberFormatException e) {
                 // Handle invalid txnRef format
                 String errorMessage = URLEncoder.encode("Mã đơn hàng không hợp lệ", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout?error=" + errorMessage;
+                return "redirect:https://wanrenbuffet.netlify.app/checkout?error=" + errorMessage;
             } catch (Exception e) {
                 // Handle other unforeseen exceptions
                 System.out.println(e.getMessage());
                 String exceptionMessage = URLEncoder.encode("Lỗi hệ thống", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout?error=" + exceptionMessage;
+                return "redirect:https://wanrenbuffet.netlify.app/checkout?error=" + exceptionMessage;
             }
         } else if (orderInfor.contains("Pay for the bill at the table by")) {
             try {
@@ -161,22 +161,22 @@ public class VnpayController {
                     }
 
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
-                    return "redirect:http://localhost:3000/checkout/sucessful";
+                    return "redirect:https://wanrenbuffet.netlify.app/checkout/sucessful";
                 } else {
                     // Handle failed payment status
                     String errorMessage = URLEncoder.encode("Giao dịch thất bại", StandardCharsets.UTF_8);
-                    return "redirect:http://localhost:3000/checkout/failed";
+                    return "redirect:https://wanrenbuffet.netlify.app/checkout/failed";
                 }
 
             } catch (NumberFormatException e) {
                 // Handle invalid txnRef format
                 String errorMessage = URLEncoder.encode("Mã đơn hàng không hợp lệ", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout/failed";
+                return "redirect:https://wanrenbuffet.netlify.app/checkout/failed";
             } catch (Exception e) {
                 // Handle other unforeseen exceptions
                 System.out.println(e.getMessage());
                 String exceptionMessage = URLEncoder.encode("Lỗi hệ thống", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout/checkout/failed";
+                return "redirect:https://wanrenbuffet.netlify.app/checkout/checkout/failed";
             }
 
         }
@@ -209,11 +209,11 @@ public class VnpayController {
             String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
             // Redirect to the frontend with a success message
-            return "redirect:http://localhost:3000/checkout/sucessful?message=" + successMessage;
+            return "redirect:https://wanrenbuffet.netlify.app/checkout/sucessful?message=" + successMessage;
         } catch (Exception e) {
             // Handle exceptions and provide a failure message
             String errorMessage = URLEncoder.encode("Có lỗi xảy ra trong quá trình thanh toán", StandardCharsets.UTF_8);
-            return "redirect:http://localhost:3000/checkout/failed?message=" + errorMessage;
+            return "redirect:https://wanrenbuffet.netlify.app/checkout/failed?message=" + errorMessage;
         }
     }
 
