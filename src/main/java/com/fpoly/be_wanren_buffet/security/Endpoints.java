@@ -54,7 +54,8 @@ public class Endpoints {
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
             "/api/customer/loyal_point/**",
-            "/api/order_staff/update-customer"
+            "/api/order_staff/update-customer",
+            "/api/customer/updatePhoneNumber/**"
     };
 
     public static final String[] PRIVATE_POST_ENDPOINTS = {
