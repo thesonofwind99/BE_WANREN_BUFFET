@@ -24,6 +24,9 @@ public class OrderConvert {
             order.setTotalAmount(orderForStaffRequest.getTotalAmount());
         }
 
+        if(orderForStaffRequest.getNumberPeople() != null){
+            order.setNumberPeople(orderForStaffRequest.getNumberPeople());
+        }
         return order;
     }
 }
