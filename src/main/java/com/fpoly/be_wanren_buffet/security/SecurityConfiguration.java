@@ -1,8 +1,7 @@
 package com.fpoly.be_wanren_buffet.security;
 
-import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
-import com.fpoly.be_wanren_buffet.service.*;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,19 +11,24 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import com.fpoly.be_wanren_buffet.service.CustomOAuth2UserService;
+import com.fpoly.be_wanren_buffet.service.CustomerAuthService;
+import com.fpoly.be_wanren_buffet.service.CustomerService;
+import com.fpoly.be_wanren_buffet.service.JwtService;
+import com.fpoly.be_wanren_buffet.service.UserAuthService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
@@ -94,7 +98,8 @@ public class SecurityConfiguration {
                         // Các endpoint khác được phép truy cập mà không cần xác thực
                         .requestMatchers("/login**", "/oauth2/**", "/api/product/**", "/assets/**").permitAll()
                         // Private Endpoints for Customers
-                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINTS).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_CUSTOMER_GET_ENDPOINTS)
+                        .hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_ENDPOINTS).hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINTS).hasAuthority("CUSTOMER")
                         // Private Endpoints for Admins
@@ -103,14 +108,24 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
+                        // Private Endpoints for Cashier
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
                         // Private Endpoints for Staff
-                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAnyAuthority("STAFF","ADMIN")
-                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAnyAuthority("STAFF","ADMIN")
-                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAnyAuthority("STAFF","ADMIN")
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAnyAuthority("STAFF", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF)
+                        .hasAnyAuthority("STAFF", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_STAFF).hasAnyAuthority("STAFF", "ADMIN")
                         // All other endpoints require authentication
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
+                                                                                                              // sessions
                 .authenticationProvider(userAuthenticationProvider()) // Add User provider
                 .authenticationProvider(customerAuthenticationProvider()) // Add Customer provider
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT Filter
@@ -118,8 +133,7 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/login") // Specify custom login page if needed
                         .successHandler(oauth2AuthenticationSuccessHandler) // Use the custom success handler
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-                );
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)));
 
         return http.build();
     }
@@ -128,7 +142,8 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Change according to your frontend URL
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Allowed HTTP methods
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Allowed HTTP
+                                                                                                      // methods
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
         configuration.setMaxAge(3600L); // Cache CORS preflight response for 1 hour

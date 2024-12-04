@@ -1,20 +1,29 @@
 package com.fpoly.be_wanren_buffet.rest;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fpoly.be_wanren_buffet.dao.ReservationRepository;
 import com.fpoly.be_wanren_buffet.dto.ReservationStaffDTO;
 import com.fpoly.be_wanren_buffet.dto.request.ReservationRequest;
 import com.fpoly.be_wanren_buffet.entity.Reservation;
 import com.fpoly.be_wanren_buffet.enums.ReservationStatus;
 import com.fpoly.be_wanren_buffet.service.ReservationService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/reservation")
@@ -41,7 +50,7 @@ public class ReservationController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<String> updateReservationStatus(@PathVariable("id") Long reservationId,
-                                                          @RequestParam("status") ReservationStatus status) {
+            @RequestParam("status") ReservationStatus status) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
 
         if (optionalReservation.isPresent()) {

@@ -1,11 +1,10 @@
 package com.fpoly.be_wanren_buffet.rest;
 
-import com.fpoly.be_wanren_buffet.dao.*;
-import com.fpoly.be_wanren_buffet.entity.*;
-import com.fpoly.be_wanren_buffet.enums.OrderStatus;
-import com.fpoly.be_wanren_buffet.enums.PaymentMethod;
-import com.fpoly.be_wanren_buffet.enums.TableStatus;
-import com.fpoly.be_wanren_buffet.service.OrderService;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import com.fpoly.be_wanren_buffet.dao.OrderRepository;
+import com.fpoly.be_wanren_buffet.dao.PaymentRepository;
+import com.fpoly.be_wanren_buffet.dao.TableRepository;
+import com.fpoly.be_wanren_buffet.dao.UserRepository;
+import com.fpoly.be_wanren_buffet.entity.Customer;
+import com.fpoly.be_wanren_buffet.entity.Order;
+import com.fpoly.be_wanren_buffet.entity.Payment;
+import com.fpoly.be_wanren_buffet.entity.Tablee;
+import com.fpoly.be_wanren_buffet.entity.User;
+import com.fpoly.be_wanren_buffet.enums.OrderStatus;
+import com.fpoly.be_wanren_buffet.enums.PaymentMethod;
+import com.fpoly.be_wanren_buffet.enums.TableStatus;
+import com.fpoly.be_wanren_buffet.service.OrderService;
 
 @Controller
 @RequestMapping("/api/payment")
@@ -56,7 +65,7 @@ public class VnpayController {
                     Order order = orderService.GetOrderById(orderId - 1);
                     order.setOrderStatus(OrderStatus.PREPARING_ORDER);
                     orderService.UpdateStatusOrder(order);
-                    Payment payment = paymentRepository.findByOrderId(orderId -1);
+                    Payment payment = paymentRepository.findByOrderId(orderId - 1);
                     payment.setPaymentStatus(true);
                     paymentRepository.save(payment);
                     // Encode the success message
@@ -152,7 +161,8 @@ public class VnpayController {
                         Customer customer = customerRepository.findByPhoneNumber(phoneNumber);
 
                         if (customer.getLoyaltyPoints() < pointsToDeduct) {
-                            throw new IllegalArgumentException("Not enough loyalty points to deduct. Current points: " + customer.getLoyaltyPoints());
+                            throw new IllegalArgumentException("Not enough loyalty points to deduct. Current points: "
+                                    + customer.getLoyaltyPoints());
                         }
 
                         // Cập nhật loyalty points

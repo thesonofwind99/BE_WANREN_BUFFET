@@ -1,6 +1,20 @@
 package com.fpoly.be_wanren_buffet.rest;
 
-import com.fpoly.be_wanren_buffet.dto.CustomerDiscountDTO;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerRequestStaff;
 import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.dto.request.OrderUpdateRequest;
@@ -12,14 +26,8 @@ import com.fpoly.be_wanren_buffet.enums.TableStatus;
 import com.fpoly.be_wanren_buffet.service.OrderForStaffService;
 import com.fpoly.be_wanren_buffet.service.OrderService;
 import com.fpoly.be_wanren_buffet.service.TableService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
@@ -41,7 +49,8 @@ public class OrderForStaffController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestBody OrderUpdateRequest orderUpdateRequest) {
+    public ResponseEntity<?> updateOrder(@PathVariable Long orderId,
+            @RequestBody OrderUpdateRequest orderUpdateRequest) {
         try {
             // Find the order by ID
             Optional<Order> existingOrder = orderForStaffService.findById(orderId);
@@ -97,7 +106,8 @@ public class OrderForStaffController {
     }
 
     @PutMapping("/update/total_amount/{order_id}/{total_amount}")
-    public ResponseEntity<Map<String, Object>> updateOrderTotalAmount(@PathVariable(name = "order_id") Long orderId, @PathVariable(name = "total_amount") Double total_amount) {
+    public ResponseEntity<Map<String, Object>> updateOrderTotalAmount(@PathVariable(name = "order_id") Long orderId,
+            @PathVariable(name = "total_amount") Double total_amount) {
         Map<String, Object> response = new HashMap<>();
         response.put("amount_last", orderForStaffService.updateTotalPrice(orderId, total_amount));
         response.put("message", "Cập nhật tổng tiền thành công");
@@ -124,8 +134,8 @@ public class OrderForStaffController {
         }
 
         // Cập nhật trạng thái bàn cũ và bàn mới
-        oldTable.setTableStatus(TableStatus.EMPTY_TABLE);  // Bàn cũ trở thành bàn trống
-        newTable.setTableStatus(TableStatus.OCCUPIED_TABLE);  // Bàn mới trở thành bàn đã chiếm
+        oldTable.setTableStatus(TableStatus.EMPTY_TABLE); // Bàn cũ trở thành bàn trống
+        newTable.setTableStatus(TableStatus.OCCUPIED_TABLE); // Bàn mới trở thành bàn đã chiếm
 
         // Lưu thay đổi trạng thái của các bàn
         tableService.save(oldTable);
@@ -150,7 +160,6 @@ public class OrderForStaffController {
             return ResponseEntity.status(400).body("Failed to update order status");
         }
     }
-
 
     @PutMapping("/update-customer")
     public ResponseEntity<String> updateCustomerInOrder(@RequestBody UpdateCustomerRequestStaff request) {
