@@ -52,13 +52,19 @@ public class Endpoints {
                         "/api/user/login",
         };
 
+        public static final String[] PUBLIC_PUT_ENDPOINTS = {
+                        "/api/customer/loyal_point/**",
+                        "/api/order_staff/update-customer"
+        };
+
         public static final String[] PRIVATE_POST_ENDPOINTS = {
                         "/api/orders"
         };
 
         public static final String[] PRIVATE_PUT_ENDPOINTS = {
                         "/api/customer/**",
-
+                        "/api/customer/loyal_point/**",
+                        "/api/customer/updatePhoneNumber/**"
         };
 
         // Private Customer GET endpoints
@@ -122,6 +128,9 @@ public class Endpoints {
                         "/api/promotions/info/**",
                         "/api/customer/loyalty-points",
                         "/api/table/status/**",
+                        "/api/order_staff/check-customer/**",
+                        "/api/order_staff/get-discount-points/**",
+                        "/api/reservation/today"
 
         };
 
@@ -143,6 +152,8 @@ public class Endpoints {
                         "/api/orders_detail_staff/quantity-update",
                         "/api/customer/loyal_point/**",
                         "/api/customer/update-loyalty-points",
+                        "/api/order_staff/update-discount-points-order/**",
+                        "/api/reservation/**"
                         // STAFF
         };
 
@@ -180,4 +191,5 @@ public class Endpoints {
         };
 
         // Cashier ^
+
 }

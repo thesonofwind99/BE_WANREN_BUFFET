@@ -1,5 +1,6 @@
 package com.fpoly.be_wanren_buffet.entity;
 
+import com.fpoly.be_wanren_buffet.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,5 +54,9 @@ public class Reservation extends Auditable implements Serializable {
 
     @JoinColumn(name = "note")
     private String note;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ReservationStatus status;
 
 }

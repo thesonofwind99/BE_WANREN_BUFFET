@@ -171,22 +171,22 @@ public class VnpayController {
                     }
 
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
-                    return "redirect:http://localhost:3000/checkout/sucessful";
+                    return "redirect:http://localhost:3000/staff/checkout/sucessful";
                 } else {
                     // Handle failed payment status
                     String errorMessage = URLEncoder.encode("Giao dịch thất bại", StandardCharsets.UTF_8);
-                    return "redirect:http://localhost:3000/checkout/failed";
+                    return "redirect:http://localhost:3000/staff/checkout/failed";
                 }
 
             } catch (NumberFormatException e) {
                 // Handle invalid txnRef format
                 String errorMessage = URLEncoder.encode("Mã đơn hàng không hợp lệ", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout/failed";
+                return "redirect:http://localhost:3000/staff/checkout/failed";
             } catch (Exception e) {
                 // Handle other unforeseen exceptions
                 System.out.println(e.getMessage());
                 String exceptionMessage = URLEncoder.encode("Lỗi hệ thống", StandardCharsets.UTF_8);
-                return "redirect:http://localhost:3000/checkout/checkout/failed";
+                return "redirect:http://localhost:3000/staff/checkout/failed";
             }
 
         }

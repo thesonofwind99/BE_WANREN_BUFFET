@@ -70,4 +70,7 @@ public class Customer extends Auditable implements Serializable {
 
     @OneToMany(mappedBy = "customer")
     private Set<Order> orders;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Voucher> vouchers;
 }
