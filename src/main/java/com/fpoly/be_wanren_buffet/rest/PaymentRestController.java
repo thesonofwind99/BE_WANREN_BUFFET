@@ -1,25 +1,38 @@
 // PaymentRestController.java
 package com.fpoly.be_wanren_buffet.rest;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fpoly.be_wanren_buffet.config.VnpayConfig;
 import com.fpoly.be_wanren_buffet.dao.OrderRepository;
 import com.fpoly.be_wanren_buffet.dao.PaymentRepository;
 import com.fpoly.be_wanren_buffet.dto.PaymentDTO;
 import com.fpoly.be_wanren_buffet.dto.request.PaymentForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
-import com.fpoly.be_wanren_buffet.entity.Payment;
-import com.fpoly.be_wanren_buffet.enums.OrderStatus;
 import com.fpoly.be_wanren_buffet.service.OrderService;
 import com.fpoly.be_wanren_buffet.service.PaymentForStaffService;
 import com.fpoly.be_wanren_buffet.service.VNPayService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -45,8 +58,8 @@ public class PaymentRestController {
 
     @GetMapping("/create_payment")
     public ResponseEntity<?> getPayment(@RequestParam long price,
-                                        @RequestParam(required = false) String bankCode,
-                                        HttpServletRequest request) {
+            @RequestParam(required = false) String bankCode,
+            HttpServletRequest request) {
         List<Order> orders = orderRepository.findAll();
         Order order = orders.get(orders.size() - 1);
         try {
@@ -133,11 +146,10 @@ public class PaymentRestController {
             return ResponseEntity.status(500).body("An error occurred while processing the payment.");
         }
 
-
     }
 
     @PostMapping("/create_payment/normal")
-    public ResponseEntity<?> createPayment(@RequestBody PaymentForStaffRequest paymentForStaffRequest){
+    public ResponseEntity<?> createPayment(@RequestBody PaymentForStaffRequest paymentForStaffRequest) {
         Map<String, Object> response = new HashMap<>();
         response.put("payment_id", paymentForStaffService.createPaymentForStaff(paymentForStaffRequest));
         response.put("message", "Tạo giao dịch thành công");
@@ -146,12 +158,9 @@ public class PaymentRestController {
 
     @PostMapping("/submit_order_vnpay")
     public String submidOrder(@RequestParam("amount") Integer orderTotal,
-                              @RequestParam("orderInfo") String orderInfo){
+            @RequestParam("orderInfo") String orderInfo) {
         String vnpayUrl = vnpayService.createOrder(orderTotal, orderInfo);
         return vnpayUrl;
     }
-
-
-
 
 }

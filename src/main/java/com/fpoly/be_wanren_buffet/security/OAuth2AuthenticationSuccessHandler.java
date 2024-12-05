@@ -1,22 +1,24 @@
 package com.fpoly.be_wanren_buffet.security;
 
-import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
-import com.fpoly.be_wanren_buffet.entity.Customer;
-import com.fpoly.be_wanren_buffet.service.CustomerService;
-import com.fpoly.be_wanren_buffet.service.JwtService;
+import java.io.IOException;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import java.io.IOException;
-import java.util.*;
+import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import com.fpoly.be_wanren_buffet.entity.Customer;
+import com.fpoly.be_wanren_buffet.service.CustomerService;
+import com.fpoly.be_wanren_buffet.service.JwtService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -29,8 +31,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Autowired
     public OAuth2AuthenticationSuccessHandler(JwtService jwtService,
-                                              CustomerRepository customerRepository,
-                                              CustomerService customerService) {
+            CustomerRepository customerRepository,
+            CustomerService customerService) {
         this.jwtService = jwtService;
         this.customerRepository = customerRepository;
         this.customerService = customerService;
@@ -38,8 +40,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+            HttpServletResponse response,
+            Authentication authentication) throws IOException, ServletException {
 
         try {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -56,8 +58,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
             Optional<Customer> optionalCustomer = customerRepository.findByEmail(email);
             Long userId;
-
-
 
             if (optionalCustomer.isPresent()) {
                 // Nếu người dùng đã có tài khoản thông thường (email đã tồn tại)
@@ -89,14 +89,12 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 logger.info("Created new user with ID: {}", userId);
             }
 
-
             String token = jwtService.generateTokenForCustomer(
                     fullName,
                     email,
                     phone,
                     userId,
-                    address
-            );
+                    address);
 
             logger.info("Generated JWT token for user: {}", email);
 

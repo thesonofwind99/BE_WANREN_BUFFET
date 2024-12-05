@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
-import com.fpoly.be_wanren_buffet.dto.LoyaltyPointsResponse;
-import com.fpoly.be_wanren_buffet.dto.UpdateLoyaltyPointsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -19,9 +16,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
+import com.fpoly.be_wanren_buffet.dto.LoyaltyPointsResponse;
 import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
+import com.fpoly.be_wanren_buffet.dto.UpdateLoyaltyPointsRequest;
 import com.fpoly.be_wanren_buffet.entity.Customer;
 import com.fpoly.be_wanren_buffet.security.JwtResponse;
 import com.fpoly.be_wanren_buffet.security.LoginRequest;
@@ -68,8 +76,7 @@ public class CustomerRestController {
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             if (authentication.isAuthenticated()) {
                 // Lấy thông tin người dùng đã đăng nhập
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -81,7 +88,7 @@ public class CustomerRestController {
                 Long UserId = authenticatedCustomer.getCustomerId();
                 String address = authenticatedCustomer.getAddress();
                 System.out.println(address + "ĐỊA CHỈ");
-                final String jwt = jwtService.generateTokenForCustomer( fullName , email, phone , UserId , address);
+                final String jwt = jwtService.generateTokenForCustomer(fullName, email, phone, UserId, address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
@@ -116,8 +123,7 @@ public class CustomerRestController {
                     customer.getEmail(),
                     customer.getPhoneNumber(),
                     customer.getCustomerId(),
-                    customer.getAddress()
-            );
+                    customer.getAddress());
 
             // Chuẩn bị DTO phản hồi
             UpdateCustomerDTO responseDTO = new UpdateCustomerDTO();
@@ -161,7 +167,7 @@ public class CustomerRestController {
         try {
             // Mã hóa và cập nhật mật khẩu
             customer.setPassword(passwordEncoder.encode(password));
-            customerRepository.save(customer);  // Lưu thông tin khách hàng
+            customerRepository.save(customer); // Lưu thông tin khách hàng
 
             return ResponseEntity.ok("Password updated successfully");
         } catch (Exception e) {
@@ -169,17 +175,14 @@ public class CustomerRestController {
         }
     }
 
-
     // Method to validate Vietnamese phone numbers
-
-
-
 
     /**
      * Endpoint cập nhật điểm thưởng cho khách hàng
      */
     @PutMapping("/loyal_point/{phone_number}/{total_amount}")
-    public ResponseEntity<?> updateLoyaltyPoint(@PathVariable(name = "phone_number") String phoneNumber, @PathVariable(name = "total_amount") Double totalAmount){
+    public ResponseEntity<?> updateLoyaltyPoint(@PathVariable(name = "phone_number") String phoneNumber,
+            @PathVariable(name = "total_amount") Double totalAmount) {
         Map<String, Object> response = new HashMap<>();
         response.put("loyal_phone", customerForStaffService.updateloyalPointOfCustomer(phoneNumber, totalAmount));
         response.put("message", "Tích điểm thành công");

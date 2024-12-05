@@ -4,7 +4,6 @@ import com.fpoly.be_wanren_buffet.dao.CustomerRepository;
 import com.fpoly.be_wanren_buffet.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -57,8 +56,6 @@ public class SecurityConfiguration {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
-
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -93,6 +90,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_PORT_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/customer/updatePhoneNumber/**").hasAuthority("CUSTOMER")
                         // Các endpoint khác được phép truy cập mà không cần xác thực
                         .requestMatchers("/login**", "/oauth2/**", "/api/product/**", "/assets/**").permitAll()
                         // Private Endpoints for Customers
@@ -105,6 +103,15 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_ADMIN).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
+                        // Private Endpoints for Cashier
+                        .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_CASHIER)
+                        .hasAnyAuthority("CASHIER", "ADMIN")
                         // Private Endpoints for Staff
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAnyAuthority("STAFF","ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF).hasAnyAuthority("STAFF","ADMIN")
