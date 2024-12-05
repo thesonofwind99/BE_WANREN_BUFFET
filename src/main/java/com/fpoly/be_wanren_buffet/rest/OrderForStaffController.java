@@ -174,7 +174,7 @@ public class OrderForStaffController {
         if (exists) {
             return ResponseEntity.ok("Customer exists for the specified order.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer does not exist for the specified order.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer does not exist for the specified order.");
         }
     }
 

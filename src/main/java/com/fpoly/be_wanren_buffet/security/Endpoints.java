@@ -6,11 +6,9 @@ public class Endpoints {
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/product/search/findByTypeFood",
             "/api/product/ProductHot",
-            "/api/product/search/findByProductNameContaining",
             "/api/product/**",
-            "/api/promotion/search/findByPromotionStatus",
-            "/api/customer/existsByUsername",
-            "/api/customer/existsByEmail",
+            "/api-data/Customer/search/existsByUsername",
+            "/api-data/Customer/search/existsByEmail",
             "/api/payment/create_payment",
             "/api/payment/RollBack_VNPAY",
             "/api/customer",
@@ -26,19 +24,14 @@ public class Endpoints {
             "/api/promotion/**",
             "/api/user/admins",
             "/api/user/{id}/roles",
-            "/api/customer/search/existsByPhoneNumber",
-            "/api/user/**",
+            "/api-data/Customer/search/existsByPhoneNumber",
             "/api/checkout",
-            "/api/statistical/**",
             "/api/register",
             "/api-data/Customer/**",
-            "/api-data/Category",
-            "/api-data/Product",
-            "/api-data/Product/**",
-            "/api-data/Category/**",
             "/api/payment/callbck_qrcode/**",
             "/oauth2/authorization/google",
-
+            "/api-data/Promotion/search/findByPromotionStatus",
+            "/api-data/Product/search/findByProductNameContaining"
     };
 
     // Public POST endpoints
@@ -78,6 +71,7 @@ public class Endpoints {
     public static final String[] PRIVATE_GET_ADMIN = {
             "/api/customer/create",
             "/api/statistical/**",
+            "/api-data/Orders"
     };
 
     // Private Admin POST endpoints
@@ -157,4 +151,38 @@ public class Endpoints {
             "/api/reservation/**"
             // STAFF
     };
+
+    public static final String[] PRIVATE_GET_CASHIER = {
+            "/Table/**",
+            "/Orders/**",
+            "/Reservation/**",
+            "/Product/**",
+    };
+
+    public static final String[] PRIVATE_POST_CASHIER = {
+            "/Table/**",
+            "/Orders/**",
+            "/Reservation/**",
+            "/Product/**",
+            "/api/payment/**",
+            "/api/order_staff/**",
+    };
+
+    public static final String[] PRIVATE_PATCH_CASHIER = {
+            "/Table/**",
+            "/Orders/**",
+            "/Reservation/**",
+            "/Product/**",
+    };
+
+    public static final String[] PRIVATE_PUT_CASHIER = {
+            "/Table/**",
+            "/Orders/**",
+            "/Reservation/**",
+            "/Product/**",
+            "/api/order_staff/**",
+    };
+
+
+
 }

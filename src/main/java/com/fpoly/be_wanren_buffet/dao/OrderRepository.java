@@ -14,6 +14,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,4 +60,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Modifying
     @Query("UPDATE Order o SET o.discountPointUsed = :discountPoints WHERE o.orderId = :orderId")
     int updateDiscountPointsByOrderId(@Param("discountPoints") Long discountPoints, @Param("orderId") Long orderId);
+
+
+
+
+
 }

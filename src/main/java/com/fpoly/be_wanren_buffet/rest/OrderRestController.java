@@ -11,11 +11,15 @@ import com.fpoly.be_wanren_buffet.enums.PaymentMethod;
 import com.fpoly.be_wanren_buffet.service.JwtService;
 import com.fpoly.be_wanren_buffet.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +108,8 @@ public class OrderRestController {
             order.setNotes(orderRequest.getNotes());
             order.setAddress(orderRequest.getAddress());
             order.setCreatedDate(LocalDateTime.now());
+            order.setAddress(orderRequest.getAddress());
+
 
             // Handle Payment
             Payment payment = new Payment();
@@ -206,6 +212,9 @@ public class OrderRestController {
 
         return ResponseEntity.ok().body(orderHistoryDTOList);
     }
+
+
+
 
 
 
