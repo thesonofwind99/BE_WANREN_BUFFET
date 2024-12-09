@@ -10,6 +10,7 @@ public class OrderRequest {
     private String phone;
     private String email;
     private String notes;
+    private String promotion;
     private String payment;
     private Double totalAmount;
     private List<OrderDetailRequest> orderDetails;

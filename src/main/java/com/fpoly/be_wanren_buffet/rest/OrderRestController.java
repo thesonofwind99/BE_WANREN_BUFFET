@@ -47,6 +47,13 @@ public class OrderRestController {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private PromotionOrderRepository promotionOrderRepository;
+
+    @Autowired
+    private PromotionRepository promotionRepository;
+
+
 
 
     @PostMapping
@@ -84,16 +91,14 @@ public class OrderRestController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             }
 
+
             // Kiểm tra và cập nhật thông tin địa chỉ và số điện thoại nếu cần
             boolean isUpdated = false;
             if (orderRequest.getAddress() != null && !orderRequest.getAddress().equals(customer.getAddress())) {
                 customer.setAddress(orderRequest.getAddress());
                 isUpdated = true;
             }
-            if (orderRequest.getPhone() != null && !orderRequest.getPhone().equals(customer.getPhoneNumber())) {
-                customer.setPhoneNumber(orderRequest.getPhone());
-                isUpdated = true;
-            }
+
             if (isUpdated) {
                 customerRepository.save(customer);
                 log.debug("Cập nhật thông tin khách hàng thành công: {}", customer.getUsername());
@@ -161,10 +166,19 @@ public class OrderRestController {
                 log.debug("Saved OrderDetail for Product ID: {}", product.getProductId());
             }
 
+            if(orderRequest.getPromotion() != null){
+                PromotionOrder promotionOrder = new PromotionOrder();
+                promotionOrder.setOrder(order);
+                Promotion  promotion = promotionRepository.findById(Long.parseLong(orderRequest.getPromotion())).get()
+;                promotionOrder.setPromotion(promotion);
+                promotionOrderRepository.save(promotionOrder);
+            }
+
             // Nếu thông tin khách hàng đã được cập nhật, tạo token mới
             String newToken = null;
             if (isUpdated) {
                 newToken = jwtService.generateTokenForCustomer(
+                        customer.getUsername(),
                         customer.getFullName(),
                         customer.getEmail(),
                         customer.getPhoneNumber(),
@@ -172,6 +186,8 @@ public class OrderRestController {
                         customer.getAddress()
                 );
             }
+
+
 
             // Chuẩn bị phản hồi
             Map<String, Object> response = new HashMap<>();

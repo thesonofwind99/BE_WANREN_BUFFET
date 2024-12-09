@@ -79,7 +79,7 @@ public class CustomerRestController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             if (authentication.isAuthenticated()) {
                 // Lấy thông tin người dùng đã đăng nhập
-                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
 
                 Customer authenticatedCustomer = customerAuthService.authenticate(loginRequest.getUsername());
                 String fullName = authenticatedCustomer.getFullName();
@@ -87,8 +87,8 @@ public class CustomerRestController {
                 String phone = authenticatedCustomer.getPhoneNumber();
                 Long UserId = authenticatedCustomer.getCustomerId();
                 String address = authenticatedCustomer.getAddress();
-                System.out.println(address + "ĐỊA CHỈ");
-                final String jwt = jwtService.generateTokenForCustomer(fullName, email, phone, UserId, address);
+                String  username = authenticatedCustomer.getUsername();
+                final String jwt = jwtService.generateTokenForCustomer(username,fullName, email, phone, UserId, address);
                 return ResponseEntity.ok(new JwtResponse(jwt));
             }
         } catch (Exception e) {
@@ -119,6 +119,7 @@ public class CustomerRestController {
 
             // Tạo mới JWT token với thông tin cập nhật
             String newToken = jwtService.generateTokenForCustomer(
+                    customer.getUsername(),
                     customer.getFullName(),
                     customer.getEmail(),
                     customer.getPhoneNumber(),

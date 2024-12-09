@@ -19,6 +19,7 @@ public class CustomerAuthServiceImpl implements CustomerAuthService {
 
     @Override
     public Customer authenticate(String username) {
+        System.out.println("USER" + username);
         if(username.contains("@")){
             return customerRepository.findByEmail(username).get(); // Sử dụng email thay vì username
         }
@@ -39,7 +40,7 @@ public class CustomerAuthServiceImpl implements CustomerAuthService {
 
         // Tạo UserDetails với quyền hạn "CUSTOMER"
         UserDetails userDetails = User.builder()
-                .username(customer.getEmail()) // Đảm bảo username là email
+                .username(customer.getUsername()) // Đảm bảo username là email
                 .password(customer.getPassword()) // Sử dụng password nếu cần
                 .authorities("CUSTOMER")
                 .accountLocked(!customer.getAccountStatus()) // Kiểm tra trạng thái tài khoản

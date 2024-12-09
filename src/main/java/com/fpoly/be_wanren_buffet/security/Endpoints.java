@@ -22,6 +22,7 @@ public class Endpoints {
             "/api/table",
             "/api/account",
             "/api/promotion/**",
+            "/api-data/Product/**",
             "/api/user/admins",
             "/api/user/{id}/roles",
             "/api-data/Customer/search/existsByPhoneNumber",
@@ -31,7 +32,10 @@ public class Endpoints {
             "/api/payment/callbck_qrcode/**",
             "/oauth2/authorization/google",
             "/api-data/Promotion/search/findByPromotionStatus",
-            "/api-data/Product/search/findByProductNameContaining"
+            "/api-data/Product/search/findByProductNameContaining",
+            "/api-data/Promotion/**",
+            "/api/reservation/create"
+
     };
 
     // Public POST endpoints
@@ -148,7 +152,8 @@ public class Endpoints {
             "/api/customer/loyal_point/**",
             "/api/customer/update-loyalty-points",
             "/api/order_staff/update-discount-points-order/**",
-            "/api/reservation/**"
+            "/api/reservation/**",
+            "/api/order_staff/update/total_amount/**"
             // STAFF
     };
 
@@ -166,6 +171,10 @@ public class Endpoints {
             "/Product/**",
             "/api/payment/**",
             "/api/order_staff/**",
+            "/api-data/Table/**",
+            "/api-data/Orders/**",
+            "/Reservation/**",
+            "/api-data/Product/**",
     };
 
     public static final String[] PRIVATE_PATCH_CASHIER = {
@@ -180,6 +189,10 @@ public class Endpoints {
             "/Orders/**",
             "/Reservation/**",
             "/Product/**",
+            "/api-data/Table/**",
+            "/api-data/Orders/**",
+            "/Reservation/**",
+            "/api-data/Product/**",
             "/api/order_staff/**",
     };
 

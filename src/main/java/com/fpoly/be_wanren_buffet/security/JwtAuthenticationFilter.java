@@ -69,7 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails;
             if (roles.contains("CUSTOMER")) {
                 // Xác thực Customer
+
                 userDetails = customerAuthService.loadUserByUsername(username);
+                System.out.println(userDetails + "HELLO");
             } else {
                 // Xác thực User (nhân viên)
                 userDetails = userAuthService.loadUserByUsername(username);

@@ -34,6 +34,10 @@ public class OtpController {
             return ResponseEntity.badRequest().body("Email không tồn tại.");
         }
 
+        if (customerOpt.get().getUsername().contains("@")) {
+            return ResponseEntity.badRequest().body("Email đang dùng google");
+        }
+
         boolean isValid = otpService.validateOtp(email, otp);
         if (isValid) {
             return ResponseEntity.ok("OTP hợp lệ.");

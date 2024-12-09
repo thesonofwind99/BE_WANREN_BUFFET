@@ -1,13 +1,8 @@
 package com.fpoly.be_wanren_buffet.service;
 
-import com.fpoly.be_wanren_buffet.dao.OrderDetailRepository;
-import com.fpoly.be_wanren_buffet.dao.OrderRepository;
-import com.fpoly.be_wanren_buffet.dao.ProductRepository;
-import com.fpoly.be_wanren_buffet.dao.ReviewRepository;
+import com.fpoly.be_wanren_buffet.dao.*;
 import com.fpoly.be_wanren_buffet.dto.*;
-import com.fpoly.be_wanren_buffet.entity.Order;
-import com.fpoly.be_wanren_buffet.entity.OrderDetail;
-import com.fpoly.be_wanren_buffet.entity.Review;
+import com.fpoly.be_wanren_buffet.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +32,9 @@ public class OrderService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private PromotionOrderRepository promotionOrderRepository;
 
     public void UpdateStatusOrder(Order order) {
         orderRepository.save(order);
@@ -101,6 +99,7 @@ public class OrderService {
 
         // Create a list of order IDs that have been reviewed
         List<Long> reviewedOrderIds = new ArrayList<>();
+        List<PromotionOrder> promotionOrders = promotionOrderRepository.findAll();
         for (Review review : reviewList) {
             if (review.getOrder() != null) {
                 reviewedOrderIds.add(review.getOrder().getOrderId());
@@ -116,9 +115,26 @@ public class OrderService {
                 orderHistoryDTO.setPayment(order.getPayment().getPaymentMethod().toString());
                 orderHistoryDTO.setAddress(order.getAddress());
                 orderHistoryDTO.setNotes(order.getNotes());
+                orderHistoryDTO.setOrderStatus(order.getOrderStatus().toString());
                 orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>()); // Initialize list for product history
+                promotionOrders.stream()
+                        .filter(promotionOrder -> promotionOrder.getOrder().getOrderId().equals(order.getOrderId()))  // Kiểm tra orderId
+                        .findFirst()  // Lấy phần tử đầu tiên thỏa mãn điều kiện
+                        .ifPresent(promotionOrder -> {
+                            Promotion promotion = promotionOrder.getPromotion();
+                            // Kiểm tra kiểu khuyến mãi (phần trăm hoặc giá trị cố định)
+                            if (promotion.getPromotionType().contains("%")) {
+                                // Nếu là phần trăm
+                                orderHistoryDTO.setPromotion("-" + promotion.getPromotionValue() + "%");
+                            } else {
+                                // Nếu là giá trị cố định
+                                orderHistoryDTO.setPromotion("-" + promotion.getPromotionValue());
+                            }
+                        });
 
-                // Check if the order has been reviewed
+
+
+
                 boolean isReviewed = reviewedOrderIds.contains(order.getOrderId());
                 orderHistoryDTO.setIsReviewed(isReviewed); // Set the isReviewed flag
 

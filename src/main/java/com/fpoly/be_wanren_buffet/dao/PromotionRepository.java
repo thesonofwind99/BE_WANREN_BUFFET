@@ -16,4 +16,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     Page<Promotion> findByPromotionNameContaining(String promotionName, Pageable pageable);
 
+
+
+
 }

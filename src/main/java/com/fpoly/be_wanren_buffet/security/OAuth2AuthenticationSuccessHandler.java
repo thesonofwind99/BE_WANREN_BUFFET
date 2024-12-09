@@ -90,6 +90,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             }
 
             String token = jwtService.generateTokenForCustomer(
+                    email,
                     fullName,
                     email,
                     phone,

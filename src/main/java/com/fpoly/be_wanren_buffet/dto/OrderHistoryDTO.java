@@ -11,6 +11,8 @@ public class OrderHistoryDTO {
     private String notes;
     private String address;
     private String payment;
+    private String promotion;
+    private String orderStatus;
     private List<ProducHistorytDTO> producHistorytDTOList;
     private Boolean isReviewed;
 }
