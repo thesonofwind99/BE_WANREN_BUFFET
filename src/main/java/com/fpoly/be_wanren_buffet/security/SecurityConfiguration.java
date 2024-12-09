@@ -112,11 +112,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_CASHIER)
                         .hasAnyAuthority("CASHIER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_CASHIER)
-                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .hasAnyAuthority("CASHIER", "ADMIN", "STAFF")
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_CASHIER)
                         .hasAnyAuthority("CASHIER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, Endpoints.PRIVATE_PUT_CASHIER)
-                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .hasAnyAuthority("CASHIER", "ADMIN", "STAFF")
                         // Private Endpoints for Staff
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_STAFF).hasAnyAuthority("STAFF", "ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_STAFF)

@@ -62,9 +62,7 @@ public class Endpoints {
         };
 
         public static final String[] PRIVATE_PUT_ENDPOINTS = {
-                        "/api/customer/**",
-                        "/api/customer/loyal_point/**",
-                        "/api/customer/updatePhoneNumber/**"
+
         };
 
         // Private Customer GET endpoints
@@ -117,8 +115,8 @@ public class Endpoints {
         // Private STAFF GET endpoints
         public static final String[] PRIVATE_GET_STAFF = {
                         // Staff
-                        "/Table",
-                        "/Table/**",
+                        "/api/Table",
+                        "/api/Table/**",
                         "/api/order_staff/findOrderIdByTableId/**",
                         "/api/product/by-category/**",
                         "/api/order_staff/**",
@@ -153,7 +151,10 @@ public class Endpoints {
                         "/api/customer/loyal_point/**",
                         "/api/customer/update-loyalty-points",
                         "/api/order_staff/update-discount-points-order/**",
-                        "/api/reservation/**"
+                        "/api/reservation/**",
+                        "/api/customer/**",
+                        "/api/customer/loyal_point/**",
+                        "/api/customer/updatePhoneNumber/**"
                         // STAFF
         };
 
