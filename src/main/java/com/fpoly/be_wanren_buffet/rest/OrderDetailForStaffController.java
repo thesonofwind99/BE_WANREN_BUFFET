@@ -35,12 +35,16 @@ public class OrderDetailForStaffController {
 
     @PostMapping("/add_or_update/{order_id}")
     public ResponseEntity<?> addOrUpdateOrderDetail(@PathVariable(name = "order_id") Long orderId, @RequestBody List<OrderDetailForStaffRequest> orderDetails) {
-        Map<String, Object> response = new HashMap<>();
-        // Gọi service để xử lý thêm mới hoặc cập nhật chi tiết đơn hàng
-        List<OrderDetail> updatedOrderDetails = orderDetailService.addOrUpdateOrderDetail(orderId, orderDetails);
-        response.put("orderDetails", updatedOrderDetails);
-        response.put("message", "Thêm hoặc cập nhật chi tiết sản phẩm thành công");
-        return ResponseEntity.ok().body(response);
+        try {
+            Map<String, Object> response = new HashMap<>();
+            // Gọi service để xử lý thêm mới hoặc cập nhật chi tiết đơn hàng
+            List<OrderDetail> updatedOrderDetails = orderDetailService.addOrUpdateOrderDetail(orderId, orderDetails);
+            response.put("orderDetails", updatedOrderDetails);
+            response.put("message", "Thêm hoặc cập nhật chi tiết sản phẩm thành công");
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/get/order_details/with_name/{order_id}")
