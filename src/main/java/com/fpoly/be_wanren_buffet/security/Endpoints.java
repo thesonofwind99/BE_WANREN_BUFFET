@@ -115,8 +115,8 @@ public class Endpoints {
         // Private STAFF GET endpoints
         public static final String[] PRIVATE_GET_STAFF = {
                         // Staff
-                        "/api/Table",
-                        "/api/Table/**",
+                        "/api-data/Table",
+                        "/api-data/Table/**",
                         "/api/order_staff/findOrderIdByTableId/**",
                         "/api/product/by-category/**",
                         "/api/order_staff/**",
