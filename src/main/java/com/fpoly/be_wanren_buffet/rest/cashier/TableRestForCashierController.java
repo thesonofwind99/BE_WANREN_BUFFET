@@ -21,6 +21,7 @@ public class TableRestForCashierController {
 
     @GetMapping("/all")
     public List<TableDTO> getAllTables() {
+        System.out.println("test how many this run");
         List<Tablee> tables = tableRepository.findAll();
         return tables.stream()
                 .map(table -> new TableDTO(table.getTableId(), table.getTableNumber(), table.getTableStatus(),

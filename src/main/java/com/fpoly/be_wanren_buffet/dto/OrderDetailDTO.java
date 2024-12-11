@@ -1,8 +1,14 @@
 package com.fpoly.be_wanren_buffet.dto;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDetailDTO {
     private Long orderId;
     private Long orderDetailId;
@@ -12,6 +18,8 @@ public class OrderDetailDTO {
     private String itemNotes;
     private String createdDate;
     private LocalDateTime updatedDate;
+    private String productName; // Thêm tên sản phẩm
+    private String productImage; // Thêm hình ảnh sản phẩm
 
     public Long getOrderId() {
         return orderId;
