@@ -5,5 +5,5 @@ public enum TableStatus {
     OCCUPIED_TABLE, // Ban co nguoi
     RESERVED_TABLE, // Ban da dat
     LOCKED_TABLE,
-    PAYING
+    PAYING_TABLE
 }
