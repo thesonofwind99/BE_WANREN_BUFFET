@@ -39,7 +39,7 @@ public class Endpoints {
                         "/api/payment/callbck_qrcode/**",
                         "/oauth2/authorization/google"
 
-    };
+        };
 
         // Public POST endpoints
         public static final String[] PUBLIC_PORT_ENDPOINTS = {
@@ -62,9 +62,7 @@ public class Endpoints {
         };
 
         public static final String[] PRIVATE_PUT_ENDPOINTS = {
-                        "/api/customer/**",
-                        "/api/customer/loyal_point/**",
-                        "/api/customer/updatePhoneNumber/**"
+
         };
 
         // Private Customer GET endpoints
@@ -117,8 +115,8 @@ public class Endpoints {
         // Private STAFF GET endpoints
         public static final String[] PRIVATE_GET_STAFF = {
                         // Staff
-                        "/Table",
-                        "/Table/**",
+                        "/api-data/Table",
+                        "/api-data/Table/**",
                         "/api/order_staff/findOrderIdByTableId/**",
                         "/api/product/by-category/**",
                         "/api/order_staff/**",
