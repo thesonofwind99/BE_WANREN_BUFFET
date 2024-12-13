@@ -32,6 +32,12 @@ public class Promotion extends Auditable implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "type_food")
+    private String type_food;
+
     @Column(name = "promotion_type")
     private String promotionType;
 

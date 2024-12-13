@@ -72,7 +72,7 @@ public class VnpayController {
                     String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
                     // Redirect to the frontend with a success message
-                    return "redirect:https://wanrenbuffet.netlify.app/checkout/sucessful";
+                    return "redirect:https://wanrenbuffet.netlify.app/checkout?success=" +successMessage;
                 } else {
                     Long orderId = Long.parseLong(txnRef);
                     orderService.deleteOrderById(orderId - 1);
@@ -218,12 +218,12 @@ public class VnpayController {
             // Encode the success message and include it in the redirect
             String successMessage = URLEncoder.encode("Giao dịch thành công", StandardCharsets.UTF_8);
 
-            // Redirect to the frontend with a success message
-            return "redirect:https://wanrenbuffet.netlify.app/checkout?error=" + successMessage;
+            // Redirect to the frontend with a success message error
+            return "redirect:https://wanrenbuffet.netlify.app/checkout?success=" + successMessage;
         } catch (Exception e) {
             // Handle exceptions and provide a failure message
             String errorMessage = URLEncoder.encode("Có lỗi xảy ra trong quá trình thanh toán", StandardCharsets.UTF_8);
-            return "redirect:https://wanrenbuffet.netlify.app/checkout?success=" + errorMessage;
+            return "redirect:https://wanrenbuffet.netlify.app/checkout?error=" + errorMessage;
         }
     }
 

@@ -35,9 +35,10 @@ public class Endpoints {
                 "/api-data/Promotion/search/findByPromotionStatus",
                 "/api-data/Product/search/findByProductNameContaining",
                 "/api-data/Promotion/**",
-                "/api/reservation/create",
+
                         "/api/payment/callbck_qrcode/**",
-                        "/oauth2/authorization/google"
+                        "/oauth2/authorization/google",
+                "/api-data/Product/**"
 
         };
 
@@ -50,6 +51,7 @@ public class Endpoints {
                         "/api/otp/validate",
                         "/api/reset-password/update",
                         "/api/user/login",
+                "/api/reservation/create",
         };
 
         public static final String[] PUBLIC_PUT_ENDPOINTS = {
@@ -75,6 +77,7 @@ public class Endpoints {
         public static final String[] PRIVATE_GET_ADMIN = {
                         "/api/customer/create",
                         "/api/statistical/**",
+                "/api-data/Promotion"
         };
 
         // Private Admin POST endpoints

@@ -141,7 +141,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://wanrenbuffet.netlify.app" , "http://localhost:3000/")); // Change according to your frontend URL
+        configuration.setAllowedOrigins(List.of("https://wanrenbuffet.netlify.app" , "http://localhost:3000/","https://wanrenbuffet.io.vn/")); // Change according to your frontend URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Allowed HTTP methods
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
