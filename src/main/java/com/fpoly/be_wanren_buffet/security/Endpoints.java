@@ -128,7 +128,8 @@ public class Endpoints {
                         "/api/table/status/**",
                         "/api/order_staff/check-customer/**",
                         "/api/order_staff/get-discount-points/**",
-                        "/api/reservation/today"
+                        "/api/reservation/today",
+                        "/api/order_staff/created_date/**"
 
         };
 

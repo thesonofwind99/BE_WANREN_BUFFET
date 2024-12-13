@@ -1,5 +1,7 @@
 package com.fpoly.be_wanren_buffet.rest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -201,4 +203,20 @@ public class OrderForStaffController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found or discount points not set.");
         }
     }
+
+    @GetMapping("/created_date/{orderId}")
+    public String getCreatedDateByOrderId(@PathVariable Long orderId) {
+        // Find the order by orderId
+        Order order = orderForStaffService.findOrderById(orderId);
+
+        // Get the createdDate from the order
+        LocalDateTime createdDate = order.getCreatedDate();
+
+        // Define the format pattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy");
+
+        // Format the createdDate to the desired string format
+        return createdDate.format(formatter); // Return the formatted string
+    }
 }
+
