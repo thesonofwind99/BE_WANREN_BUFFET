@@ -2,16 +2,15 @@ package com.fpoly.be_wanren_buffet.rest;
 
 import com.fpoly.be_wanren_buffet.dto.PromotionInfoDTO;
 import com.fpoly.be_wanren_buffet.service.PromotionOrderService;
+import com.fpoly.be_wanren_buffet.service.VoucherService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/promotions")
 public class PromotionOrderController {
     private final PromotionOrderService promotionOrderService;
+    private VoucherService voucherService;
 
     public PromotionOrderController(PromotionOrderService promotionOrderService) {
         this.promotionOrderService = promotionOrderService;

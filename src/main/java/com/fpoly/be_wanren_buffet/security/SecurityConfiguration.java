@@ -110,7 +110,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, Endpoints.PRIVATE_DELETE_ADMIN).hasAuthority("ADMIN")
                         // Private Endpoints for Cashier
                         .requestMatchers(HttpMethod.GET, Endpoints.PRIVATE_GET_CASHIER)
-                        .hasAnyAuthority("CASHIER", "ADMIN")
+                        .hasAnyAuthority("CASHIER", "ADMIN", "STAFF")
                         .requestMatchers(HttpMethod.POST, Endpoints.PRIVATE_POST_CASHIER)
                         .hasAnyAuthority("CASHIER", "ADMIN", "STAFF")
                         .requestMatchers(HttpMethod.PATCH, Endpoints.PRIVATE_PATCH_CASHIER)

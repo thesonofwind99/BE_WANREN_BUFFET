@@ -38,7 +38,7 @@ public class Endpoints {
 
                         "/api/payment/callbck_qrcode/**",
                         "/oauth2/authorization/google",
-                        "/api-data/Product/**",
+                        "/api-data/Product/**"
 
         };
 
@@ -60,7 +60,8 @@ public class Endpoints {
         };
 
         public static final String[] PRIVATE_POST_ENDPOINTS = {
-                        "/api/orders"
+                        "/api/orders",
+                        "/api/vouchers"
         };
 
         public static final String[] PRIVATE_PUT_ENDPOINTS = {
@@ -71,7 +72,8 @@ public class Endpoints {
         public static final String[] PRIVATE_CUSTOMER_GET_ENDPOINTS = {
                         "/api/orders/GetOrderByCustomerId/**",
                         "/api/orders/GetOrderDetailByOrderId/**",
-                        "/api/payment/create_payment"
+                        "/api/payment/create_payment",
+                        "/api/vouchers/voucherInfo/**"
         };
 
         public static final String[] PRIVATE_GET_ADMIN = {
@@ -158,7 +160,8 @@ public class Endpoints {
                         "/api/reservation/**",
                         "/api/customer/**",
                         "/api/customer/loyal_point/**",
-                        "/api/customer/updatePhoneNumber/**"
+                        "/api/customer/updatePhoneNumber/**",
+                        "/api/order_staff/update/total_amount/"
                         // STAFF
         };
 
@@ -173,6 +176,12 @@ public class Endpoints {
                         "/api-data/Orders/**",
                         "/api-data/Reservation/**",
                         "/api-data/Product/**",
+                        "/api-data/Voucher/**",
+                        "/Voucher/**",
+                        "/api-data/Promotion/**",
+                        "/Promotion/**",
+                        "/api-data/PromotionOrder/**",
+                        "/PromotionOrder/**",
         };
 
         public static final String[] PRIVATE_POST_CASHIER = {
@@ -186,6 +195,12 @@ public class Endpoints {
                         "/api-data/Product/**",
                         "/api/payment/**",
                         "/api/order_staff/**",
+                        "/api-data/Voucher/**",
+                        "/Voucher/**",
+                        "/api-data/Promotion/**",
+                        "/Promotion/**",
+                        "/api-data/PromotionOrder/**",
+                        "/PromotionOrder/**",
         };
 
         public static final String[] PRIVATE_PATCH_CASHIER = {
@@ -197,6 +212,12 @@ public class Endpoints {
                         "/api-data/Orders/**",
                         "/api-data/Reservation/**",
                         "/api-data/Product/**",
+                        "/api-data/Voucher/**",
+                        "/Voucher/**",
+                        "/api-data/Promotion/**",
+                        "/Promotion/**",
+                        "/api-data/PromotionOrder/**",
+                        "/PromotionOrder/**",
         };
 
         public static final String[] PRIVATE_PUT_CASHIER = {
@@ -209,6 +230,12 @@ public class Endpoints {
                         "/api-data/Reservation/**",
                         "/api-data/Product/**",
                         "/api/order_staff/**",
+                        "/api-data/Voucher/**",
+                        "/Voucher/**",
+                        "/api-data/Promotion/**",
+                        "/Promotion/**",
+                        "/api-data/PromotionOrder/**",
+                        "/PromotionOrder/**",
         };
 
         // Cashier ^
