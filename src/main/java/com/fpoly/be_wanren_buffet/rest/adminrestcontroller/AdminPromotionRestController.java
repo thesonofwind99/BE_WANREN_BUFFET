@@ -62,6 +62,19 @@ public class AdminPromotionRestController {
             existingPromotion.setPromotionStatus(promotionUpdates.getPromotionStatus());
         }
 
+        if (promotionUpdates.getUnitPrice() != null) {
+            existingPromotion.setUnitPrice(promotionUpdates.getUnitPrice());
+        }
+
+        if (promotionUpdates.getImage() != null) {
+            existingPromotion.setImage(promotionUpdates.getImage());
+        }
+
+        if (promotionUpdates.getType_food() != null) {
+            existingPromotion.setType_food(promotionUpdates.getType_food());
+        }
+
+
         // Lưu đối tượng đã cập nhật
         try {
             return new ResponseEntity<>(promotionRepository.save(existingPromotion), HttpStatus.OK);
