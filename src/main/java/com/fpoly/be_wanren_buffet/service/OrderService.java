@@ -1,16 +1,29 @@
 package com.fpoly.be_wanren_buffet.service;
 
-import com.fpoly.be_wanren_buffet.dao.*;
-import com.fpoly.be_wanren_buffet.dto.*;
-import com.fpoly.be_wanren_buffet.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.fpoly.be_wanren_buffet.dao.OrderDetailRepository;
+import com.fpoly.be_wanren_buffet.dao.OrderRepository;
+import com.fpoly.be_wanren_buffet.dao.ProductRepository;
+import com.fpoly.be_wanren_buffet.dao.PromotionOrderRepository;
+import com.fpoly.be_wanren_buffet.dao.ReviewRepository;
+import com.fpoly.be_wanren_buffet.dto.HourlyRevenueDTO;
+import com.fpoly.be_wanren_buffet.dto.OrderDetailDTO;
+import com.fpoly.be_wanren_buffet.dto.OrderHistoryDTO;
+import com.fpoly.be_wanren_buffet.dto.ProducHistorytDTO;
+import com.fpoly.be_wanren_buffet.dto.WeeklyRevenueDTO;
+import com.fpoly.be_wanren_buffet.entity.Order;
+import com.fpoly.be_wanren_buffet.entity.OrderDetail;
+import com.fpoly.be_wanren_buffet.entity.Promotion;
+import com.fpoly.be_wanren_buffet.entity.PromotionOrder;
+import com.fpoly.be_wanren_buffet.entity.Review;
 
 /**
  * Service class for managing orders.
@@ -49,8 +62,7 @@ public class OrderService {
         try {
             orderRepository.deleteById(id);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return false;
         }
@@ -77,8 +89,7 @@ public class OrderService {
                         orderDetail.getProduct().getImage(),
                         orderDetail.getQuantity(),
                         orderDetail.getProduct().getProductStatus().toString(),
-                        orderDetail.getOrder().getTotalAmount()
-                );
+                        orderDetail.getOrder().getTotalAmount());
                 listProducts.add(producHistorytDTO);
             }
         }
@@ -86,7 +97,8 @@ public class OrderService {
     }
 
     /**
-     * Retrieves the order history for a given customer ID, including the review status.
+     * Retrieves the order history for a given customer ID, including the review
+     * status.
      *
      * @param customerId The ID of the customer.
      * @return A list of order history DTOs.
@@ -108,7 +120,8 @@ public class OrderService {
 
         // Populate the order history list based on the customer ID
         for (Order order : orderList) {
-            if (order.getCustomer() != null && order.getCustomer().getCustomerId().equals(customerId) && order.getOrderStatus().toString().equals("PREPARING_ORDER")) {
+            if (order.getCustomer() != null && order.getCustomer().getCustomerId().equals(customerId)
+                    && order.getOrderStatus().toString().equals("PREPARING_ORDER")) {
                 OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
                 orderHistoryDTO.setOrderId(order.getOrderId());
                 orderHistoryDTO.setTotalAmount(order.getTotalAmount());
@@ -118,8 +131,10 @@ public class OrderService {
                 orderHistoryDTO.setOrderStatus(order.getOrderStatus().toString());
                 orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>()); // Initialize list for product history
                 promotionOrders.stream()
-                        .filter(promotionOrder -> promotionOrder.getOrder().getOrderId().equals(order.getOrderId()))  // Kiểm tra orderId
-                        .findFirst()  // Lấy phần tử đầu tiên thỏa mãn điều kiện
+                        .filter(promotionOrder -> promotionOrder.getOrder().getOrderId().equals(order.getOrderId())) // Kiểm
+                                                                                                                     // tra
+                                                                                                                     // orderId
+                        .findFirst() // Lấy phần tử đầu tiên thỏa mãn điều kiện
                         .ifPresent(promotionOrder -> {
                             Promotion promotion = promotionOrder.getPromotion();
                             // Kiểm tra kiểu khuyến mãi (phần trăm hoặc giá trị cố định)
@@ -132,20 +147,13 @@ public class OrderService {
                             }
                         });
 
-
-
-
                 boolean isReviewed = reviewedOrderIds.contains(order.getOrderId());
                 orderHistoryDTO.setIsReviewed(isReviewed); // Set the isReviewed flag
 
                 orderHistoryDTOList.add(orderHistoryDTO);
             }
 
-
         }
-
-
-
 
         // Populate product history for each order
         for (OrderDetail orderDetail : orderDetails) {
@@ -161,8 +169,7 @@ public class OrderService {
                                 orderDetail.getProduct().getImage(),
                                 orderDetail.getQuantity(),
                                 orderDetail.getProduct().getProductStatus().toString(),
-                                orderDetail.getOrder().getTotalAmount()
-                        );
+                                orderDetail.getOrder().getTotalAmount());
 
                         // Add each product history to the list within the order history
                         orderHistoryDTO.getProducHistorytDTOList().add(producHistorytDTO);
@@ -230,11 +237,11 @@ public class OrderService {
 
     public void updateOrderDetails(Long orderId, List<OrderDetailDTO> orderDetails) {
 
-
-//        // Lấy danh sách các OrderDetail hiện có trong database cho orderId
+        // // Lấy danh sách các OrderDetail hiện có trong database cho orderId
         List<OrderDetail> existingDetails = orderDetailRepository.findByOrder_orderId(orderId);
-//
-//        // Duyệt qua các chi tiết hiện có để xóa những cái không còn trong danh sách cập nhật
+        //
+        // // Duyệt qua các chi tiết hiện có để xóa những cái không còn trong danh sách
+        // cập nhật
         for (OrderDetail existingDetail : existingDetails) {
             boolean stillExists = orderDetails.stream()
                     .anyMatch(detail -> detail.getOrderDetailId() != null
@@ -243,7 +250,6 @@ public class OrderService {
                 orderDetailRepository.delete(existingDetail); // Xóa nếu không còn trong danh sách
             }
         }
-
 
         for (OrderDetailDTO detail : orderDetails) {
             OrderDetail entity = new OrderDetail();
@@ -266,11 +272,9 @@ public class OrderService {
 
         // Cập nhật totalAmount cho Order
         Order order = orderRepository.findByOrderId(orderId);
-        order.setTotalAmount(totalAmount+15000);
+        order.setTotalAmount(totalAmount);
         orderRepository.save(order); // Lưu lại Order với totalAmount mới
 
     }
-
-
 
 }

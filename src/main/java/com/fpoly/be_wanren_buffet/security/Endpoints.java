@@ -31,14 +31,14 @@ public class Endpoints {
                         "/api/checkout",
                         "/api/statistical/**",
                         "/api/register",
-                "/api-data/Customer/**",
-                "/api-data/Promotion/search/findByPromotionStatus",
-                "/api-data/Product/search/findByProductNameContaining",
-                "/api-data/Promotion/**",
+                        "/api-data/Customer/**",
+                        "/api-data/Promotion/search/findByPromotionStatus",
+                        "/api-data/Product/search/findByProductNameContaining",
+                        "/api-data/Promotion/**",
 
                         "/api/payment/callbck_qrcode/**",
                         "/oauth2/authorization/google",
-                "/api-data/Product/**"
+                        "/api-data/Product/**",
 
         };
 
@@ -51,7 +51,7 @@ public class Endpoints {
                         "/api/otp/validate",
                         "/api/reset-password/update",
                         "/api/user/login",
-                "/api/reservation/create",
+                        "/api/reservation/create",
         };
 
         public static final String[] PUBLIC_PUT_ENDPOINTS = {
@@ -77,7 +77,7 @@ public class Endpoints {
         public static final String[] PRIVATE_GET_ADMIN = {
                         "/api/customer/create",
                         "/api/statistical/**",
-                "/api-data/Promotion"
+                        "/api-data/Promotion"
         };
 
         // Private Admin POST endpoints
@@ -169,6 +169,10 @@ public class Endpoints {
                         "/Orders/**",
                         "/Reservation/**",
                         "/Product/**",
+                        "/api-data/Table/**",
+                        "/api-data/Orders/**",
+                        "/api-data/Reservation/**",
+                        "/api-data/Product/**",
         };
 
         public static final String[] PRIVATE_POST_CASHIER = {
@@ -176,6 +180,10 @@ public class Endpoints {
                         "/Orders/**",
                         "/Reservation/**",
                         "/Product/**",
+                        "/api-data/Table/**",
+                        "/api-data/Orders/**",
+                        "/api-data/Reservation/**",
+                        "/api-data/Product/**",
                         "/api/payment/**",
                         "/api/order_staff/**",
         };
@@ -185,6 +193,10 @@ public class Endpoints {
                         "/Orders/**",
                         "/Reservation/**",
                         "/Product/**",
+                        "/api-data/Table/**",
+                        "/api-data/Orders/**",
+                        "/api-data/Reservation/**",
+                        "/api-data/Product/**",
         };
 
         public static final String[] PRIVATE_PUT_CASHIER = {
@@ -192,6 +204,10 @@ public class Endpoints {
                         "/Orders/**",
                         "/Reservation/**",
                         "/Product/**",
+                        "/api-data/Table/**",
+                        "/api-data/Orders/**",
+                        "/api-data/Reservation/**",
+                        "/api-data/Product/**",
                         "/api/order_staff/**",
         };
 
