@@ -23,7 +23,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Long createReservation(ReservationRequest reservationRequest) {
-        Customer customer = customerRepository.findById(reservationRequest.getCustomerId()).get();
+        Customer customer;
+        System.out.println(reservationRequest.getCustomerId());
+        if(reservationRequest.getCustomerId() != 0){
+             customer = customerRepository.findById(reservationRequest.getCustomerId()).get();
+        }else{
+             customer = null;
+        }
+
 
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);

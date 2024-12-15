@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/Promotion")
+@RequestMapping("/api/Promotion")
 @RequiredArgsConstructor
 public class AdminPromotionRestController {
 

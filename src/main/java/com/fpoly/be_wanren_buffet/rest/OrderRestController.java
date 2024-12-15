@@ -99,6 +99,11 @@ public class OrderRestController {
                 isUpdated = true;
             }
 
+            if (customer.getPhoneNumber() == null &&  orderRequest.getPhone() != null) {
+                customer.setPhoneNumber(orderRequest.getPhone());
+                isUpdated = true;
+            }
+
             if (isUpdated) {
                 customerRepository.save(customer);
                 log.debug("Cập nhật thông tin khách hàng thành công: {}", customer.getUsername());
@@ -114,6 +119,7 @@ public class OrderRestController {
             order.setAddress(orderRequest.getAddress());
             order.setCreatedDate(LocalDateTime.now());
             order.setAddress(orderRequest.getAddress());
+            order.setPhoneNumber(orderRequest.getPhone());
 
 
             // Handle Payment

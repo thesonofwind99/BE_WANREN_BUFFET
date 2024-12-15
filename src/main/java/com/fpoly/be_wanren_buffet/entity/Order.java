@@ -41,6 +41,9 @@ public class Order extends Auditable implements Serializable {
     @Column(name = "Address")
     private String address;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @ManyToOne
     @JoinColumn(name = "table_id")
     private Tablee tablee;

@@ -100,7 +100,8 @@ public class Endpoints {
                         "/api/user/update/{id}",
                         "/api/user/updateAccountStatus/{id}",
                         "/api/promotion/update/{id}",
-                        "/api/user/admins/update/{id}"
+                        "/api/user/admins/update/{id}",
+
         };
 
         public static final String[] PRIVATE_PUT_ADMIN = {
@@ -161,7 +162,7 @@ public class Endpoints {
                         "/api/customer/**",
                         "/api/customer/loyal_point/**",
                         "/api/customer/updatePhoneNumber/**",
-                        "/api/order_staff/update/total_amount/"
+                        "/api/order_staff/update/total_amount/",
                         // STAFF
         };
 
@@ -218,6 +219,8 @@ public class Endpoints {
                         "/Promotion/**",
                         "/api-data/PromotionOrder/**",
                         "/PromotionOrder/**",
+
+
         };
 
         public static final String[] PRIVATE_PUT_CASHIER = {
