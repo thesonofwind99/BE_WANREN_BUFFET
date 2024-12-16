@@ -220,7 +220,6 @@ public class Endpoints {
                         "/api-data/PromotionOrder/**",
                         "/PromotionOrder/**",
 
-
         };
 
         public static final String[] PRIVATE_PUT_CASHIER = {
