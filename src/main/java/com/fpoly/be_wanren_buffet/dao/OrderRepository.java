@@ -1,19 +1,19 @@
 // OrderRepository.java
 package com.fpoly.be_wanren_buffet.dao;
 
-import com.fpoly.be_wanren_buffet.entity.Order;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
-
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.fpoly.be_wanren_buffet.entity.Order;
 
 @RepositoryRestResource(path = "Orders")
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -31,7 +31,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY MONTH(o.createdDate)")
     List<Object[]> getMonthlyRevenue(@Param("year") int year);
 
-
     @Procedure(name = "getWeeklyRevenue")
     List<Object[]> getWeeklyRevenue();
 
@@ -39,7 +38,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Object[]> getHourlyRevenue();
 
     Order findByOrderId(Long orderId);
-
 
     @Modifying
     @Transactional
@@ -56,8 +54,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("UPDATE Order o SET o.discountPointUsed = :discountPoints WHERE o.orderId = :orderId")
     int updateDiscountPointsByOrderId(@Param("discountPoints") Long discountPoints, @Param("orderId") Long orderId);
 
-
-
-
+    List<Order> findByTableeIsNull(); // Lọc trực tiếp trong query
 
 }
