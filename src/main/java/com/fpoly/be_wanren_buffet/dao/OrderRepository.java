@@ -1,7 +1,6 @@
 // OrderRepository.java
 package com.fpoly.be_wanren_buffet.dao;
 
-import com.fpoly.be_wanren_buffet.dto.WeeklyRevenueDTO;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,11 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RepositoryRestResource(path = "Orders")

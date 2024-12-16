@@ -1,9 +1,6 @@
 package com.fpoly.be_wanren_buffet.dao;
 
-import com.fpoly.be_wanren_buffet.dto.UpdateCustomerDTO;
-import com.fpoly.be_wanren_buffet.entity.Auditable;
 import com.fpoly.be_wanren_buffet.entity.Customer;
-import com.fpoly.be_wanren_buffet.entity.Promotion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
