@@ -186,7 +186,7 @@ public class VnpayController {
                 // Handle other unforeseen exceptions
                 System.out.println(e.getMessage());
                 String exceptionMessage = URLEncoder.encode("Lỗi hệ thống", StandardCharsets.UTF_8);
-                return "redirect:https://wanrenbuffet.netlify.app/staff/checkout/checkout/failed";
+                return "redirect:https://wanrenbuffet.netlify.app/staff/checkout/failed";
             }
 
         }

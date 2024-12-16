@@ -14,10 +14,7 @@ public class Endpoints {
                         "/api/payment/create_payment",
                         "/api/payment/RollBack_VNPAY",
                         "/api/customer",
-                        "/api/orders/**",
                         "/api/order_detail/**",
-                        "/api/orders/GetOrderDetailByOrderId/**",
-                        "/api/orders/GetOrderByCustomerId/**",
                         "/api/customer/search",
                         "/api/user",
                         "/api/user/search",
@@ -65,7 +62,7 @@ public class Endpoints {
         };
 
         public static final String[] PRIVATE_PUT_ENDPOINTS = {
-
+                "/api/customer/updatePassword/**"
         };
 
         // Private Customer GET endpoints

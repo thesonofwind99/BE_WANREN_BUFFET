@@ -120,6 +120,7 @@ public class OrderRestController {
             order.setCreatedDate(LocalDateTime.now());
             order.setAddress(orderRequest.getAddress());
             order.setPhoneNumber(orderRequest.getPhone());
+            order.setUpdatedDate(LocalDateTime.now());
 
 
             // Handle Payment
@@ -219,14 +220,20 @@ public class OrderRestController {
 
     @GetMapping("/GetOrderDetailByOrderId/{orderId}")
     public ResponseEntity<?> getOrderHistory(@PathVariable("orderId") Long orderId) {
+        System.out.println(orderId + "HELLO");
         List<ProducHistorytDTO> list = orderService.getOrderDetail(orderId);
-        return ResponseEntity.ok().body(list);
+        try {
+            return ResponseEntity.ok().body(list);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e);
+        }
+
     }
 
     @GetMapping("/GetOrderByCustomerId/{CustomerId}")
     public ResponseEntity<?> getTest(@PathVariable("CustomerId") Long CustomerId) {
         List<OrderHistoryDTO> orderHistoryDTOList = orderService.orderHistoryDTOList(CustomerId);
-
         // Kiểm tra nếu không có đơn hàng nào
         if (orderHistoryDTOList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No orders found for Customer ID " + CustomerId);

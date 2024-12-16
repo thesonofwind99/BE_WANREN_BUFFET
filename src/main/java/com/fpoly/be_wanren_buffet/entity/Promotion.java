@@ -29,7 +29,7 @@ public class Promotion extends Auditable implements Serializable {
     @Column(name = "promotion_name")
     private String promotionName;
 
-    @Column(name = "description")
+    @Column(name = "description"  ,columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(name = "unit_price")
