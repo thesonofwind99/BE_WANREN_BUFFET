@@ -2,7 +2,6 @@ package com.fpoly.be_wanren_buffet.service;
 
 import java.util.Optional;
 
-import com.fpoly.be_wanren_buffet.dto.CustomerDiscountDTO;
 import com.fpoly.be_wanren_buffet.dto.request.OrderForStaffRequest;
 import com.fpoly.be_wanren_buffet.entity.Order;
 import com.fpoly.be_wanren_buffet.enums.OrderStatus;

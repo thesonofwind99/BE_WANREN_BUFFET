@@ -76,7 +76,8 @@ public class Endpoints {
         public static final String[] PRIVATE_GET_ADMIN = {
                         "/api/customer/create",
                         "/api/statistical/**",
-                        "/api-data/Promotion"
+                        "/api-data/Promotion",
+                        "/api-data/Review"
         };
 
         // Private Admin POST endpoints
