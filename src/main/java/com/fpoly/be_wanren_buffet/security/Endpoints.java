@@ -9,8 +9,8 @@ public class Endpoints {
                         "/api/product/search/findByProductNameContaining",
                         "/api/product/**",
                         "/api/promotion/search/findByPromotionStatus",
-                        "/api/customer/existsByUsername",
-                        "/api/customer/existsByEmail",
+                        "/api-data/Customer/existsByUsername",
+                        "/api-data/Customer/existsByEmail",
                         "/api/payment/create_payment",
                         "/api/payment/RollBack_VNPAY",
                         "/api/customer",
@@ -23,7 +23,7 @@ public class Endpoints {
                         "/api/promotion/**",
                         "/api/user/admins",
                         "/api/user/{id}/roles",
-                        "/api/customer/search/existsByPhoneNumber",
+                        "/api-data/Customer/search/existsByPhoneNumber",
                         "/api/user/**",
                         "/api/checkout",
                         "/api/statistical/**",
@@ -62,7 +62,8 @@ public class Endpoints {
         };
 
         public static final String[] PRIVATE_PUT_ENDPOINTS = {
-                "/api/customer/updatePassword/**"
+                "/api/customer/updatePassword/**",
+                "/api/customer/updateCustomer/**"
         };
 
         // Private Customer GET endpoints

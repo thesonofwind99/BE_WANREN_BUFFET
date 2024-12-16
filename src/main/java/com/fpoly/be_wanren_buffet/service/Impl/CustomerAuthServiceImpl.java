@@ -21,7 +21,8 @@ public class CustomerAuthServiceImpl implements CustomerAuthService {
     public Customer authenticate(String username) {
         System.out.println("USER" + username);
         if(username.contains("@")){
-            return customerRepository.findByEmail(username).get(); // Sử dụng email thay vì username
+
+            return customerRepository.findByEmail(username).get() == null ? customerRepository.findByUsername(username).get() : customerRepository.findByUsername(username).get(); // Sử dụng email thay vì username
         }
         return  customerRepository.findByUsername(username).get();
 
