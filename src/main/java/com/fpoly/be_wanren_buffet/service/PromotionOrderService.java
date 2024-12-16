@@ -2,7 +2,6 @@ package com.fpoly.be_wanren_buffet.service;
 
 import com.fpoly.be_wanren_buffet.dao.PromotionOrderRepository;
 import com.fpoly.be_wanren_buffet.dto.PromotionInfoDTO;
-import com.fpoly.be_wanren_buffet.dto.PromotionVoucherDTO;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -15,12 +15,10 @@ import com.fpoly.be_wanren_buffet.entity.Voucher;
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
     Optional<Voucher> findByCode(String code);
 
-    @Query("SELECT new com.fpoly.be_wanren_buffet.dto.PromotionVoucherDTO(p.promotionName, p.image, p.endDate, v.code, v.status) "
+    @Query("SELECT new com.fpoly.be_wanren_buffet.dto.PromotionVoucherDTO(p.promotionName, p.image, p.endDate, v.code, v.status, v.customer.customerId, p.Promotion) "
             +
             "FROM voucher v " +
             "JOIN v.promotion p " +
             "WHERE v.customer.customerId = :customerId")
     List<PromotionVoucherDTO> findPromotionVoucherInfoByCustomerId(@Param("customerId") Long customerId);
-
-    Optional<Voucher> findById(Long voucherId);
 }
