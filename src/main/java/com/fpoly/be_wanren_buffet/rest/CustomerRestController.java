@@ -67,6 +67,7 @@ public class CustomerRestController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody Customer customer) {
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customer.setAddress(null);
         return customerService.register(customer);
     }
 
@@ -110,7 +111,6 @@ public class CustomerRestController {
 
             // Cập nhật các trường thông tin
             customer.setFullName(updateCustomerDTO.getFullName());
-            customer.setEmail(updateCustomerDTO.getEmail());
             customer.setPhoneNumber(updateCustomerDTO.getPhoneNumber());
             // Bạn có thể thêm các trường khác nếu cần
             customerService.save(customer);

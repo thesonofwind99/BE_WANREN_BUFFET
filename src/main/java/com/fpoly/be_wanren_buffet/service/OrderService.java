@@ -130,10 +130,9 @@ public class OrderService {
                 orderHistoryDTO.setNotes(order.getNotes());
                 orderHistoryDTO.setOrderStatus(order.getOrderStatus().toString());
                 orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>()); // Initialize list for product history
+
                 promotionOrders.stream()
-                        .filter(promotionOrder -> promotionOrder.getOrder().getOrderId().equals(order.getOrderId())) // Kiểm
-                                                                                                                     // tra
-                                                                                                                     // orderId
+                        .filter(promotionOrder -> promotionOrder.getOrder().getOrderId().equals(order.getOrderId())) // Kiểm tra orderId
                         .findFirst() // Lấy phần tử đầu tiên thỏa mãn điều kiện
                         .ifPresent(promotionOrder -> {
                             Promotion promotion = promotionOrder.getPromotion();
@@ -152,14 +151,18 @@ public class OrderService {
 
                 orderHistoryDTOList.add(orderHistoryDTO);
             }
-
         }
 
         // Populate product history for each order
         for (OrderDetail orderDetail : orderDetails) {
-            if (orderDetail.getOrder() != null) {
+            if (orderDetail.getOrder() != null && orderDetail.getProduct() != null) {
                 for (OrderHistoryDTO orderHistoryDTO : orderHistoryDTOList) {
                     if (orderDetail.getOrder().getOrderId().equals(orderHistoryDTO.getOrderId())) {
+                        // Kiểm tra ProducHistorytDTOList trước khi thêm
+                        if (orderHistoryDTO.getProducHistorytDTOList() == null) {
+                            orderHistoryDTO.setProducHistorytDTOList(new ArrayList<>());
+                        }
+
                         ProducHistorytDTO producHistorytDTO = new ProducHistorytDTO(
                                 orderDetail.getProduct().getProductId(),
                                 orderDetail.getProduct().getProductName(),
@@ -180,6 +183,7 @@ public class OrderService {
 
         return orderHistoryDTOList;
     }
+
 
     public Map<Integer, Double> getMonthlyRevenue(int year) {
         List<Object[]> results = orderRepository.getMonthlyRevenue(2024);

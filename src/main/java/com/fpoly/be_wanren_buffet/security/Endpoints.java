@@ -35,7 +35,8 @@ public class Endpoints {
 
                         "/api/payment/callbck_qrcode/**",
                         "/oauth2/authorization/google",
-                        "/api-data/Product/**"
+                        "/api-data/Product/**",
+                
 
         };
 

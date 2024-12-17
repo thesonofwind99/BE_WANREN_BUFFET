@@ -216,7 +216,6 @@ public class OrderRestController {
 
     @GetMapping("/GetOrderDetailByOrderId/{orderId}")
     public ResponseEntity<?> getOrderHistory(@PathVariable("orderId") Long orderId) {
-        System.out.println(orderId + "HELLO");
         List<ProducHistorytDTO> list = orderService.getOrderDetail(orderId);
         try {
             return ResponseEntity.ok().body(list);
