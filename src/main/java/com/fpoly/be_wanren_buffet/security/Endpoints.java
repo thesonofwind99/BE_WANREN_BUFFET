@@ -36,6 +36,7 @@ public class Endpoints {
                         "/api/payment/callbck_qrcode/**",
                         "/oauth2/authorization/google",
                         "/api-data/Product/**",
+
                 
 
         };
@@ -54,7 +55,8 @@ public class Endpoints {
 
         public static final String[] PUBLIC_PUT_ENDPOINTS = {
                         "/api/customer/loyal_point/**",
-                        "/api/order_staff/update-customer"
+                        "/api/order_staff/update-customer",
+                "/api-data/User/**"
         };
 
         public static final String[] PRIVATE_POST_ENDPOINTS = {

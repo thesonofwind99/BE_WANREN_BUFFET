@@ -88,7 +88,7 @@ public class AdminUserRestController {
 
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<Object> updatePartialUser(@PathVariable Long id, @RequestBody User partialUpdateUser) {
+    public ResponseEntity<Object> updatePartialUser(@PathVariable Long id, @RequestBody User user) {
         // Tìm user hiện tại theo ID
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
@@ -96,18 +96,25 @@ public class AdminUserRestController {
         }
 
         // Kiểm tra trùng lặp username và email trước khi cập nhật
-        if (isFieldChangedAndExists(partialUpdateUser.getUsername(), existingUser.getUsername(), userRepository::findByUsername)) {
+        if (isFieldChangedAndExists(user.getUsername(), existingUser.getUsername(), userRepository::findByUsername)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists. Please choose another username.");
         }
-        if (isFieldChangedAndExists(partialUpdateUser.getEmail(), existingUser.getEmail(), userRepository::findByEmail)) {
+        if (isFieldChangedAndExists(user.getEmail(), existingUser.getEmail(), userRepository::findByEmail)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists. Please choose another email.");
         }
 
-        // Cập nhật các trường không null và lưu
-        updateFields(partialUpdateUser, existingUser);
-        existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+        // Cập nhật các trường không null
+        updateFields(user, existingUser);
+
+        // Kiểm tra nếu mật khẩu có thay đổi thì mới mã hóa lại
+        if (user.getPassword() != null && !user.getPassword().equals(existingUser.getPassword())) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        // Lưu lại người dùng đã cập nhật
         return ResponseEntity.ok(userRepository.save(existingUser));
     }
+
 
     // Phương thức kiểm tra nếu trường đã thay đổi và trùng với user khác
     private boolean isFieldChangedAndExists(String newValue, String currentValue, Function<String, Optional<User>> finderFunction) {
